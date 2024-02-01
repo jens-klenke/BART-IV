@@ -10,6 +10,10 @@ pacman::p_load(
   MCMCpack,
   BayesTree,
   dbarts,
+  bcf,
   crayon,
-  future
+  future,
+  rpart,
+  AER,
+  bartCause
 )

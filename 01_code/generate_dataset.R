@@ -1,3 +1,4 @@
+############## Packages ################
 source(here::here('01_code/packages.R'))
 # @title
 # Generate Dataset for BCF-IV Example
@@ -20,7 +21,7 @@ source(here::here('01_code/packages.R'))
 # dataset <- generate_dataset()
 #
 # @export
-generate_dataset <- function(n = 1000, p = 10, rho = 0, null = 0, effect_size = 2, compliance = 0.75) {
+generate_dataset <- function(n = 1000, p = 100, rho = 0, null = 0, effect_size = 2, compliance = 0.75) {
   
   # Generate Variables
   mu <- rep(0, p)
@@ -29,8 +30,10 @@ generate_dataset <- function(n = 1000, p = 10, rho = 0, null = 0, effect_size = 
   pvars <- pnorm(rawvars)
   binomvars <- qbinom(pvars, 1, 0.5) 
   X <- binomvars
-  # rewrite as loop 
-  # why not just unlist? 
+  
+  ########## just vectoriced? ########## 
+  'why only the first 10 variables? Mistake?' 
+  # x1 and x2 needed for heterogenes effects
   x1 <- X[, 1]
   x2 <- X[, 2]
   x3 <- X[, 3]
@@ -41,8 +44,12 @@ generate_dataset <- function(n = 1000, p = 10, rho = 0, null = 0, effect_size = 
   x8 <- X[, 8]
   x9 <- X[, 9]
   x10 <- X[, 10]
+  
+  # unecessary isn't it ? 
+  # Drops all the other vovariates
   X <- cbind(x1, x2, x3, x4, x5, x6, x7, x8, x9, x10)
-  matrix(X)
+
+  
   # Generate unit level observed exposure
   w1 <- rbinom(n, 1, compliance)
   w0 <- numeric(n)
@@ -51,7 +58,7 @@ generate_dataset <- function(n = 1000, p = 10, rho = 0, null = 0, effect_size = 
   y0 <- rnorm(n)
   y1 <- numeric(n)
   
-  # Generate Heterogeneity
+  # Generate Heterogeneity - only depends on x1 and x2  
   y1[x1 == 0 & x2 == 0] <- y0[x1 == 0 & x2 == 0] + w1[x1 == 0 & x2 == 0] * effect_size
   y1[x1 == 0 & x2 == 1] <- y0[x1 == 0 & x2 == 1] + w1[x1 == 0 & x2 == 1] * null
   y1[x1 == 1 & x2 == 0] <- y0[x1 == 1 & x2 == 0] + w1[x1 == 1 & x2 == 0] * null
