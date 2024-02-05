@@ -77,6 +77,7 @@ bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 500, n_sim = 500,
   pihat <- predict(p.score, as.data.frame(x[-index,]))
   
   # Perform the Bayesian Causal Forest for the Proportion of Compliers (pic)
+  'only this function with BARTC and once with sparse BCF'
   pic_bcf <- quiet(bartc(w[-index], z[-index], x[-index,], n.samples = n_sim, n.burn = n_burn, n.chains = 2L))
   tau_pic <- extract(pic_bcf, type = "ite")
   pic <- apply(tau_pic, 2, mean)
@@ -88,6 +89,7 @@ bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 500, n_sim = 500,
   if (binary == FALSE){
     
     # Perform the Bayesian Causal Forest for the ITT
+    'bcf - sparse bcf' 
     itt_bcf <- quiet(bcf(y[-index], z[-index], x[-index,], x[-index,], pihat, nburn=n_burn, nsim=n_sim))
     tau_itt <- itt_bcf$tau
     itt <- colMeans(tau_itt)
