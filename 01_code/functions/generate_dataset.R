@@ -32,7 +32,6 @@ generate_dataset <- function(n = 1000, p = 100, rho = 0, null = 0, effect_size =
   X <- binomvars
   
   ########## just vectoriced? ########## 
-  'why only the first 10 variables? Mistake?' 
   # x1 and x2 needed for heterogenes effects
   x1 <- X[, 1]
   x2 <- X[, 2]
