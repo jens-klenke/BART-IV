@@ -15,5 +15,9 @@ pacman::p_load(
   future,
   rpart,
   AER,
-  bartCause
+  bartCause,
+  pryr
 )
+
+
+# devtools::install_github("jaredsmurray/bcf")
