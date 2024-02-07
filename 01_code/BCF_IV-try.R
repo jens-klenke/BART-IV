@@ -44,11 +44,13 @@ seed = 42
                  data = discovery)
   pihat <- predict(p.score, as.data.frame(x[-index,]))
   
-  # Perform the Bayesian Causal Forest for the Proportion of Compliers (pic)
+  # Perform the Bayesian Causal Forest  to calculate the Proportion of Compliers (pic)
   'only this function with BARTC and once with sparse BCF'
-  pic_bcf <- quiet(bartc(w[-index], z[-index], x[-index,], n.samples = n_sim, n.burn = n_burn, n.chains = 2L))
-  tau_pic <- extract(pic_bcf, type = "ite")
+  pic_bcf <- quiet(bartCause::bartc(w[-index], z[-index], x[-index,], n.samples = n_sim, n.burn = n_burn, n.chains = 2L))
+  tau_pic <- bartCause::extract(pic_bcf, type = "ite")
   pic <- apply(tau_pic, 2, mean)
+  
+  # mean(pic) == compliance
   
   ######################################################
   ####     Continuous and Discrete Outcomes         ####
