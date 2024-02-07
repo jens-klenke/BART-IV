@@ -1,6 +1,3 @@
-############## Packages ################
-source(here::here('01_code/packages.R'))
-
 # @title
 # Bayesian Causal Forest with Instrumental Variables
 #

@@ -16,7 +16,8 @@ pacman::p_load(
   rpart,
   AER,
   bartCause,
-  pryr
+  pryr,
+  rpart.plot
 )
 
 
