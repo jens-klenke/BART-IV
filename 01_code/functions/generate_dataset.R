@@ -62,8 +62,3 @@ generate_dataset <- function(n = 1000, p = 100, rho = 0, null = 0, effect_size =
   
   return(dataset)
 }
-
-# generating
-dataset <- generate_dataset()
-
-
