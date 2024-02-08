@@ -6,7 +6,7 @@ source(here::here('01_code/packages.R'))
 invisible(sapply(list.files(here::here('01_code/functions'), full.names = TRUE), 
        source))
 
-i <- 1 
+i <- 3 
 j <- 1
 p <- c(10, 50, 100)
 p_i <- p[i]

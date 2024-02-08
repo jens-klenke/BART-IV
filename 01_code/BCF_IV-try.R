@@ -60,10 +60,11 @@ seed = 42
     
     # Perform the Bayesian Causal Forest for the ITT
     'bcf - sparse bcf' 
+    tictoc::tic()
     itt_bcf <- quiet(bcf(y[-index], z[-index], x[-index,], x[-index,], pihat, nburn=n_burn, nsim=n_sim))
     tau_itt <- itt_bcf$tau
     itt <- colMeans(tau_itt)
-    
+    tictoc::toc()
     # Get posterior of treatment effects
     tauhat <- itt/pic
     exp <- as.data.frame(cbind(tauhat, x[-index,]))
