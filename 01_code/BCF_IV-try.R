@@ -59,12 +59,14 @@ seed = 42
 #  if (binary == FALSE){
     
     # Perform the Bayesian Causal Forest for the ITT
+  # is that \mu and ITT ? 
     'bcf - sparse bcf' 
     tictoc::tic()
     itt_bcf <- quiet(bcf(y[-index], z[-index], x[-index,], x[-index,], pihat, nburn=n_burn, nsim=n_sim))
     tau_itt <- itt_bcf$tau
     itt <- colMeans(tau_itt)
     tictoc::toc()
+    
     # Get posterior of treatment effects
     tauhat <- itt/pic
     exp <- as.data.frame(cbind(tauhat, x[-index,]))
@@ -72,7 +74,7 @@ seed = 42
     ######################################################
     ####  Step 2: Build a CART on the Unit Level CITT ####
     ######################################################
-    
+    ' binary decision tree to discover, in an interpretable manner, the drivers of the heterogeneity??'
     fit.tree <- rpart(tauhat ~ .,
                       data = exp,
                       maxdepth = max_depth,
@@ -166,4 +168,4 @@ seed = 42
 #    } # end Continuous and Discrete Outcomes 
   
   # Return Results
-  return(bcfivResults)
+  bcfivResults
