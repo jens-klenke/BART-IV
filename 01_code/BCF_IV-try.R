@@ -69,6 +69,8 @@ seed = 42
     
     # Get posterior of treatment effects
     tauhat <- itt/pic
+    # driven by outliers
+    # exp %>% dplyr::filter(V2 == 0 & V3 == 0) %>% dplyr::summarise(median(tauhat))
     exp <- as.data.frame(cbind(tauhat, x[-index,]))
     
     ######################################################
@@ -85,6 +87,7 @@ seed = 42
     ####  Step 3: Extract the Causal Rules (Nodes)    ####
     ######################################################
     
+    #  rules end terminal nodes?
     rules <- as.numeric(row.names(fit.tree$frame[fit.tree$numresp]))
     
     # Initialize Outputs
@@ -102,7 +105,7 @@ seed = 42
     
     # Run an IV Regression on the Root
     iv.root <- ivreg(y ~ w | z,  
-                     data = inference)
+                     data = inference) # inference dataset
     summary <- summary(iv.root, diagnostics = TRUE)
     iv.effect.root <-  summary$coef[2,1]
     p.value.root <- summary$coef[2,4]
