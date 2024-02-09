@@ -61,6 +61,7 @@ bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 500, n_sim = 500,
   
   # Discovery and Inference Samples
   discovery <- iv.data[-index,]
+  'names not fitting' # binary tree starts with V2 and not V4 in covariates
   inference <- iv.data[index,]
   
   ######################################################

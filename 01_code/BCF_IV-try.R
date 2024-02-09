@@ -73,6 +73,8 @@ seed = 42
     # exp %>% dplyr::filter(V2 == 0 & V3 == 0) %>% dplyr::summarise(median(tauhat))
     exp <- as.data.frame(cbind(tauhat, x[-index,]))
     
+    # repair names? 
+    names(exp)[2:length(exp)] <- names(inference)[-(1:3)]
     ######################################################
     ####  Step 2: Build a CART on the Unit Level CITT ####
     ######################################################
@@ -82,6 +84,9 @@ seed = 42
                       maxdepth = max_depth,
                       cp=cp,
                       minsplit=minsplit)
+    
+    # plot tree
+    rpart.plot::rpart.plot(fit.tree)
     
     ######################################################
     ####  Step 3: Extract the Causal Rules (Nodes)    ####
