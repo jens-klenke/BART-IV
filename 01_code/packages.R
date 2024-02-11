@@ -17,7 +17,8 @@ pacman::p_load(
   AER,
   bartCause,
   pryr,
-  rpart.plot
+  rpart.plot,
+  BayesIV
 )
 
 
