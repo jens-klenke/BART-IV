@@ -16,7 +16,7 @@ minsplit = 10
 adj_method = "holm"
 seed = 42
 
-  
+x_names <- paste0('x', 1:ncol(x))
     
   ######################################################
   ####         Step 0: Initialize the Data          ####
@@ -28,7 +28,7 @@ seed = 42
   
   # Initialize total dataset
   iv.data <- as.data.frame(cbind(y, w, z, x))
-  names(iv.data)[1:3] <- c("y", "w", "z")
+  names(iv.data) <- c("y", "w", "z", x_names)
   
   # Discovery and Inference Samples
   discovery <- iv.data[-index,]
@@ -50,7 +50,7 @@ seed = 42
   tau_pic <- bartCause::extract(pic_bcf, type = "ite")
   pic <- apply(tau_pic, 2, mean)
   
-  # mean(pic) == compliance
+  # mean(pic) / median(pic) == compliance
   
   ######################################################
   ####     Continuous and Discrete Outcomes         ####
@@ -73,7 +73,7 @@ seed = 42
     # exp %>% dplyr::filter(V2 == 0 & V3 == 0) %>% dplyr::summarise(median(tauhat))
     exp <- as.data.frame(cbind(tauhat, x[-index,]))
     
-    # repair names? 
+    # repair names? !! by me 
     names(exp)[2:length(exp)] <- names(inference)[-(1:3)]
     ######################################################
     ####  Step 2: Build a CART on the Unit Level CITT ####
@@ -116,6 +116,7 @@ seed = 42
     p.value.root <- summary$coef[2,4]
     p.value.weak.iv.root <- summary$diagnostics[1,4]
     proportion.root <- 1
+    # share of compilers in root
     compliers.root <- length(which(inference$z==inference$w))/nrow(inference)
     itt.root <- iv.effect.root*compliers.root
     

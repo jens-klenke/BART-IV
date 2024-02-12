@@ -20,17 +20,20 @@ data <- readRDS(
 )
 
 tictoc::tic()
-first_bcf <- bcf_iv(data$y, data$w, data$z, data$X, n_burn = 1000)
-tictoc::toc()
-
-### package 
-tictoc::tic()
-first_bcf <- bcf_iv(data$y, data$w, data$z, data$X, n_burn = 1000)
-tictoc::toc()
-
-tictoc::tic()
 bcf_package <- BayesIV::bcf_iv(data$y, data$w, data$z, data$X, n_burn = 1000)
 tictoc::toc()
+
+
+tictoc::tic()
+first_bcf <- bcf_iv(data$y, data$w, data$z, data$X, n_burn = 1000)
+tictoc::toc()
+
+# own 
+tictoc::tic()
+own_bcf <- own_bcf_iv(data$y, data$w, data$z, data$X, n_burn = 1000)
+tictoc::toc()
+
+pryr::object_size(own_bcf)
 
 
 
