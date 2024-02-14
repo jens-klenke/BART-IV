@@ -7,8 +7,8 @@ x <- data$X
 
 # Parameters
 binary = FALSE
-n_burn = 1000
-n_sim = 1000
+n_burn = 500
+n_sim = 500
 inference_ratio = 0.5
 max_depth = 2
 cp = 0.01

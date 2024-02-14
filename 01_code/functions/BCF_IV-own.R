@@ -30,14 +30,17 @@ own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 500, n_sim = 500,
                  data = discovery)
   pihat <- predict(p.score, as.data.frame(x[-index,]))
   
+  # sparse BCF https://github.com/albicaron/SparseBCF
   # Perform the Bayesian Causal Forest  to calculate the Proportion of Compliers (pic)
   pic_bcf <- quiet(bartCause::bartc(w[-index], z[-index], x[-index,], 
                                     n.samples = n_sim, n.burn = n_burn, n.chains = 2L))
   tau_pic <- bartCause::extract(pic_bcf, type = "ite")
   pic <- apply(tau_pic, 2, mean)
-  
+  # workaround! 
+  pic[pic == 0] <- 1e-1 
   # mean(pic) / median(pic) == compliance
   
+  print(paste('median pic:', median(pic)))
   
   ######################################################
   ####     Continuous and Discrete Outcomes         ####
@@ -65,7 +68,7 @@ own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 500, n_sim = 500,
                     maxdepth = max_depth,
                     cp=cp,
                     minsplit=minsplit)
-  
+  print(fit.tree)
   ######################################################
   ####  Step 3: Extract the Causal Rules (Nodes)    ####
   ######################################################
@@ -107,6 +110,7 @@ own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 500, n_sim = 500,
   # Initialize New Data
   names(inference) <- paste(names(inference), sep="")
   
+  print(names(inference))
   # Run a loop to get the rules (sub-populations)
   for (i in rules[-1]){
     # Create a Vector to Store all the Dimensions of a Rule
@@ -164,6 +168,7 @@ own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 500, n_sim = 500,
   return(
     list(
     'results' = bcfivResults,
+    'rules' = rules,
     'pi_c' = pic,
     'itt' = itt,
     'exp' = exp)

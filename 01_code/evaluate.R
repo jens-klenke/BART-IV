@@ -22,7 +22,7 @@ data <- readRDS(
 
 # own 
 tictoc::tic()
-own_bcf <- own_bcf_iv(data$y, data$w, data$z, data$X, n_burn = 1000)
+own_bcf <- own_bcf_iv(data$y, data$w, data$z, data$X, n_burn = 500, n_sim = 500)
 tictoc::toc()
 
 tictoc::tic()
