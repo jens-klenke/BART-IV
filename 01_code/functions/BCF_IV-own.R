@@ -1,4 +1,4 @@
-own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 500, n_sim = 500, 
+own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 1000, n_sim = 1000, 
                    inference_ratio = 0.5, max_depth = 2, cp = 0.01, 
                    minsplit = 10, adj_method = "holm", seed = 42) {
   
@@ -37,10 +37,8 @@ own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 500, n_sim = 500,
   tau_pic <- bartCause::extract(pic_bcf, type = "ite")
   pic <- apply(tau_pic, 2, mean)
   # workaround! 
-  pic[pic == 0] <- 1e-1 
+  pic[pic == 0] <- 1e-2 
   # mean(pic) / median(pic) == compliance
-  
-  print(paste('median pic:', median(pic)))
   
   ######################################################
   ####     Continuous and Discrete Outcomes         ####
@@ -68,13 +66,15 @@ own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 500, n_sim = 500,
                     maxdepth = max_depth,
                     cp=cp,
                     minsplit=minsplit)
-  print(fit.tree)
+  
   ######################################################
   ####  Step 3: Extract the Causal Rules (Nodes)    ####
   ######################################################
   
   #  rules end terminal nodes?
   rules <- as.numeric(row.names(fit.tree$frame[fit.tree$numresp]))
+  
+  #print(rules)
   
   # Initialize Outputs
   bcfivMat <- as.data.frame(matrix(NA, nrow = length(rules), ncol=7))
@@ -108,9 +108,9 @@ own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 500, n_sim = 500,
                      round(itt.root, 4), round(compliers.root, 4))
   
   # Initialize New Data
+  # important?
   names(inference) <- paste(names(inference), sep="")
   
-  print(names(inference))
   # Run a loop to get the rules (sub-populations)
   for (i in rules[-1]){
     # Create a Vector to Store all the Dimensions of a Rule
@@ -171,7 +171,8 @@ own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 500, n_sim = 500,
     'rules' = rules,
     'pi_c' = pic,
     'itt' = itt,
-    'exp' = exp)
+    'exp' = exp
+    )
   )
 
 }

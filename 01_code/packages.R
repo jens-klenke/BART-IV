@@ -1,6 +1,7 @@
 # packages
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(
+  furrr,
   Hmisc,
   magrittr,
   MASS,
@@ -17,8 +18,10 @@ pacman::p_load(
   AER,
   bartCause,
   pryr,
+  stringr,
   rpart.plot,
-  BayesIV
+  BayesIV, # https://github.com/fbargaglistoffi/BCF-IV/tree/master
+  SparseBCF # https://github.com/albicaron/SparseBCF
 )
 
 

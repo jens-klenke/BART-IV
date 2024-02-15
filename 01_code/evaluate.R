@@ -1,10 +1,39 @@
 # load packages 
 ############## Packages ################
 source(here::here('01_code/packages.R'))
+# some packages have to be implemented by hand (from github)
 
 # source all files in the functions folder
 invisible(sapply(list.files(here::here('01_code/functions'), full.names = TRUE), 
        source))
+
+# parallel plan
+future::plan(multisession, workers = parallel::detectCores()*.9)
+options(future.globals.maxSize = 2147483648) # 2GB  
+
+
+# 
+data <- tibble::tibble(
+  # path for loading data
+  path_in = list.files(
+    here::here("00_sim_data/"), recursive = TRUE, full.names = TRUE)
+  ) %>%
+  dplyr::mutate(ncov = readr::parse_number(stringr::str_extract(data$path_in, pattern = 'ncovs_[0-9]*')))
+
+
+# example dataset
+
+try <- data %>%
+  dplyr::slice_head(n = 3)
+
+# 
+tictoc::tic()
+try_1 <- try %>%
+  dplyr::mutate(results = furrr::future_pmap(., wrapper_function, .progress = TRUE))
+tictoc::toc()
+
+
+
 
 # 1 and 1 works
 i <- 1 
@@ -22,7 +51,7 @@ data <- readRDS(
 
 # own 
 tictoc::tic()
-own_bcf <- own_bcf_iv(data$y, data$w, data$z, data$X, n_burn = 500, n_sim = 500)
+own_bcf <- own_bcf_iv(data$y, data$w, data$z, data$X)
 tictoc::toc()
 
 tictoc::tic()
