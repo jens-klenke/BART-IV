@@ -1,5 +1,7 @@
 # bcf_iv <- function(
 # Data 
+data <- readRDS(data$path_in[1])
+
 y <- data$y
 w <- data$w
 z <- data$z
@@ -45,12 +47,20 @@ x_names <- paste0('x', 1:ncol(x))
   pihat <- predict(p.score, as.data.frame(x[-index,]))
   
   # Perform the Bayesian Causal Forest  to calculate the Proportion of Compliers (pic)
-  'only this function with BARTC and once with sparse BCF'
-  pic_bcf <- quiet(bartCause::bartc(w[-index], z[-index], x[-index,], n.samples = n_sim, n.burn = n_burn, n.chains = 2L))
-  tau_pic <- bartCause::extract(pic_bcf, type = "ite")
-  pic <- apply(tau_pic, 2, mean)
+  bcf_pic_tree <- quiet(bartCause::bartc(w[-index], z[-index], x[-index,],
+                                         n.samples = n_sim, n.burn = n_burn, 
+                                         n.chains = 2L))
   
-  # mean(pic) / median(pic) == compliance
+  bcf_tau_pic <- bartCause::extract(bcf_pic_tree, type = "ite")
+  bcf_pic <- apply(bcf_tau_pic, 2, mean)
+  # workaround! 
+  bcf_pic[bcf_pic == 0] <- 1e-2 
+  # mean(pic_bcf) / median(pic) == compliance
+  
+  ##### sparse BCF -> BCF https://github.com/albicaron/SparseBCF
+  s_bcf_pic_tress <- quiet(SparseBCF::SparseBCF(w[-index], z[-index], x[-index,], pihat = pihat, 
+                                      nsim = n_sim, nburn = n_burn)
+                 )
   
   ######################################################
   ####     Continuous and Discrete Outcomes         ####
@@ -62,31 +72,65 @@ x_names <- paste0('x', 1:ncol(x))
   # is that \mu and ITT ? 
     'bcf - sparse bcf' 
     tictoc::tic()
-    itt_bcf <- quiet(bcf(y[-index], z[-index], x[-index,], x[-index,], pihat, nburn=n_burn, nsim=n_sim))
-    tau_itt <- itt_bcf$tau
-    itt <- colMeans(tau_itt)
+    bcf_itt.tree <- quiet(bcf::bcf(y[-index], z[-index], x[-index,], x[-index,], pihat, nburn=n_burn, nsim=n_sim, save_tree_directory = NULL))
+    bcf_tau_itt <- bcf_itt.tree$tau
+    bcf_itt <- colMeans(bcf_tau_itt)
     tictoc::toc()
     
     # Get posterior of treatment effects
-    tauhat <- itt/pic
+    bcf_tauhat <- bcf_itt/bcf_pic
     # driven by outliers
-    # exp %>% dplyr::filter(V2 == 0 & V3 == 0) %>% dplyr::summarise(median(tauhat))
-    exp <- as.data.frame(cbind(tauhat, x[-index,]))
+    # bcf_exp %>% dplyr::filter(x1 == 0 & x2 == 0) %>% dplyr::summarise(median(bcf_tauhat))
+    bcf_exp <- as.data.frame(cbind(bcf_tauhat, x[-index,]))
     
     # repair names? !! by me 
-    names(exp)[2:length(exp)] <- names(inference)[-(1:3)]
+    names(bcf_exp)[2:length(bcf_exp)] <- names(inference)[-(1:3)]
+    
+    
+    'sparse BCF'
+    ##### sparse BCF -> BCF https://github.com/albicaron/SparseBCF
+    tictoc::tic()
+    s_bcf_itt.tree <- quiet(
+      SparseBCF::SparseBCF(y[-index], z[-index], x[-index,], pihat = pihat,
+                           nsim = n_sim, nburn = n_burn)
+      )
+    
+    s_bcf_tau_itt <- s_bcf_itt.tree$tau
+    s_bcf_itt <- colMeans(s_bcf_tau_itt)
+    tictoc::toc()
+    
+    # Get posterior of treatment effects
+    s_bcf_tauhat <- s_bcf_itt/bcf_pic
+    # driven by outliers
+    # s_bcf_exp %>% dplyr::filter(V2 == 0 & V3 == 0) %>% dplyr::summarise(median(s_bcf_tauhat))
+    s_bcf_exp <- as.data.frame(cbind(s_bcf_tauhat, x[-index,]))
+    
+    # repair names? !! by me 
+    names(s_bcf_exp)[2:length(s_bcf_exp)] <- names(inference)[-(1:3)]
+    
     ######################################################
     ####  Step 2: Build a CART on the Unit Level CITT ####
     ######################################################
     ' binary decision tree to discover, in an interpretable manner, the drivers of the heterogeneity??'
-    fit.tree <- rpart(tauhat ~ .,
-                      data = exp,
+    bcf_fit.tree <- rpart(bcf_tauhat ~ .,
+                      data = bcf_exp,
                       maxdepth = max_depth,
                       cp=cp,
                       minsplit=minsplit)
     
     # plot tree
-    rpart.plot::rpart.plot(fit.tree)
+    rpart.plot::rpart.plot(bcf_fit.tree)
+    
+    # binary tree for sparse trees 
+    s_bcf_fit.tree <- rpart(s_bcf_tauhat ~ .,
+                          data = s_bcf_exp,
+                          maxdepth = max_depth,
+                          cp=cp,
+                          minsplit=minsplit)
+    
+    # plot tree
+    rpart.plot::rpart.plot(s_bcf_fit.tree)
+    
     
     ######################################################
     ####  Step 3: Extract the Causal Rules (Nodes)    ####

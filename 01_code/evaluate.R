@@ -12,19 +12,26 @@ future::plan(multisession, workers = parallel::detectCores()*.9)
 options(future.globals.maxSize = 2147483648) # 2GB  
 
 
-# 
+# # reading data 
 data <- tibble::tibble(
   # path for loading data
   path_in = list.files(
     here::here("00_sim_data/"), recursive = TRUE, full.names = TRUE)
   ) %>%
-  dplyr::mutate(ncov = readr::parse_number(stringr::str_extract(data$path_in, pattern = 'ncovs_[0-9]*')))
+  dplyr::mutate(ncov = readr::parse_number(stringr::str_extract(path_in, pattern = 'ncovs_[0-9]*')))
 
 
-# example dataset
-
+# example data set
 try <- data %>%
   dplyr::slice_head(n = 3)
+
+tictoc::tic()
+try_1 <- try %>%
+  dplyr::mutate(results = purrr::pmap(., wrapper_function, .progress = TRUE))
+tictoc::toc()
+
+
+
 
 # 
 tictoc::tic()

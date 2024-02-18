@@ -30,15 +30,18 @@ own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 1000, n_sim = 1000,
                  data = discovery)
   pihat <- predict(p.score, as.data.frame(x[-index,]))
   
-  # sparse BCF https://github.com/albicaron/SparseBCF
   # Perform the Bayesian Causal Forest  to calculate the Proportion of Compliers (pic)
-  pic_bcf <- quiet(bartCause::bartc(w[-index], z[-index], x[-index,], 
-                                    n.samples = n_sim, n.burn = n_burn, n.chains = 2L))
-  tau_pic <- bartCause::extract(pic_bcf, type = "ite")
-  pic <- apply(tau_pic, 2, mean)
+  pic_bcf_tree <- quiet(bartCause::bartc(w[-index], z[-index], x[-index,],
+                                         n.samples = n_sim, n.burn = n_burn, 
+                                         n.chains = 2L))
+  tau_bcf_pic <- bartCause::extract(pic_bcf_tree, type = "ite")
+  pic_bcf <- apply(tau_bcf_pic, 2, mean)
   # workaround! 
-  pic[pic == 0] <- 1e-2 
-  # mean(pic) / median(pic) == compliance
+  pic_bcf[pic_bcf == 0] <- 1e-2 
+  # mean(pic_bcf) / median(pic) == compliance
+  
+  ##### sparse BCF -> BCF https://github.com/albicaron/SparseBCF
+  
   
   ######################################################
   ####     Continuous and Discrete Outcomes         ####
@@ -47,21 +50,21 @@ own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 1000, n_sim = 1000,
   # binary case  if (binary == FALSE){
   # Perform the Bayesian Causal Forest for the ITT
   itt_bcf <- quiet(bcf(y[-index], z[-index], x[-index,], x[-index,], pihat, 
-                       nburn=n_burn, nsim=n_sim))
-  tau_itt <- itt_bcf$tau
-  itt <- colMeans(tau_itt)
+                       nburn=n_burn, nsim=n_sim, save_tree_directory = NULL))
+  bcf_tau_itt <- itt_bcf$tau
+  bcf_itt <- colMeans(bcf_tau_itt)
   
   # Get posterior of treatment effects
-  tauhat <- itt/pic
-  exp <- as.data.frame(cbind(tauhat, x[-index,]))
+  bcf_tauhat <- bcf_itt/pic_bcf
+  bcf_exp <- as.data.frame(cbind(bcf_tauhat, x[-index,]))
   
   # repair names for binary tree
-  names(exp)[2:length(exp)] <- names(inference)[-(1:3)]
+  names(bcf_exp)[2:length(bcf_exp)] <- names(inference)[-(1:3)]
   
   ######################################################
   ####  Step 2: Build a CART on the Unit Level CITT ####
   ######################################################
-  fit.tree <- rpart(tauhat ~ .,
+  bcf_fit.tree <- rpart(tauhat ~ .,
                     data = exp,
                     maxdepth = max_depth,
                     cp=cp,
