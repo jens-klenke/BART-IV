@@ -11,7 +11,6 @@ invisible(sapply(list.files(here::here('01_code/functions'), full.names = TRUE),
 future::plan(multisession, workers = parallel::detectCores()*.9)
 options(future.globals.maxSize = 2147483648) # 2GB  
 
-
 # # reading data 
 data <- tibble::tibble(
   # path for loading data
@@ -29,9 +28,6 @@ tictoc::tic()
 try_1 <- try %>%
   dplyr::mutate(results = purrr::pmap(., wrapper_function, .progress = TRUE))
 tictoc::toc()
-
-
-
 
 # 
 tictoc::tic()
