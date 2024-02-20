@@ -6,7 +6,6 @@ own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 1000, n_sim = 1000,
   ####         Step 0: Initialize the Data          ####
   ######################################################
   
-  
   # Split data into Discovery and Inference
   set.seed(seed)
   index <- sample(nrow(x), nrow(x)*inference_ratio, replace=FALSE)
@@ -20,7 +19,7 @@ own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 1000, n_sim = 1000,
   # 'names not fitting' # binary tree starts with V2 and not V4 in covariates
   inference <- iv.data[index,] 
   
-  print('Step 0 completed')
+  #print('Step 0 completed')
   ######################################################
   ####  Step 1: Compute the Bayesian Causal Forest  ####
   ######################################################
@@ -44,7 +43,6 @@ own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 1000, n_sim = 1000,
   ####     Continuous and Discrete Outcomes         ####
   ######################################################
   
-  # binary case  if (binary == FALSE){
   # Perform the Bayesian Causal Forest for the ITT
   itt_bcf <- quiet(bcf(y[-index], z[-index], x[-index,], x[-index,], pihat, 
                        nburn=n_burn, nsim=n_sim, save_tree_directory = NULL))
@@ -68,19 +66,19 @@ own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 1000, n_sim = 1000,
   s_bcf_itt <- colMeans(s_bcf_tau_itt)
   
   # Get posterior of treatment effects
-  s_bcf_tauhat <- s_bcf_itt/bcf_pic
+  s_bcf_tauhat <- s_bcf_itt/pic_bcf
   # s_bcf_exp %>% dplyr::filter(V2 == 0 & V3 == 0) %>% dplyr::summarise(median(s_bcf_tauhat))
   s_bcf_exp <- as.data.frame(cbind(s_bcf_tauhat, x[-index,]))
   
   # repair names? !! by me 
   names(s_bcf_exp)[2:length(s_bcf_exp)] <- names(inference)[-(1:3)]
   
-  print('Step 1 completed')
+  # print('Step 1 completed')
   ######################################################
   ####  Step 2: Build a CART on the Unit Level CITT ####
   ######################################################
-  bcf_fit.tree <- rpart(tauhat ~ .,
-                    data = exp,
+  bcf_fit.tree <- rpart(bcf_tauhat ~ .,
+                    data = bcf_exp,
                     maxdepth = max_depth,
                     cp=cp,
                     minsplit=minsplit)
@@ -92,31 +90,30 @@ own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 1000, n_sim = 1000,
                           cp=cp,
                           minsplit=minsplit)
   
-  print('Step 2 completed')
+  # print('Step 2 completed')
   ######################################################
   ####  Step 3: Extract the Causal Rules (Nodes)    ####
   ######################################################
 
-  bcf_ivResults <- extract_causal_rules(bcf_fit.tree, inference = inference)
+  bcf_ivResults <- extract_causal_rules(bcf_fit.tree, inference = inference, adj_method = adj_method)
   
-  s_bcf_ivResults <- extract_causal_rules(s_bcf_fit.tree, inference = inference)
+  s_bcf_ivResults <- extract_causal_rules(s_bcf_fit.tree, inference = inference, adj_method = adj_method)
 
-  print('Step 3 completed')
+  # print('Step 3 completed')
   ######################################################
   ####             Step 4: Return results           ####
   ######################################################
+  #  print('before returning')
   
-  print('before returning')
   return(
     list(
     'bcf_results' = bcf_ivResults,
     's_bcf_results' = s_bcf_ivResults,
     'pic' = pic_bcf,
-    'bcf_itt' = itt_bcf,
+    'bcf_itt' = bcf_itt,
     's_bcf_itt'= s_bcf_itt,
-    'bcf_exp' = bcf_exp,
-    's_bcf_exp' = s_bcf_exp
+    'bcf_tauhat' = bcf_tauhat,
+    's_bcf_tauhat' = s_bcf_tauhat
     )
   )
-
 }

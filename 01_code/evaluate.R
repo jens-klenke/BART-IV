@@ -17,12 +17,12 @@ data <- tibble::tibble(
   path_in = list.files(
     here::here("00_sim_data/"), recursive = TRUE, full.names = TRUE)
   ) %>%
-  dplyr::mutate(ncov = readr::parse_number(stringr::str_extract(path_in, pattern = 'ncovs_[0-9]*')))
-
+  dplyr::mutate(ncov = readr::parse_number(stringr::str_extract(path_in, pattern = 'ncovs_[0-9]*')),
+                row_num = paste(dplyr::row_number(), 'of', max(dplyr::row_number())))
 
 # example data set
 try <- data %>%
-  dplyr::slice_head(n = 3)
+  dplyr::slice_head(n = 2)
 
 tictoc::tic()
 try_1 <- try %>%
@@ -31,7 +31,7 @@ tictoc::toc()
 
 # 
 tictoc::tic()
-try_1 <- try %>%
+parallel_try_1 <- try %>%
   dplyr::mutate(results = furrr::future_pmap(., wrapper_function, .progress = TRUE))
 tictoc::toc()
 

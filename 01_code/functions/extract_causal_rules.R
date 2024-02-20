@@ -1,5 +1,5 @@
 # used insite BCF_IV-own estimation
-extract_causal_rules <- function(fit.tree, inference){
+extract_causal_rules <- function(fit.tree, inference, adj_method){
   # rules end terminal nodes?
   rules <- as.numeric(row.names(fit.tree$frame[fit.tree$numresp]))
   

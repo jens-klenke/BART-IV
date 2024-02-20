@@ -1,8 +1,9 @@
-wrapper_function <- function(path_in, ...){
+wrapper_function <- function(path_in, row_num, ...){
   data <- readRDS(path_in)
   
   results <- own_bcf_iv(data$y, data$w, data$z, data$X)
   
-  return(results)
+  print(paste('Dataset', row_num, 'completed.'))
   
+  base::return(results)
 }
