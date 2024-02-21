@@ -1,0 +1,12 @@
+\begin{thebibliography}{xx}
+
+\harvarditem[Hahn et~al.]{Hahn, Murray \harvardand\
+  Carvalho}{2020}{hahn_bayesian_2020}
+Hahn, P.~R., Murray, J.~S. \harvardand\ Carvalho, C.~M.  \harvardyearleft
+  2020\harvardyearright , `Bayesian {Regression} {Tree} {Models} for {Causal}
+  {Inference}: {Regularization}, {Confounding}, and {Heterogeneous} {Effects}
+  (with {Discussion})', {\em Bayesian Analysis} {\bf 15}(3),~965--1056.
+\newblock Publisher: International Society for Bayesian Analysis.
+\newline\harvardurl{https://projecteuclid.org/journals/bayesian-analysis/volume-15/issue-3/Bayesian-Regression-Tree-Models-for-Causal-Inference--Regularization-Confounding/10.1214/19-BA1195.full}
+
+\end{thebibliography}

@@ -1,0 +1,54 @@
+\chapter{Potential Outcomes and IV}
+
+
+
+\section{Potential Outcomes and ITT}
+
+\begin{itemize}
+ \item $Y_i$: outcome variable; $W_i$: treatment variable; $Z_i$: instrumental variable
+ \item $\mathbb{X}$: $N \times P$ matrix of control variables
+ \item $G_i$: sub-populations of units
+ \begin{itemize}
+    \item $G_i=C: W_i(Z_i = 0) = 0, Wi(Zi = 1) = 1$
+    \item $G_i=D: W_i(Z_i = 0) = 1, W_i(Z_i = 1) = 0$
+    \item $G_i=AT: W_i(Z_i = 0) = 1, W_i(Z_i = 1) = 1$
+    \item $G_i=NT: W_i(Z_i = 0) = 0, W_i(Z_i = 1) = 0$
+ \end{itemize}
+\end{itemize} 
+
+Given the Stable Unit Treatment Value Assumption (SUTVA), one can postulate the existence of potential outcomes $Y_i(W_i)$ such that $Y_i^{obs} = Y_i(1)W_i + Y_i(0)(1-W_i)$.
+
+One can directly get from the data the effect of the assignment to treatment: 
+$$
+\begin{aligned}
+ITT_Y &= \mathbb{E}[Y_i|Z_i=1] - \mathbb{E}[Y_i|Z_i=0] \\
+&= \pi_C ITT_{Y,C} + \pi_D ITT_{Y,D} + \pi_{AT} ITT_{Y,AT} + \pi_{NT} ITT_{Y,NT}.
+\end{aligned}
+$$
+
+
+\section{IV assumptions}
+
+Assumptions to infer Complier Average Causal Effect (CACE),  
+
+$$
+\tau^{cace} = ITT_{Y,C} = \frac{\mathbb{E}[Y_i|Z_i=1]-\mathbb{E}[Y_i|Z_i=0]}{\mathbb{E}[W_i|Z_i=1]-\mathbb{E}[W_i|Z_i=0]} = \frac{ITT_Y}{\pi_C}, 
+$$ 
+
+and its conditional version (cCACE),
+
+$$
+\tau^{cace}(x) = \frac{\mathbb{E}[Y_i|Z_i=1, \mathbb{X}_i=x]-\mathbb{E}[Y_i|Z_i=0, \mathbb{X}_i=x]}{\mathbb{E}[W_i|Z_i=1, \mathbb{X}_i=x]-\mathbb{E}[W_i|Z_i=0, \mathbb{X}_i=x]} = \frac{ITT_Y(x)}{\pi_C(x)}. 
+$$ 
+
+\hspace{0.2cm}\\
+1. exclusion restriction: $Y_i(0) = Y_i(1), \text{ for } G_i \in \{AT, NT \}.$ \\
+2. monotonicity: $W_i(1) \geq W_i(0) \rightarrow \pi_D = 0.$ \\
+3. existence of compliers: $P(W_i(0) < W_i(1)) > 0 \rightarrow \pi_C \ne 0.$ \\
+4. unconfoundedness of the instrument: $Z_i \perp (Y_i(0, 0), Y_i(0, 1), Y_i(1, 0), Y_i(1, 1), W_i(0), W_i(1)).$
+
+
+\section{Estimation}
+
+The conditional CACE can be estimated in a generic sub-sample (i.e., for each $\mathbf{X}_i \in \mathbb{X}_j$ , where $\mathbb{X}_j$ is a
+generic node of the discovered tree, like a non-terminal node or a leaf) as:

@@ -1,0 +1,332 @@
+\documentclass[oneside, english, reqno, 11pt, headsepline, BCOR=8.5mm]{scrbook} %BCOR8.5mm, ohne DIV openany % exchange 'article' with 'scrbook'
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+%\setlength{\parskip}{\smallskipamount}
+%\setlength{\parindent}{0pt}
+%\usepackage{textcomp}
+\usepackage{amsmath, amssymb, amsthm, amstext,mathrsfs, mathtools}
+\newcommand\norm[1]{\left\lVert#1\right\rVert} % define adjustable norm
+\usepackage{esint}
+\usepackage{babel}
+\usepackage{microtype}
+\usepackage[english=usenglishmax]{hyphsubst}	
+\usepackage{booktabs}
+\usepackage{scrlayer-scrpage}
+\usepackage{graphicx}
+%\usepackage{ngerman}
+\usepackage[babel,german=quotes]{csquotes}
+\usepackage{bibentry}
+\usepackage{tabularx}	
+\usepackage{hhline} % for double h line
+\usepackage{commath}			% for \norm{...}
+\usepackage{setspace, natbib}
+\usepackage{bm}
+\usepackage{threeparttable}
+\usepackage{comment}\includecomment{notthisone}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{enumerate}
+\usepackage{epstopdf}
+\usepackage{dsfont}
+\usepackage{pstool}
+\usepackage{subfig}
+\usepackage{natbib}
+\usepackage{hyperref}
+\usepackage{scalerel} % for the \scaleto command
+\usepackage{array, booktabs}
+\usepackage{bbm}
+\usepackage{setspace}
+\usepackage{mathcomp}
+\usepackage{multirow}
+\usepackage[toc,page]{appendix}
+\usepackage{lipsum}
+\usepackage{titling} % for abstract
+%\usepackage[top=3.5cm,bottom=4.5cm]{geometry}
+\usepackage{verbatim} % to do a block comment
+\usepackage{float} % figures tsay where they should be with "H"
+\usepackage{dsfont} % for indicator function
+\usepackage{fancyvrb} % for "\Verb" macro
+\VerbatimFootnotes    % enable use of \Verb in footnotes
+
+\renewcommand\thesubtable{(\alph{subtable})}
+
+\DeclareOldFontCommand{\rm}{\normalfont\rmfamily}{\mathrm}
+\DeclareOldFontCommand{\sf}{\normalfont\sffamily}{\mathsf}
+\DeclareOldFontCommand{\tt}{\normalfont\ttfamily}{\mathtt}
+\DeclareOldFontCommand{\bf}{\normalfont\bfseries}{\mathbf}
+\DeclareOldFontCommand{\it}{\normalfont\itshape}{\mathit}
+
+%\usepackage{algorithm}
+%\usepackage{algcompatible}
+%\usepackage{algorithmicx}
+\usepackage[ruled]{algorithm2e}
+%\usepackage[noend]{algpseudocode}
+
+%\floatname{algorithm}{Algorithm}
+%\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+%\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+\usepackage{mathtools}
+%\mathtoolsset{showonlyrefs} % activate this for no equation numbering
+
+\makeatletter
+\def\BState{\State\hskip-\ALG@thistlm}
+\makeatother
+
+\input{style/ee.sty} 
+
+
+%\usepackage{cite} %Literaturverwaltung 
+%\usepackage{setspace} % Zeilenabstand aendern
+
+%\setcounter{tocdepth}{3}
+
+%\bibliographystyle{plain}
+\pagestyle{scrheadings}%{plain}%
+\makeatletter
+
+\newtheoremstyle{Definition}
+  {0.2cm}                   %Space above
+  {0.2cm}                   %Space below
+  {\normalfont}           %Body font
+  {}                      %Indent amount (empty = no indent,
+                          %\parindent = para indent)
+  {\bfseries}  						%Thm head font
+  {.}                     %Punctuation after thm head
+  { }              				%Space after thm head: " " = normal interword
+                          %space; \newline = linebreak
+  {}
+                          %Thm head spec (can be left empty, meaning
+                          %`normal')
+                          
+\newtheoremstyle{Theorem}
+  {0.2cm}                   %Space above
+  {0.2cm}                   %Space below
+  {\itshape}           		%Body font
+  {}                      %Indent amount (empty = no indent,
+                          %\parindent = para indent)
+  {\bfseries}  						%Thm head font
+  {.}                     %Punctuation after thm head
+  { }              				%Space after thm head: " " = normal interword
+                          %space; \newline = linebreak
+  {}
+                          %Thm head spec (can be left empty, meaning
+                          %`normal')
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+
+
+\theoremstyle{Theorem}
+	\newtheorem{cor}{Corollary}[chapter]
+	\newtheorem{prop}{Proposition}[chapter]
+	\newtheorem{lem}{Lemma}[chapter]
+	\newtheorem{thm}{Theorem}[chapter]
+	\newtheorem{thmA}{Theorem A}[chapter]
+	\newtheorem{lemA}{Lemma A}[chapter]
+
+\theoremstyle{Definition}
+	\newtheorem{example}{Example}[chapter]
+	\newtheorem{rem}{Remark}[chapter]
+	\newtheorem{defn}{Definition}[chapter]
+    \newtheorem{assump}{Assumption}[chapter]
+	
+\newcommand\Chapter[2]{\chapter
+  [#1\hfil\hbox{}\protect\linebreak{\itshape#2}]%
+  {#1\\[2ex]\itshape#2}%
+}
+
+\renewcommand\topfraction{0.85}
+\renewcommand\bottomfraction{0.85}
+\renewcommand\textfraction{0.1}
+\renewcommand\floatpagefraction{0.85}
+
+\setlength{\footskip}{2cm}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{.5em}
+
+\newcommand{\Levy}{L\'{e}vy }
+
+
+\allowdisplaybreaks
+
+\raggedbottom
+
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% just some information for \maketitle
+\title{Sparsity-inducing Bayesian Causal Forest with Instrumental Variable}
+\subtitle{Here should be a fancy subtitle}
+\author
+{Jens Klenke$^{1,\barwedge}$, Lennard Ma{\ss}mann$^{1,2,\ast}$ \\
+\\
+\normalsize{$^{1}$Chair of Econometrics, University of Duisburg-Essen}\\
+\normalsize{$^{2}$Ruhr Graduate School in Economics}\\
+\\
+\normalsize{$^\ast$E-mail:  lennard.massmann@uni-due.de}\\
+\normalsize{$^\barwedge$E-mail:  jens.klenke@vwl.uni-due.de}\\
+}
+\date{\today}
+%\publishers{Aperture Science Enrichment Center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%% to introduce an abstract %%%%%%%%%
+%   Reduce the margin of the summary:
+\def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
+\let\endchangemargin=\endlist 
+
+%   Generate the environment for the abstract:
+\newcommand\summaryname{Abstract}
+\newenvironment{Abstract}%
+    {\small\begin{center}%
+    \bfseries{\summaryname} \end{center}}
+%%%%%%%% to introduce an abstract %%%%%%%%%
+
+
+
+\newcommand{\Rbb}{\mathbb{R}}
+\newcommand{\Nbb}{\mathbb{N}}
+\newcommand{\Zbb}{\mathbb{Z}}
+\newcommand{\Qbb}{\mathbb{Q}}
+\newcommand{\Ebb}{\mathbb{E}}
+\newcommand{\ind}{\perp\!\!\!\!\perp} % statistical independence sign
+
+
+%%%%%%%% todo comments %%%%%%%%%
+
+\newcommand{\todoComment}[2][]{\todo[linecolor=red!20,backgroundcolor=red!20,bordercolor=red!20, size=\tiny,#1]{#2}}
+
+
+
+\begin{document}
+
+%\onehalfspacing % 1.5-facher Zeilenabstand
+\frontmatter
+%\input{title}
+\maketitle
+
+%\listoftodos
+
+\cleardoublepage
+
+
+\begin{Abstract}
+\begin{changemargin}{1cm}{1cm}
+Your text:\lipsum[10]
+\end{changemargin}
+\end{Abstract}
+
+\cleardoublepage
+
+\pagenumbering{Roman}
+
+% \begin{center}
+% \textbf{Frequently used symbols and abbreviations:}
+% \end{center}
+% \begin{eqnarray*}
+% \mathcal{S}^{tr} &:& \textup{training sample (for tree-growing process)} \\
+% \mathcal{S}^{est} &:& \textup{estimation sample (for leaf-wise estimation)} \\
+% \mathcal{S}^{te} &:& \textup{test sample} \\
+% \Pi &:& \textup{tree/partitioning of feature space } \mathbb{X}\\
+% MSE &:& \textup{mean squared error} \\
+% \mu(x; \mathcal{S}, \Pi) &:& \textup{conditional mean function} \\
+% \tau(x; \mathcal{S}, \Pi) &:& \textup{conditional average treatment effect} \\
+% \tau_i &:& \textup{unit-level treatment effect} \\
+% X_i &:& \textup{individual $i$'s feature matrix of dimension } N \times K \\
+% D_i &:& \textup{individual $i$'s binary treatment indicator, $D_i \in (0,1)$} \\
+% Y_i(D_i) &:& \textup{individual $i$'s potential outcome}\\
+% Y_i^{obs} &:& \textup{individual $i$'s observed potential outcome}\\
+% \mathbb{E} &:& \textup{expectation operator}\\
+% Pr(.) &:& \textup{probability}\\
+% Pr(.|.) &:& \textup{conditional probability}\\
+% \hspace{1cm} \\
+% \textup{to be continued ...}
+% \end{eqnarray*}
+
+
+\begin{comment}
+\mathbb{N} &:& \{1,2,\ldots\}\\
+\mathbb{R} &:& \textup{set of real numbers}\\
+%\mathbb{R}_+ &:& (0,\infty)\\
+\mathbb{C} &:& \textup{set of complex numbers}\\
+\mathrm{i} &:& \textup{imaginary unit, }  \mathrm{i}^2=-1\\
+\mathrm{Re}(z) &:& \textup{real part } a \textup{ of } z=a+b\mathrm{i}\in\mathbb{C}\\
+\arg(z) &:& \textup{the argument of a complex number } z\\
+A^{\mathrm{T}} &:& \textup{transpose of a matrix } A\in\mathbb{R}^{m\times n}\\
+\left\langle x,y\right\rangle &:& x^{\mathrm{T}}y, \textup{ for } x,y\in\mathbb{R}^n\\
+\mathds{1}_A &:& \textup{indicator function } \mathds{1}_A(x)=1, \textup{ if } x\in A;\ \mathds{1}_A(x)=0, \textup{ if } x\notin A\\
+\Gamma(x) &:& \textup{gamma function for } x>0\\
+J_{\lambda}(x) &:& \textup{Bessel function of the first kind}\\
+Y_{\lambda}(x) &:& \textup{Bessel function of the second kind}\\
+K_{\lambda}(x) &:& \textup{modified Bessel function of the second kind}\\
+f(x)\sim g(x) &:& \lim_{x\to a}\frac{f(x)}{g(x)}=1, a\in\mathbb{R}\cup\{\pm\infty\}\\
+f(x)=\mathcal{O}( g(x)) &:& \limsup_{x\to a}\frac{|f(x)|}{|g(x)|}<\infty, a\in\mathbb{R}\cup\{\pm\infty\}\\
+X\sim \mu &:& X \textup{ has distribution } \mu\\
+\stackrel{\mathcal{L}}{=} &:& \textup{equality in distribution}\\
+\stackrel{\mathcal{L}}{\rightarrow} &:& \textup{convergence in distribution}\\
+X_n\stackrel{\mathcal{L}}{\sim}Y_n &:& X_n\stackrel{\mathcal{L}}{\rightarrow}X,Y_n\stackrel{\mathcal{L}}{\rightarrow}X\\
+X_n=o_P(1) &:& X_n\to0 \textup{ in probability for } n\to\infty\\
+\textup{a.s.} &:& \textup{almost surely}\\
+\textup{i.i.d.} &:& \textup{independent, identically distributed}\\
+N(\mu,\sigma^2) &:& \textup{normal distribution with mean } \mu \textup{ and variance } \sigma^2\\
+t(\nu,\mu,\sigma^2) &:& \textup{Student } t \textup{ distribution with degree of freedom } \nu, \textup{ location } \mu \textup{ and scale } \sigma\\
+t(\nu,\mu,\sigma^2,\beta) &:& \textup{Skew Student } t \textup{ distribution with skewness parameter } \beta\\
+R\Gamma(\alpha,\beta) &:& \textup{inverse gamma distribution with shape parameter } \alpha \textup{ and scale } \beta\\
+Poi(\lambda) &:& \textup{Poisson distribution with intensity parameter } \lambda\\
+Exp(\lambda) &:& \textup{Exponential distribution with rate } \lambda\\
+\mathcal{U}_{[a,b]} &:& \textup{Uniform distribution on } [a,b] 
+\end{comment}
+
+
+%\newpage{}
+
+%\thispagestyle{empty}
+\tableofcontents
+%\newpage{}
+
+
+\mainmatter
+%\pagenumbering{arabic}
+\microtypesetup{activate=true}
+
+
+\include{chapters/01_intro}
+
+\include{chapters/02_PO}
+
+\include{chapters/03_BCF_IV}
+
+\include{chapters/04_sim_study}
+
+\include{chapters/05_emp_appl}
+
+\include{chapters/06_discussion}
+
+
+
+
+
+
+
+
+
+
+
+%\section{Appendices}
+%\addcontentsline{toc}{section}{Appendices}
+
+
+
+\Urlmuskip=0mu plus 1mu\relax
+\bibliographystyle{agsm}
+\bibliography{refs/paper_bibtex_file}
+
+\cleardoubleemptypage
+
+
+
+\end{document}
