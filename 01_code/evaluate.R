@@ -8,7 +8,7 @@ invisible(sapply(list.files(here::here('01_code/functions'), full.names = TRUE),
        source))
 
 # parallel plan
-future::plan(multisession, workers = parallel::detectCores()*.9)
+future::plan(multisession, workers = 10)
 options(future.globals.maxSize = 2147483648) # 2GB  
 
 # # reading data 
@@ -31,7 +31,7 @@ tictoc::toc()
 
 # 
 tictoc::tic()
-parallel_try_1 <- try %>%
+sim_results <- data %>%
   dplyr::mutate(results = furrr::future_pmap(., wrapper_function, .progress = TRUE))
 tictoc::toc()
 
