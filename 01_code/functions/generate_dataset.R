@@ -21,18 +21,32 @@ source(here::here('01_code/packages.R'))
 # dataset <- generate_dataset()
 #
 # @export
-generate_dataset <- function(n = 1000, p = 100, rho = 0, null = 0, effect_size = 2, compliance = 0.75) {
+generate_dataset <- function(n = 1000, p = 100, rho = 0, null = 0, effect_size = 2,
+                             compliance = 0.75, continuous_covariates = FALSE) {
   
-  # Generate Variables
-  mu <- rep(0, p)
-  Sigma <- matrix(rho, nrow = p, ncol = p) + diag(p) * (1 - rho)
-  rawvars <- mvrnorm(n = n, mu = mu, Sigma = Sigma)
-  pvars <- pnorm(rawvars)
-  binomvars <- qbinom(pvars, 1, 0.5) 
-  X <- binomvars
+  if(!continuous_covariates) {
+    # Generate Variables
+    mu <- rep(0, p)
+    Sigma <- matrix(rho, nrow = p, ncol = p) + diag(p) * (1 - rho)
+    rawvars <- mvrnorm(n = n, mu = mu, Sigma = Sigma)
+    pvars <- pnorm(rawvars)
+    binomvars <- qbinom(pvars, 1, 0.5) 
+    X <- binomvars
+  }
+  
+  if(continuous_covariates) {
+    # Generate Variables
+    mu <- rep(0, p)
+    Sigma <- matrix(rho, nrow = p, ncol = p) + diag(p) * (1 - rho)
+    rawvars <- mvrnorm(n = n, mu = mu, Sigma = Sigma)
+    pvars <- pnorm(rawvars)
+    binomvars <- qbinom(pvars, 1, 0.5) 
+    X <- cbind(binomvars[, 1:2], rawvars[, -c(1, 2)])
+  }
+  
   
   ########## just vectoriced? ########## 
-  # x1 and x2 needed for heterogenes effects
+  # x1 and x2 needed for heterogeneous effects
   x1 <- X[, 1]
   x2 <- X[, 2]
 

@@ -27,3 +27,4 @@ for (i in seq_along(p)) {
 
 tictoc::toc()
 
+dataset <- generate_dataset(n = 100, p = 10, continuous_covariates = TRUE)
