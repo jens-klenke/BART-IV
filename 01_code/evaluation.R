@@ -33,20 +33,38 @@ get_bcf_results <- function(results, ...){
     .$bcf_results
 }
 
+get_sbcf_results <- function(results, ...){
+  results %>%
+    .$s_bcf_results
+}
+
 try <- estimation_results %>%
-  dplyr::slice_head(n = 1000)
+  dplyr::slice_head(n = 1)
 
 try_1 <- try %>%
-  dplyr::mutate(bcf_result = purrr::pmap(., get_bcf_results, .progress = TRUE)) 
+  dplyr::mutate(bcf_result = purrr::pmap(., get_bcf_results, .progress = TRUE),
+                s_bcf_result = purrr::pmap(., get_sbcf_results, .progress = TRUE)) 
 
 
 try_1 %<>%
   dplyr::select(ncov, row_num, bcf_result)
 
+###
+try_1 %>%
+  dplyr::select(bcf_result) %>%
+  tidyr::unnest(bcf_result) %>%
+  dplyr::filter(node == 'x1>=0.5 & x2>=0.5') %>%
+  dplyr::select(node, CCACE)
 
 
+
+###
 result %>%
   dplyr::select(bcf_results) %>%
   tidyr::unnest(bcf_results) %>%
   dplyr::filter(node == 'x1>=0.5 & x2>=0.5') %>%
   dplyr::select(node, CCACE)
+
+
+
+  

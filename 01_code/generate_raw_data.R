@@ -3,8 +3,8 @@
 source(here::here('01_code/packages.R'))
 
 # source all files in the functions folder
-sapply(list.files(here::here('01_code/functions'), full.names = TRUE), 
-       source)
+invisible(sapply(list.files(here::here('01_code/functions'), full.names = TRUE), 
+       source))
 
 # loop over parameters
 p <- c(10, 50, 100)
