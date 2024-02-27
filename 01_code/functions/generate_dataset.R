@@ -22,9 +22,9 @@ source(here::here('01_code/packages.R'))
 #
 # @export
 generate_dataset <- function(n = 1000, p = 100, rho = 0, null = 0, effect_size = 2,
-                             compliance = 0.75, continuous_covariates = FALSE) {
+                             compliance = 0.75, covariates = 'cont-cov') {
   
-  if(!continuous_covariates) {
+  if(!covariates == 'cont-cov') {
     # Generate Variables
     mu <- rep(0, p)
     Sigma <- matrix(rho, nrow = p, ncol = p) + diag(p) * (1 - rho)
@@ -34,7 +34,7 @@ generate_dataset <- function(n = 1000, p = 100, rho = 0, null = 0, effect_size =
     X <- binomvars
   }
   
-  if(continuous_covariates) {
+  if(covariates == 'cont-cov') {
     # Generate Variables
     mu <- rep(0, p)
     Sigma <- matrix(rho, nrow = p, ncol = p) + diag(p) * (1 - rho)

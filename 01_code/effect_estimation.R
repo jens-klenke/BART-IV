@@ -20,6 +20,22 @@ data <- tibble::tibble(
   dplyr::mutate(ncov = readr::parse_number(stringr::str_extract(path_in, pattern = 'ncovs_[0-9]*')),
                 row_num = paste(dplyr::row_number(), 'of', max(dplyr::row_number())))
 
+# 
+tictoc::tic()
+sim_results <- data %>%
+  dplyr::mutate(results = furrr::future_pmap(., wrapper_function, .progress = TRUE))
+tictoc::toc()
+
+
+################################################################################
+#####                                 save                                #####
+################################################################################
+saveRDS(sim_results, here::here('03_sim_results/discrete_covariates.rds'))
+
+################################################################################
+#####                                 tries                                #####
+################################################################################
+
 # example data set
 try <- data %>%
   dplyr::slice_head(n = 2)
@@ -29,43 +45,7 @@ try_1 <- try %>%
   dplyr::mutate(results = purrr::pmap(., wrapper_function, .progress = TRUE))
 tictoc::toc()
 
-# 
-tictoc::tic()
-sim_results <- data %>%
-  dplyr::mutate(results = furrr::future_pmap(., wrapper_function, .progress = TRUE))
-tictoc::toc()
 
-
-
-
-# 1 and 1 works
-i <- 1 
-j <- 1
-p <- c(10, 50, 100)
-p_i <- p[i]
-
-# reading in the data
-data <- readRDS(
-  here::here(
-    paste0('00_sim_data/ncovs_', p_i,
-           '/dataset_ncovs', p_i, '_', j)
-    )
-)
-
-# own 
-tictoc::tic()
-own_bcf <- own_bcf_iv(data$y, data$w, data$z, data$X)
-tictoc::toc()
-
-tictoc::tic()
-bcf_package <- BayesIV::bcf_iv(data$y, data$w, data$z, data$X, n_burn = 1000)
-tictoc::toc()
-
-tictoc::tic()
-first_bcf <- bcf_iv(data$y, data$w, data$z, data$X, n_burn = 1000)
-tictoc::toc()
-
-pryr::object_size(own_bcf)
 
 
 

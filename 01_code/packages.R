@@ -1,6 +1,7 @@
 # packages
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(
+  tibble,
   furrr,
   Hmisc,
   magrittr,
