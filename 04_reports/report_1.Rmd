@@ -1,0 +1,48 @@
+---
+title: 'Report'
+author: 'Jens Klenke'
+author2: 'A'
+subtitle: 'AA'
+semester: "23"
+output:
+  pdf_document:
+    keep_tex: yes
+    template: template.tex
+    fig_caption: yes
+    number_sections: true
+toc: true
+lot: true
+lof: true
+graphics: true
+linkcolor: black
+urlcolor: black
+citecolor: black
+colorlinks: true
+font: Times New Roman
+fontsize: 12pt
+geometry: lmargin = 2cm, rmargin = 2.5cm, tmargin = 2cm, bmargin = 2.5cm
+classoption: a4paper
+---
+
+```{r set-up, include=FALSE}
+#Sys.setlocale(locale = "English_United States.1252") ## English US Windows
+knitr::opts_chunk$set(echo = TRUE)
+
+#options(kableExtra.latex.load_packages = FALSE)
+#### required packages ####
+source(here::here('01_code/packages.R'))
+```
+
+
+# `R` als Taschenrechner
+
+Öffnen Sie `RStudio` auf Ihrem Rechner und machen Sie sich mit der Oberfläche vertraut. Versuchen Sie unter dem Menüpunkt _File_ ein `R`-Skript zu öffnen und anschließend die Funktionen der unterschiedlichen Fenster zu verstehen.  
+
+\begin{enumerate}[label=\alph*)]
+  \item Benutzen Sie R als Taschenrechner: Berechnen Sie $3 + 4$, $6 - 8$, $3 \times 5$ und $10 \div 3$.
+  \item Speichern Sie das letzte Ergebnis ab, indem Sie diesem den Namen $x$ geben. Nutzen Sie hierfür \verb|<-| den Zuweisungsoperator in \verb|R|.
+  \item Lassen Sie sich das Ergebnis ausgeben.
+  \item Runden Sie das Ergebnis $x$ auf $2$ Nachkommastellen: \verb|round(x, 2)|.
+\end{enumerate}
+
+
