@@ -1,0 +1,94 @@
+---
+title: "BCF vs SBCF"
+subtitle: ""
+author:
+- name: Jens Klenke
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+  pdf:
+    template: 'svm-latex-ms.tex'
+    pdf-engine: pdflatex
+    number-sections: true
+    colorlinks: true
+    toc: false
+    keep-tex: true
+geometry: margin=1in
+course: 'Research'
+term: '2024'
+endnote: true
+params:
+  show_solutions: true
+show_solutions: true
+lang: de
+babel-lang: ngerman
+---
+
+```{r setup, include=F, message=F}
+knitr::opts_chunk$set(fig.align = 'center', echo = F, eval = T)
+source(here::here('01_code/packages.R'))
+
+# load raw estimations
+estimation_results_raw <- readRDS(here::here('03_sim_results/discrete_covariates.rds'))
+```
+
+```{r data_wrangling, include = F}
+estimation_results <- estimation_results_raw %>%
+  # unnest results
+  tidyr::unnest(results) %>%
+  # # name results 
+  dplyr::mutate(result_names = names(results)) %>%
+  # parse ID 
+  dplyr::mutate(ID = readr::parse_number(str_extract(path_in, "_(?:.(?!_))+$"))) %>%
+  # delselect unimportant variables
+  dplyr::select(-c(row_num, path_in)) %>%
+  #  filter for main results
+  dplyr::filter(result_names %in% c('bcf_results', 's_bcf_results')) %>%
+  # force same datatype
+  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, node = as.character(node)))) %>%
+  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, CCACE = as.double(CCACE)))) %>%
+  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, pvalue = as.double(pvalue)))) %>%
+  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, Weak_IV_test = as.double(Weak_IV_test)))) %>%
+  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, Pi_obs = as.double(Pi_obs)))) %>%
+  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, ITT = as.double(ITT)))) %>%
+  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, Pi_compliers = as.double(Pi_compliers)))) %>%
+  # unnest bcf and bcfs results
+  tidyr::unnest(results) %>%
+  dplyr::arrange(ncov, ID) %>%
+  dplyr::mutate(subgroup = dplyr::case_when(
+    node == 'x1>=0.5 & x2>=0.5' | node == 'x2>=0.5 & x1>=0.5' |
+    node == 'x2> 0.5 & x1> 0.5' | node == 'x1> 0.5 & x2> 0.5' ~ 'negative_effect',
+    node == 'x2< 0.5 & x1< 0.5' | node == 'x1< 0.5 & x2< 0.5' |
+    node == 'x2<=0.5 & x1<=0.5' | node == 'x1<=0.5 & x2<=0.5' ~ 'positive_effect',
+    .default = NA)
+    )
+
+estimation_results_ncov_10 <- estimation_results %>%
+  dplyr::filter(ncov == 10) %>%
+  dplyr::group_by(result_names, subgroup)
+
+estimation_results_ncov_50 <- estimation_results %>%
+  dplyr::filter(ncov == 50) %>%
+  dplyr::group_by(result_names, subgroup)
+
+estimation_results_ncov_100 <- estimation_results %>%
+  dplyr::filter(ncov == 100) %>%
+  dplyr::group_by(result_names, subgroup)
+```
+
+
+# Discrete Case 
+
+## 10 Covaraiates 
+
+```{r}
+estimation_results_ncov_10  %>%
+  dplyr::filter(subgroup %in% c('negative_effect', 'positive_effect')) %>%
+  dplyr::summarise(n = dplyr::n(), '$\\bar{CCACE}$' = mean(CCACE), '$\\sigma_{CCACE}$' = sd(CCACE)) %>%
+  kable("latex", 
+      booktabs = T, 
+      align = "lccc",
+      caption = "10 Covariats"
+      ) %>%
+  kable_styling(position = "center", latex_options = "hold_position")
+```
+

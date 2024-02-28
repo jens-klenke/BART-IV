@@ -12,10 +12,171 @@ future::plan(multisession, workers = 10)
 options(future.globals.maxSize = 2147483648) # 2GB  
 
 # load raw estimations
-estimation_results <- readRDS(here::here('03_sim_results/discrete_covariates.rds'))
+estimation_results_raw <- readRDS(here::here('03_sim_results/discrete_covariates.rds'))
 
-names(estimation_results)
-# unnest estimation results
+##############################################
+#####              wrangling             #####
+##############################################
+
+estimation_results <- estimation_results_raw %>%
+  # unnest results
+  tidyr::unnest(results) %>%
+  # # name results 
+  dplyr::mutate(result_names = names(results)) %>%
+  # parse ID 
+  dplyr::mutate(ID = readr::parse_number(str_extract(path_in, "_(?:.(?!_))+$"))) %>%
+  # delselect unimportant variables
+  dplyr::select(-c(row_num, path_in)) %>%
+  #  filter for main results
+  dplyr::filter(result_names %in% c('bcf_results', 's_bcf_results')) %>%
+  # force same datatype
+  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, node = as.character(node)))) %>%
+  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, CCACE = as.double(CCACE)))) %>%
+  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, pvalue = as.double(pvalue)))) %>%
+  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, Weak_IV_test = as.double(Weak_IV_test)))) %>%
+  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, Pi_obs = as.double(Pi_obs)))) %>%
+  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, ITT = as.double(ITT)))) %>%
+  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, Pi_compliers = as.double(Pi_compliers)))) %>%
+  # unnest bcf and bcfs results
+  tidyr::unnest(results) %>%
+  dplyr::arrange(ncov, ID) %>%
+  dplyr::mutate(subgroup = dplyr::case_when(
+    node == 'x1>=0.5 & x2>=0.5' | node == 'x2>=0.5 & x1>=0.5' |
+    node == 'x2> 0.5 & x1> 0.5' | node == 'x1> 0.5 & x2> 0.5' ~ 'negative_effect',
+    node == 'x2< 0.5 & x1< 0.5' | node == 'x1< 0.5 & x2< 0.5' |
+    node == 'x2<=0.5 & x1<=0.5' | node == 'x1<=0.5 & x2<=0.5' ~ 'positive_effect',
+    .default = NA)
+    )
+
+##############################################
+#####    investigating the subgroups     #####
+##############################################
+
+
+estimation_results_ncov_10 <- estimation_results %>%
+  dplyr::filter(ncov == 10) %>%
+  dplyr::group_by(result_names, subgroup)
+
+tibble::tibble(ID = 1:100) %>%
+  dplyr::left_join(
+    estimation_results_ncov_10 %>%
+      dplyr::select(subgroup, CCACE, result_names, ID), 
+    by = 'ID') %>%
+  dplyr::filter(subgroup %in% c('negative_effect', 'positive_effect')) %>%
+  ggplot2::ggplot(aes(x = ID, y = CCACE, color = result_names)) +
+  ggplot2::geom_point(size = 2, alpha = 0.95) +
+  ggplot2::theme_bw() +
+  ggplot2::facet_wrap('subgroup')+
+  ggplot2::geom_smooth(method = lm, formula = y ~ 1, se = FALSE)
+
+estimation_results_ncov_50 <- estimation_results %>%
+  dplyr::filter(ncov == 50) %>%
+  dplyr::group_by(result_names, subgroup)
+
+tibble::tibble(ID = 1:100) %>%
+  dplyr::left_join(
+    estimation_results_ncov_50 %>%
+      dplyr::select(subgroup, CCACE, result_names, ID), 
+    by = 'ID') %>%
+  dplyr::filter(subgroup %in% c('negative_effect', 'positive_effect')) %>%
+  ggplot2::ggplot(aes(x = ID, y = CCACE, color = result_names)) +
+  ggplot2::geom_point(size = 2, alpha = 0.95) +
+  ggplot2::theme_bw() +
+  ggplot2::facet_wrap('subgroup')+
+  ggplot2::geom_smooth(method = lm, formula = y ~ 1, se = FALSE)
+
+estimation_results_ncov_100 <- estimation_results %>%
+  dplyr::filter(ncov == 100) %>%
+  dplyr::group_by(result_names, subgroup)
+
+tibble::tibble(ID = 1:100) %>%
+  dplyr::left_join(
+    estimation_results_ncov_100 %>%
+      dplyr::select(subgroup, CCACE, result_names, ID), 
+    by = 'ID') %>%
+  dplyr::filter(subgroup %in% c('negative_effect', 'positive_effect')) %>%
+  ggplot2::ggplot(aes(x = ID, y = CCACE, color = result_names)) +
+  ggplot2::geom_point(size = 2, alpha = 0.95) +
+  ggplot2::theme_bw() +
+  ggplot2::facet_wrap('subgroup')+
+  ggplot2::geom_smooth(method = lm, formula = y ~ 1, se = FALSE)
+
+
+estimation_results_ncov_10 %>%
+  dplyr::summarise(n = dplyr::n(), '\bar(CCACE)' = mean(CCACE), '\ sd(CCACE)' = sd(CCACE))
+
+
+
+
+
+
+
+
+#### --------------- trash ----------------
+
+
+
+
+
+
+
+####
+
+###
+try_1 <- estimation_results %>%
+  # unnest results
+  tidyr::unnest(results) %>%
+  # # name results 
+  dplyr::mutate(result_names = names(results)) %>%
+  # parse ID 
+  dplyr::mutate(ID = readr::parse_number(str_extract(path_in, "_(?:.(?!_))+$"))) %>%
+  # delselect unimportant variables
+  dplyr::select(-c(row_num, path_in)) %>%
+  #  filter for main results
+  dplyr::filter(result_names %in% c('bcf_results', 's_bcf_results')) %>%
+  # force same datatype
+  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, node = as.character(node)))) %>%
+  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, CCACE = as.double(CCACE)))) %>%
+  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, pvalue = as.double(pvalue)))) %>%
+  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, Weak_IV_test = as.double(Weak_IV_test)))) %>%
+  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, Pi_obs = as.double(Pi_obs)))) %>%
+  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, ITT = as.double(ITT)))) %>%
+  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, Pi_compliers = as.double(Pi_compliers)))) %>%
+  # unnest bcf and bcfs results
+  tidyr::unnest(results) %>%
+  dplyr::arrange(ncov, ID) %>%
+  dplyr::filter(CCACE > 0)
+
+
+
+
+  dplyr::select(bcf_result) %>%
+  tidyr::unnest(bcf_result) %>%
+  dplyr::filter(node == 'x1>=0.5 & x2>=0.5') %>%
+  dplyr::select(node, CCACE)
+
+
+
+###
+result %>%
+  dplyr::select(bcf_results) %>%
+  tidyr::unnest(bcf_results) %>%
+  dplyr::filter(node == 'x1>=0.5 & x2>=0.5') %>%
+  dplyr::select(node, CCACE)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 result <- tibble::as_tibble(estimation_results$results[1], .name_repair = 'minimal') %>%
   dplyr::rename('results' = 1) %>%

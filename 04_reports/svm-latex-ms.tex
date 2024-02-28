@@ -1,0 +1,310 @@
+\documentclass[$if(fontsize)$$fontsize$,$endif$$if(babel-lang)$$babel-lang$,$endif$$if(papersize)$$papersize$,$endif$$for(classoption)$$classoption$$sep$,$endfor$]{article}
+\usepackage[left=1in,top=1in,right=1in,bottom=1in]{geometry}
+
+\usepackage{relsize}
+
+\usepackage{scrextend}
+
+\usepackage[$if(babel-lang)$$babel-lang$,$endif$ english]{babel}
+\usepackage{eurosym}
+
+\usepackage{enumerate}
+\usepackage{enumitem}
+
+\newcommand*{\authorfont}{\fontfamily{phv}\selectfont}
+$if(fontfamily)$
+\usepackage[$fontfamilyoptions$]{$fontfamily$}
+$else$
+\usepackage{lmodern}
+$endif$
+
+
+\usepackage[$if(fontenc)$$fontenc$$else$T1$endif$]{fontenc}
+\usepackage[utf8]{inputenc}
+
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\allowdisplaybreaks
+
+$if(show_solutions)$
+\usepackage[wsol,wsolpubl]{optional}
+$else$
+\usepackage[wsolpubl]{optional}
+$endif$
+
+\newcommand{\optb}[2]{\opt{#1}{\textit{Lösung:} #2}}
+\newcommand{\sol}[2]{\opt{#1}{{\textit{Lösung:}\newline #2}}}
+\newcommand{\solind}[2]{\opt{#1}{{\setlength{\leftskip}{2.5em} \textit{Lösung:}\newline #2}}}
+\newcommand{\ind}[2]{\opt{#1}{\setlength{\leftskip}{2.5em} #2}}
+
+
+% \setlength{\leftskip}{2.5em}
+
+\usepackage{abstract}
+\renewcommand{\abstractname}{}    % clear the title
+\renewcommand{\absnamepos}{empty} % originally center
+
+\renewenvironment{abstract}
+ {{%
+    \setlength{\leftmargin}{0mm}
+    \setlength{\rightmargin}{\leftmargin}%
+  }%
+  \relax}
+ {\endlist}
+
+\makeatletter
+\def\@maketitle{%
+  \newpage
+%  \null
+%  \vskip 2em%
+%  \begin{center}%
+  \let \footnote \thanks
+    {\fontsize{14}{15}\selectfont \center  \setlength{\parindent}{0pt} \@title \par}%
+}
+%\fi
+\makeatother
+
+
+$if(appendix)$
+\renewcommand*\thetable{$appendixletter$.\arabic{table}}
+\renewcommand*\thefigure{$appendixletter$.\arabic{figure}}
+$endif$
+
+
+\setcounter{secnumdepth}{0}
+
+$if(listings)$
+\usepackage{listings}
+$endif$
+$if(lhs)$
+\lstnewenvironment{code}{\lstset{language=r,basicstyle=\small\ttfamily}}{}
+$endif$
+$if(highlighting-macros)$
+$highlighting-macros$
+$endif$
+$if(verbatim-in-note)$
+\usepackage{fancyvrb}
+$endif$
+$if(tables)$
+\usepackage{longtable,booktabs}
+$endif$
+
+\usepackage{graphicx}
+
+$if(title)$
+\title{\center $title$$if(subtitle)$ \\[1em]\smaller{$subtitle$}$endif$ $if(anonymous)$$else$$if(thanks)$\thanks{$thanks$} $endif$$endif$ }
+$endif$ 
+
+
+\date{}
+
+\usepackage{titlesec}
+
+\titleformat*{\section}{\normalsize\bfseries}
+\titleformat*{\subsection}{\normalsize\itshape}
+\titleformat*{\subsubsection}{\normalsize\itshape}
+\titleformat*{\paragraph}{\normalsize\itshape}
+\titleformat*{\subparagraph}{\normalsize\itshape}
+
+
+$if(natbib)$
+\usepackage{natbib}
+\bibliographystyle{$if(biblio-style)$$biblio-style$$else$plainnat$endif$}
+\usepackage[strings]{underscore} % protect underscores in most circumstances
+$endif$
+
+$if(biblatex)$
+\usepackage$if(biblio-style)$[style=$biblio-style$]$endif${biblatex}
+$if(biblatexoptions)$\ExecuteBibliographyOptions{$for(biblatexoptions)$$biblatexoptions$$sep$,$endfor$}$endif$
+$for(bibliography)$
+\addbibresource{$bibliography$}
+$endfor$
+$endif$
+$if(listings)$
+\usepackage{listings}
+$endif$
+
+
+\newtheorem{hypothesis}{Hypothesis}
+\usepackage{setspace}
+
+\makeatletter
+\@ifpackageloaded{hyperref}{}{%
+\ifxetex
+  \PassOptionsToPackage{hyphens}{url}\usepackage[setpagesize=false, % page size defined by xetex
+              unicode=false, % unicode breaks when used with xetex
+              xetex]{hyperref}
+\else
+  \PassOptionsToPackage{hyphens}{url}\usepackage[unicode=true]{hyperref}
+\fi
+}
+
+\@ifpackageloaded{color}{
+    \PassOptionsToPackage{usenames,dvipsnames}{color}
+}{%
+    \usepackage[usenames,dvipsnames]{color}
+}
+\makeatother
+\hypersetup{breaklinks=true,
+            bookmarks=true,
+            pdfauthor={$if(anonymous)$$else$$for(author)$$author.name$ ($author.affiliation$)$sep$ and $endfor$$endif$},
+             pdfkeywords = {$if(keywords)$$keywords$$endif$},  
+            pdftitle={$title$$if(subtitle)$: $subtitle$$endif$},
+            colorlinks=true,
+            citecolor=$if(citecolor)$$citecolor$$else$blue$endif$,
+            urlcolor=$if(urlcolor)$$urlcolor$$else$blue$endif$,
+            linkcolor=$if(linkcolor)$$linkcolor$$else$magenta$endif$,
+            pdfborder={0 0 0}}
+\urlstyle{same}  % don't use monospace font for urls
+
+$for(header-includes)$
+$header-includes$
+$endfor$
+
+$if(endnotes)$
+\usepackage{endnotes}
+\renewcommand{\enotesize}{\normalsize}
+\let\footnote=\endnote
+$endif$
+
+% add tightlist ----------
+\providecommand{\tightlist}{%
+\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+\newcommand{\var}{\mbox{\sf Var}}
+\newcommand{\E}{\mbox{\sf E}}
+\newcommand{\cov}{\mbox{\sf Cov}}
+\newcommand{\pr}{\mbox{\sf P}}
+\newcommand{\corr}{\mbox{\sf Cor}}
+
+\setlength{\parindent}{0pt}
+
+\usepackage{multirow}
+\usepackage{hyperref}
+\usepackage[capitalise, noabbrev, $if(babel-lang)$$babel-lang$$endif$]{cleveref}
+
+\begin{document}
+
+% \pagenumbering{arabic}% resets `page` counter to 1 
+%$if(appendix)$
+%\renewcommand*{\thepage}{$appendixletter$--\arabic{page}}
+%$endif$    
+
+$if(title)$
+% \maketitle
+
+{% \usefont{T1}{pnc}{m}{n}
+
+{
+
+\vskip 40pt\relax \normalsize\fontsize{11}{12}
+
+\begin{minipage}[t]{.49\textwidth}
+Universität Duisburg-Essen\\
+Lehrstuhl für Ökonometrie\\
+$if(anonymous)$\hfill $else$$for(by-author)$$by-author.name.literal$ \hskip 15pt \emph{\small $by-author.affiliation$}  $sep$ \par $endfor$ $endif$
+\end{minipage}% 
+%
+\hfill
+%
+\begin{minipage}[t]{.49\textwidth}
+  \begin{flushright}
+    $if(term)$$term$$endif$\\
+    $if(course)$$course$$endif$\\
+  \end{flushright}
+\end{minipage}
+
+\vspace{20pt}
+
+}
+
+\setlength{\parindent}{0pt}
+\thispagestyle{plain}
+{\fontsize{10}{10}\selectfont\raggedright 
+{\let\newpage\relax\maketitle}
+ % title \par  
+
+}
+
+
+}
+
+\vskip 8.5pt
+
+$endif$
+
+
+
+$if(abstract)$
+
+\begin{abstract}
+    
+
+    \hbox{\vrule height .2pt width 39.14pc}
+
+    \vskip 8.5pt % \small 
+
+\noindent $abstract$
+
+$if(keywords)$
+
+\vskip 8.5pt \noindent \emph{Keywords}: $keywords$ \par
+
+    \hbox{\vrule height .2pt width 39.14pc}
+
+
+$else$
+
+    \hbox{\vrule height .2pt width 39.14pc}
+
+$endif$
+
+\end{abstract}
+
+$endif$
+
+\vskip 6.5pt
+
+$if(toc)$
+{
+\hypersetup{linkcolor=black}
+\setcounter{tocdepth}{$toc-depth$}
+\tableofcontents
+}
+$endif$
+
+\noindent $if(anonymous)$\doublespacing$else$$if(spacing)$\$spacing$spacing$endif$$endif$ $body$
+
+$if(endnotes)$
+\newpage
+
+\theendnotes
+$endif$
+
+
+
+\newpage
+\singlespacing 
+$if(natbib)$
+$if(bibliography)$
+$if(biblio-title)$
+$if(book-class)$
+\renewcommand\bibname{$biblio-title$}
+$else$
+\renewcommand\refname{$biblio-title$}
+$endif$
+$endif$
+\bibliography{$for(bibliography)$$bibliography$$sep$,$endfor$}
+
+$endif$
+$endif$
+$if(biblatex)$
+\printbibliography$if(biblio-title)$[title=$biblio-title$]$endif$
+
+$endif$
+$for(include-after)$
+$include-after$
+
+$endfor$
+\end{document}

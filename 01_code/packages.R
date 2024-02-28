@@ -2,6 +2,7 @@
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(
   tibble,
+  ggplot2,
   furrr,
   Hmisc,
   magrittr,
@@ -20,6 +21,7 @@ pacman::p_load(
   bartCause,
   pryr,
   stringr,
+  kableExtra,
   rpart.plot,
   BayesIV, # https://github.com/fbargaglistoffi/BCF-IV/tree/master
   SparseBCF # https://github.com/albicaron/SparseBCF
