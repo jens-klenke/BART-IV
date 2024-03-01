@@ -90,7 +90,7 @@ own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 1000, n_sim = 1000,
                           cp=cp,
                           minsplit=minsplit)
   
-  # print('Step 2 completed')
+   print('Step 2 completed')
   ######################################################
   ####  Step 3: Extract the Causal Rules (Nodes)    ####
   ######################################################

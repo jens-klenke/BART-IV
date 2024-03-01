@@ -132,8 +132,8 @@ x_names <- paste0('x', 1:ncol(x))
     ####  Step 3: Extract the Causal Rules (Nodes)    ####
     ######################################################
     
-    bcf_ivResults <- extract_causal_rules(bcf_fit.tree, inference = inference)
+    bcf_ivResults <- extract_causal_rules(bcf_fit.tree, inference = inference, adj_method = adj_method)
     
-    s_bcf_ivResults <- extract_causal_rules(s_bcf_fit.tree, inference = inference)
+    s_bcf_ivResults <- extract_causal_rules(s_bcf_fit.tree, inference = inference, adj_method = adj_method)
     
     

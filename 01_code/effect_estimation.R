@@ -27,6 +27,51 @@ sim_results <- data %>%
 tictoc::toc()
 
 
+### continous data 
+# # reading data 
+data <- tibble::tibble(
+  # path for loading data
+  path_in = list.files(
+    here::here("00_sim_data/"), recursive = TRUE, full.names = TRUE)
+  ) %>%
+  dplyr::filter(str_detect(path_in, 'cont-cov')) %>%
+  dplyr::mutate(ncov = readr::parse_number(stringr::str_extract(path_in, pattern = 'ncovs_[0-9]*')),
+                row_num = paste(dplyr::row_number(), 'of', max(dplyr::row_number())))
+
+# 
+tictoc::tic()
+sim_results <- data %>%
+  dplyr::mutate(results = furrr::future_pmap(., wrapper_function, .progress = TRUE))
+tictoc::toc()
+
+################################################################################
+#####                                 save                                #####
+################################################################################
+saveRDS(sim_results, here::here('03_sim_results/continuous_covariates.rds'))
+
+# 
+tictoc::tic()
+sim_results <- data %>%
+  dplyr::mutate(results = purrr::pmap(., wrapper_function, .progress = TRUE))
+tictoc::toc()
+
+################################################################################
+#####                                 save                                #####
+################################################################################
+saveRDS(sim_results, here::here('03_sim_results/continuous_covariates.rds'))
+
+
+
+
+
+
+
+
+
+
+
+
+
 ################################################################################
 #####                                 save                                #####
 ################################################################################
