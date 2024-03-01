@@ -103,7 +103,10 @@ tibble::tibble(ID = 1:100) %>%
 
 
 estimation_results_ncov_10 %>%
-  dplyr::summarise(n = dplyr::n(), '\bar(CCACE)' = mean(CCACE), '\ sd(CCACE)' = sd(CCACE))
+  dplyr::filter(subgroup %in% c('negative_effect', 'positive_effect')) %>%
+  dplyr::summarise(n = dplyr::n(), share = dplyr::n()/100, mean = mean(CCACE), sd = sd(CCACE)) %>%
+  tidyr::pivot_wider(names_from = result_names, values_from = c(n, share, mean, sd)) %>%
+  dplyr::relocate(subgroup, n_bcf_results, share_bcf_results, mean_bcf_results, sd_bcf_results)
 
 
 
