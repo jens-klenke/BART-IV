@@ -26,9 +26,10 @@ sim_results <- data %>%
   dplyr::mutate(results = furrr::future_pmap(., wrapper_function, .progress = TRUE))
 tictoc::toc()
 
-
-### continous data 
-# # reading data 
+################################################################################
+#####                          continuous data                              #####
+################################################################################
+# reading data 
 data <- tibble::tibble(
   # path for loading data
   path_in = list.files(

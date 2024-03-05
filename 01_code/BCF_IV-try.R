@@ -1,6 +1,6 @@
 # bcf_iv <- function(
 # Data 
-dataset <- readRDS(data$path_in[1])
+dataset <- readRDS(data$path_in[11])
 
 y <- dataset$y
 w <- dataset$w
@@ -14,7 +14,7 @@ n_sim = 1000
 inference_ratio = 0.5
 max_depth = 2
 cp = 0.01
-minsplit = 10
+minsplit = 30
 adj_method = "holm"
 seed = 42
 
@@ -115,7 +115,8 @@ x_names <- paste0('x', 1:ncol(x))
                       data = bcf_exp,
                       maxdepth = max_depth,
                       cp=cp,
-                      minsplit=minsplit)
+                      minsplit=minsplit
+                      )
     # plot tree
     rpart.plot::rpart.plot(bcf_fit.tree)
     
