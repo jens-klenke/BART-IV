@@ -63,7 +63,7 @@ extract_causal_rules <- function(fit.tree, inference, adj_method){
     subset <- with(inference, inference[which(eval(parse(text = sub_pop))),])
     
     # Run the IV Regression
-    if (length(unique(subset$w))!= 1 | length(unique(subset$z))!= 1){
+    if (length(unique(subset$w))!= 1 & length(unique(subset$z))!= 1 & nrow(subset) >2){
       iv.reg <- ivreg(y ~ w | z,  
                       data = subset)
       summary <- summary(iv.reg, diagnostics = TRUE)
@@ -83,6 +83,10 @@ extract_causal_rules <- function(fit.tree, inference, adj_method){
       bcfivMat[i,] <- c(sub_pop, round(iv.effect, 4), p.value, 
                         p.value.weak.iv, round(proportion.node, 4), 
                         round(itt, 4), round(compliers, 4))
+    }
+    
+    if (!(length(unique(subset$w))!= 1 & length(unique(subset$z))!= 1 & nrow(subset) >2)){
+      bcfivMat[i,] <- c(sub_pop, 'est_problem', NA, NA, NA, NA, NA)
     }
     
     # Delete data
