@@ -1,6 +1,6 @@
-own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 1000, n_sim = 1000, 
+own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 3000, n_sim = 7000, 
                    inference_ratio = 0.5, max_depth = 2, cp = 0.01, 
-                   minsplit = 30, adj_method = "holm", seed = 42) {
+                   minsplit = 30, adj_method = "holm", seed = 42, cost = TRUE) {
   
   ######################################################
   ####         Step 0: Initialize the Data          ####
@@ -44,9 +44,11 @@ own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 1000, n_sim = 1000,
   ######################################################
   
   # Perform the Bayesian Causal Forest for the ITT
-  itt_bcf <- quiet(bcf(y[-index], z[-index], x[-index,], x[-index,], pihat, 
-                       nburn=n_burn, nsim=n_sim, save_tree_directory = NULL))
-  bcf_tau_itt <- itt_bcf$tau
+  bcf_itt.tree <- quiet(
+    SparseBCF::SparseBCF(y[-index], z[-index], x[-index,], pihat = pihat,
+                         nsim = n_sim, nburn = n_burn, sparse = F))
+  
+  bcf_tau_itt <- bcf_itt.tree$tau
   bcf_itt <- colMeans(bcf_tau_itt)
   
   # Get posterior of treatment effects
@@ -77,18 +79,49 @@ own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 1000, n_sim = 1000,
   ######################################################
   ####  Step 2: Build a CART on the Unit Level CITT ####
   ######################################################
-  bcf_fit.tree <- rpart(bcf_tauhat ~ .,
-                    data = bcf_exp,
-                    maxdepth = max_depth,
-                    cp=cp,
-                    minsplit=minsplit)
   
-  # binary tree for sparse trees 
-  s_bcf_fit.tree <- rpart(s_bcf_tauhat ~ .,
-                          data = s_bcf_exp,
+  # without cost function
+  if(!cost){
+    bcf_fit.tree <- rpart(bcf_tauhat ~ .,
+                          data = bcf_exp,
                           maxdepth = max_depth,
-                          cp=cp,
-                          minsplit=minsplit)
+                          cp = cp,
+                          minsplit = minsplit)
+    
+    # binary tree for sparse trees
+    s_bcf_fit.tree <- rpart(s_bcf_tauhat ~ .,
+                            data = s_bcf_exp,
+                            maxdepth = max_depth,
+                            cp = cp,
+                            minsplit = minsplit)
+  }
+  
+  # with cost function
+  if(cost){
+    bcf_fit.tree <- rpart(bcf_tauhat ~ .,
+                          data = bcf_exp,
+                          maxdepth = max_depth,
+                          cp = cp,
+                          minsplit = minsplit,
+                          cost = scales::rescale(
+                            colMeans(bcf_itt.tree$varprb_tau), 
+                            to = c(1, 0))
+                          )
+    
+    # binary tree for sparse trees
+    s_bcf_fit.tree <- rpart(s_bcf_tauhat ~ .,
+                            data = s_bcf_exp,
+                            maxdepth = max_depth,
+                            cp = cp,
+                            minsplit = minsplit,
+                            cost = scales::rescale(
+                              colMeans(s_bcf_itt.tree$varprb_tau), 
+                              to = c(1, 0))
+                            )
+  }
+  
+  
+  
   
   # print('Step 2 completed')
   ######################################################
