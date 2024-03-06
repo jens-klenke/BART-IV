@@ -1,6 +1,6 @@
 # bcf_iv <- function(
 # Data 
-dataset <- readRDS(data$path_in[11])
+dataset <- readRDS(data$path_in[21])
 
 y <- dataset$y
 w <- dataset$w
