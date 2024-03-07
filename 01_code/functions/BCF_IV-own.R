@@ -51,6 +51,9 @@ own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 3000, n_sim = 7000,
   bcf_tau_itt <- bcf_itt.tree$tau
   bcf_itt <- colMeans(bcf_tau_itt)
   
+  # posterior splitting probabilities
+  bcf_post_split_probs <- colMeans(bcf_itt.tree$varprb_tau)
+  
   # Get posterior of treatment effects
   bcf_tauhat <- bcf_itt/pic_bcf
   bcf_exp <- as.data.frame(cbind(bcf_tauhat, x[-index,]))
@@ -66,6 +69,9 @@ own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 3000, n_sim = 7000,
   
   s_bcf_tau_itt <- s_bcf_itt.tree$tau
   s_bcf_itt <- colMeans(s_bcf_tau_itt)
+  
+  # posterior splitting probabilities
+  s_bcf_post_split_probs <- colMeans(s_bcf_itt.tree$varprb_tau)
   
   # Get posterior of treatment effects
   s_bcf_tauhat <- s_bcf_itt/pic_bcf
@@ -103,9 +109,7 @@ own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 3000, n_sim = 7000,
                           maxdepth = max_depth,
                           cp = cp,
                           minsplit = minsplit,
-                          cost = scales::rescale(
-                            colMeans(bcf_itt.tree$varprb_tau), 
-                            to = c(1, 0))
+                          cost = (max(bcf_post_split_probs)/bcf_post_split_probs)
                           )
     
     # binary tree for sparse trees
@@ -114,14 +118,9 @@ own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 3000, n_sim = 7000,
                             maxdepth = max_depth,
                             cp = cp,
                             minsplit = minsplit,
-                            cost = scales::rescale(
-                              colMeans(s_bcf_itt.tree$varprb_tau), 
-                              to = c(1, 0))
+                            cost = (max(s_bcf_post_split_probs)/s_bcf_post_split_probs)
                             )
   }
-  
-  
-  
   
   # print('Step 2 completed')
   ######################################################

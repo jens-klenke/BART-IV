@@ -17,6 +17,7 @@ cp = 0.01
 minsplit = 30
 adj_method = "holm"
 seed = 42
+cost = 'both'
 
 x_names <- paste0('x', 1:ncol(x))
     
@@ -57,11 +58,6 @@ x_names <- paste0('x', 1:ncol(x))
   bcf_pic[bcf_pic == 0] <- 1e-2 
   # mean(pic_bcf) / median(pic) == compliance
   
-  ##### sparse BCF -> BCF https://github.com/albicaron/SparseBCF
-  # s_bcf_pic_tress <- quiet(SparseBCF::SparseBCF(w[-index], z[-index], x[-index,], pihat = pihat, 
-  #                                    nsim = n_sim, nburn = n_burn)
-  #               )
-  
   ######################################################
   ####     Continuous and Discrete Outcomes         ####
   ######################################################
@@ -72,7 +68,9 @@ x_names <- paste0('x', 1:ncol(x))
   # is that \mu and ITT ? 
     'bcf - sparse bcf' 
     tictoc::tic()
-    bcf_itt.tree <- quiet(bcf::bcf(y[-index], z[-index], x[-index,], x[-index,], pihat, nburn=n_burn, nsim=n_sim, save_tree_directory = NULL))
+    bcf_itt.tree <- quiet(
+      SparseBCF::SparseBCF(y[-index], z[-index], x[-index,], pihat = pihat,
+                           nsim = n_sim, nburn = n_burn, sparse = F))
     bcf_tau_itt <- bcf_itt.tree$tau
     bcf_itt <- colMeans(bcf_tau_itt)
     tictoc::toc()
@@ -111,23 +109,55 @@ x_names <- paste0('x', 1:ncol(x))
     ####  Step 2: Build a CART on the Unit Level CITT ####
     ######################################################
     'binary decision tree to discover, in an interpretable manner, the drivers of the heterogeneity??'
-    bcf_fit.tree <- rpart(bcf_tauhat ~ .,
-                      data = bcf_exp,
-                      maxdepth = max_depth,
-                      cp=cp,
-                      minsplit=minsplit
-                      )
-    # plot tree
-    rpart.plot::rpart.plot(bcf_fit.tree)
+    if(!cost){
+      bcf_fit.tree <- rpart(bcf_tauhat ~ .,
+                            data = bcf_exp,
+                            maxdepth = max_depth,
+                            cp = cp,
+                            minsplit = minsplit
+                            )
+      # plot tree
+      rpart.plot::rpart.plot(bcf_fit.tree)
     
-    # binary tree for sparse trees 
-    s_bcf_fit.tree <- rpart(s_bcf_tauhat ~ .,
-                          data = s_bcf_exp,
-                          maxdepth = max_depth,
-                          cp=cp,
-                          minsplit=minsplit)
-    # plot tree
-    rpart.plot::rpart.plot(s_bcf_fit.tree)
+      # binary tree for sparse trees 
+      s_bcf_fit.tree <- rpart(s_bcf_tauhat ~ .,
+                              data = s_bcf_exp,
+                              maxdepth = max_depth,
+                              cp = cp,
+                              minsplit = minsplit
+                              )
+      # plot tree
+      rpart.plot::rpart.plot(s_bcf_fit.tree)
+    }
+    
+    # with cost function
+    if(cost){
+      bcf_fit.tree <- rpart(bcf_tauhat ~ .,
+                            data = bcf_exp,
+                            maxdepth = max_depth,
+                            cp = cp,
+                            minsplit = minsplit,
+                            cost = scales::rescale(
+                              colMeans(bcf_itt.tree$varprb_tau), 
+                              to = c(10, 1))
+      )
+      # plot tree
+      rpart.plot::rpart.plot(bcf_fit.tree)
+      
+      # binary tree for sparse trees
+      s_bcf_fit.tree <- rpart(s_bcf_tauhat ~ .,
+                              data = s_bcf_exp,
+                              maxdepth = max_depth,
+                              cp = cp,
+                              minsplit = minsplit,
+                              cost = scales::rescale(
+                                colMeans(s_bcf_itt.tree$varprb_tau), 
+                                to = c(10, 1))
+      )
+      # plot tree
+      rpart.plot::rpart.plot(s_bcf_fit.tree)
+    }
+    
     
     ######################################################
     ####  Step 3: Extract the Causal Rules (Nodes)    ####
