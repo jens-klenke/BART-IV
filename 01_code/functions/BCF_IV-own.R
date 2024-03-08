@@ -109,7 +109,7 @@ own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 3000, n_sim = 7000,
                           maxdepth = max_depth,
                           cp = cp,
                           minsplit = minsplit,
-                          cost = (max(bcf_post_split_probs)/bcf_post_split_probs)
+                          cost = (max(bcf_post_split_probs)/bcf_post_split_probs)*nrow(bcf_exp)
                           )
     
     # binary tree for sparse trees
@@ -118,7 +118,7 @@ own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 3000, n_sim = 7000,
                             maxdepth = max_depth,
                             cp = cp,
                             minsplit = minsplit,
-                            cost = (max(s_bcf_post_split_probs)/s_bcf_post_split_probs)
+                            cost = (max(s_bcf_post_split_probs)/s_bcf_post_split_probs)*nrow(bcf_exp)
                             )
   }
   

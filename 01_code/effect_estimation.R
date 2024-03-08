@@ -8,7 +8,7 @@ invisible(sapply(list.files(here::here('01_code/functions'), full.names = TRUE),
        source))
 
 # parallel plan
-future::plan(multisession, workers = 10)
+future::plan(multisession, workers = 15)
 options(future.globals.maxSize = 2147483648) # 2GB  
 
 # # reading data 
@@ -27,12 +27,12 @@ sim_results <- data %>%
   dplyr::mutate(results = furrr::future_pmap(., wrapper_function, .progress = TRUE))
 tictoc::toc()
 
-tictoc::tic()
-sim_results <- data %>%
-  dplyr::mutate(results = purrr::pmap(., wrapper_function, .progress = TRUE))
-tictoc::toc()
+# tictoc::tic()
+# sim_results <- data %>%
+#   dplyr::mutate(results = purrr::pmap(., wrapper_function, .progress = TRUE))
+# tictoc::toc()
 
-saveRDS(sim_results, here::here('03_sim_results/discrete_covariates_cost_func.rds'))
+saveRDS(sim_results, here::here('03_sim_results/discrete_covariates_cost_func_sqrtn.rds'))
 
 ################################################################################
 #####                          continuous data                              #####
