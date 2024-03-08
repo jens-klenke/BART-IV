@@ -13,6 +13,8 @@ options(future.globals.maxSize = 2147483648) # 2GB
 
 # load raw estimations
 estimation_results_raw <- readRDS(here::here('03_sim_results/discrete_covariates.rds'))
+estimation_results_raw <- readRDS(here::here('03_sim_results/discrete_covariates_cost_func.rds'))
+
 
 ##############################################
 #####              wrangling             #####
@@ -42,9 +44,9 @@ estimation_results <- estimation_results_raw %>%
   dplyr::arrange(ncov, ID) %>%
   dplyr::mutate(subgroup = dplyr::case_when(
     node == 'x1>=0.5 & x2>=0.5' | node == 'x2>=0.5 & x1>=0.5' |
-    node == 'x2> 0.5 & x1> 0.5' | node == 'x1> 0.5 & x2> 0.5' ~ 'negative_effect',
+    node == 'x2> 0.5 & x1> 0.5' | node == 'x1> 0.5 & x2> 0.5' ~ 'negative effect',
     node == 'x2< 0.5 & x1< 0.5' | node == 'x1< 0.5 & x2< 0.5' |
-    node == 'x2<=0.5 & x1<=0.5' | node == 'x1<=0.5 & x2<=0.5' ~ 'positive_effect',
+    node == 'x2<=0.5 & x1<=0.5' | node == 'x1<=0.5 & x2<=0.5' ~ 'positive effect',
     .default = NA)
     )
 
@@ -62,7 +64,7 @@ tibble::tibble(ID = 1:100) %>%
     estimation_results_ncov_10 %>%
       dplyr::select(subgroup, CCACE, result_names, ID), 
     by = 'ID') %>%
-  dplyr::filter(subgroup %in% c('negative_effect', 'positive_effect')) %>%
+  dplyr::filter(subgroup %in% c('negative effect', 'positive effect')) %>%
   ggplot2::ggplot(aes(x = ID, y = CCACE, color = result_names)) +
   ggplot2::geom_point(size = 2, alpha = 0.95) +
   ggplot2::theme_bw() +
@@ -78,7 +80,7 @@ tibble::tibble(ID = 1:100) %>%
     estimation_results_ncov_50 %>%
       dplyr::select(subgroup, CCACE, result_names, ID), 
     by = 'ID') %>%
-  dplyr::filter(subgroup %in% c('negative_effect', 'positive_effect')) %>%
+  dplyr::filter(subgroup %in% c('negative effect', 'positive effect')) %>%
   ggplot2::ggplot(aes(x = ID, y = CCACE, color = result_names)) +
   ggplot2::geom_point(size = 2, alpha = 0.95) +
   ggplot2::theme_bw() +
@@ -94,25 +96,31 @@ tibble::tibble(ID = 1:100) %>%
     estimation_results_ncov_100 %>%
       dplyr::select(subgroup, CCACE, result_names, ID), 
     by = 'ID') %>%
-  dplyr::filter(subgroup %in% c('negative_effect', 'positive_effect')) %>%
+  dplyr::filter(subgroup %in% c('negative effect', 'positive effect')) %>%
   ggplot2::ggplot(aes(x = ID, y = CCACE, color = result_names)) +
   ggplot2::geom_point(size = 2, alpha = 0.95) +
   ggplot2::theme_bw() +
   ggplot2::facet_wrap('subgroup')+
   ggplot2::geom_smooth(method = lm, formula = y ~ 1, se = FALSE)
 
-
+# table
 estimation_results_ncov_10 %>%
-  dplyr::filter(subgroup %in% c('negative_effect', 'positive_effect')) %>%
+  dplyr::filter(subgroup %in% c('negative effect', 'positive effect')) %>%
   dplyr::summarise(n = dplyr::n(), share = dplyr::n()/100, mean = mean(CCACE), sd = sd(CCACE)) %>%
   tidyr::pivot_wider(names_from = result_names, values_from = c(n, share, mean, sd)) %>%
   dplyr::relocate(subgroup, n_bcf_results, share_bcf_results, mean_bcf_results, sd_bcf_results)
 
+try <- estimation_results_ncov_10 %>%
+  dplyr::filter(subgroup %in% c('negative effect', 'positive effect')) %>%
+  dplyr::group_by(result_names, ID) %>%
+  dplyr::count() %>%
+  dplyr::filter(n == 2) %>%
+  dplyr::group_by(result_names) %>%
+  dplyr::summarise(n = dplyr::n())
 
 
 
-
-
+try
 
 
 #### --------------- trash ----------------

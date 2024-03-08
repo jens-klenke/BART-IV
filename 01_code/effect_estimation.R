@@ -17,6 +17,7 @@ data <- tibble::tibble(
   path_in = list.files(
     here::here("00_sim_data/"), recursive = TRUE, full.names = TRUE)
   ) %>%
+  dplyr::filter(!str_detect(path_in, 'cont-cov')) %>%
   dplyr::mutate(ncov = readr::parse_number(stringr::str_extract(path_in, pattern = 'ncovs_[0-9]*')),
                 row_num = paste(dplyr::row_number(), 'of', max(dplyr::row_number())))
 

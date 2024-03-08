@@ -1,0 +1,207 @@
+---
+title: "Discrete BCF vs SBCF with Odd Ratio Cost function"
+author: "Jens and Lennard"
+format: 
+  pdf:
+    documentclass: scrartcl
+    papersize: letter
+    include-in-header:
+      - text: |
+          \usepackage{placeins}
+---
+```{r set-up, include = FALSE}
+knitr::opts_chunk$set(fig.align = 'center', fig.height = 1.75, 
+                      echo = F, eval = T, cache = T)
+
+source(here::here('01_code/packages.R'))
+
+estimation_results_raw <- readRDS(here::here('03_sim_results/discrete_covariates_cost_func.rds'))
+```
+
+
+```{r data wranling, include = FALSE}
+estimation_results <- estimation_results_raw %>%
+  # unnest results
+  tidyr::unnest(results) %>%
+  # # name results 
+  dplyr::mutate(result_names = names(results)) %>%
+  # parse ID 
+  dplyr::mutate(ID = readr::parse_number(str_extract(path_in, "_(?:.(?!_))+$"))) %>%
+  # delselect unimportant variables
+  dplyr::select(-c(row_num, path_in)) %>%
+  #  filter for main results
+  dplyr::filter(result_names %in% c('bcf_results', 's_bcf_results')) %>%
+  # force same datatype
+  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, node = as.character(node)))) %>%
+  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, CCACE = as.double(CCACE)))) %>%
+  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, pvalue = as.double(pvalue)))) %>%
+  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, Weak_IV_test = as.double(Weak_IV_test)))) %>%
+  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, Pi_obs = as.double(Pi_obs)))) %>%
+  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, ITT = as.double(ITT)))) %>%
+  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, Pi_compliers = as.double(Pi_compliers)))) %>%
+  # unnest bcf and bcfs results
+  tidyr::unnest(results) %>%
+  dplyr::arrange(ncov, ID) %>%
+  dplyr::mutate(subgroup = dplyr::case_when(
+    node == 'x1>=0.5 & x2>=0.5' | node == 'x2>=0.5 & x1>=0.5' |
+    node == 'x2> 0.5 & x1> 0.5' | node == 'x1> 0.5 & x2> 0.5' ~ 'negative effect',
+    node == 'x2< 0.5 & x1< 0.5' | node == 'x1< 0.5 & x2< 0.5' |
+    node == 'x2<=0.5 & x1<=0.5' | node == 'x1<=0.5 & x2<=0.5' ~ 'positive effect',
+    .default = NA)
+    )
+
+estimation_results_ncov_10 <- estimation_results %>%
+  dplyr::filter(ncov == 10) %>%
+  dplyr::group_by(result_names, subgroup)
+
+ncov_10_both_deteced <- estimation_results_ncov_10 %>%
+  dplyr::filter(subgroup %in% c('negative effect', 'positive effect')) %>%
+  dplyr::group_by(result_names, ID) %>%
+  dplyr::count() %>%
+  dplyr::filter(n == 2) %>%
+  dplyr::group_by(result_names) %>%
+  dplyr::summarise(n = dplyr::n())
+
+estimation_results_ncov_50 <- estimation_results %>%
+  dplyr::filter(ncov == 50) %>%
+  dplyr::group_by(result_names, subgroup)
+
+ncov_50_both_deteced <- estimation_results_ncov_50 %>%
+  dplyr::filter(subgroup %in% c('negative effect', 'positive effect')) %>%
+  dplyr::group_by(result_names, ID) %>%
+  dplyr::count() %>%
+  dplyr::filter(n == 2) %>%
+  dplyr::group_by(result_names) %>%
+  dplyr::summarise(n = dplyr::n())
+
+estimation_results_ncov_100 <- estimation_results %>%
+  dplyr::filter(ncov == 100) %>%
+  dplyr::group_by(result_names, subgroup)
+
+ncov_100_both_deteced <- estimation_results_ncov_100 %>%
+  dplyr::filter(subgroup %in% c('negative effect', 'positive effect')) %>%
+  dplyr::group_by(result_names, ID) %>%
+  dplyr::count() %>%
+  dplyr::filter(n == 2) %>%
+  dplyr::group_by(result_names) %>%
+  dplyr::summarise(n = dplyr::n())
+
+```
+
+# Results with cost function
+
+The cost for a variable selected in the binary tree is defined as: 
+
+$$cost_i = \dfrac{\max \{p\}}{p_i}$$
+
+
+## 10 Covaraites 
+
+```{r table_10, message = FALSE, warning = FALSE}
+estimation_results_ncov_10 %>%
+  dplyr::filter(subgroup %in% c('negative effect', 'positive effect')) %>%
+  dplyr::summarise(n = dplyr::n(), share = dplyr::n()/100, mean = mean(CCACE), sd = sd(CCACE)) %>%
+  tidyr::pivot_wider(names_from = result_names, values_from = c(n, share, mean, sd)) %>%
+  dplyr::relocate(subgroup, n_bcf_results, share_bcf_results, mean_bcf_results, sd_bcf_results) %>%
+  knitr::kable(booktabs = TRUE, linesep = "", format = 'latex',
+              caption= 'Results with $10$ Covariates.', 
+              digits = 3, 
+              col.names = c('subgroup', '$N$' ,'$share$', '$\\bar{CACCE}$', '$\\sigma_{CACCE}$',
+                             '$N$' ,'$share$', '$\\bar{CACCE}$', '$\\sigma_{CACCE}$'),  
+              escape = FALSE, align = 'lrrrrrrrr') %>% 
+  kable_styling(latex_options = c("striped", "hold_position")) %>%
+  kableExtra::add_header_above(c('', 'BCF ' = 4, 'S BCF' = 4))
+```
+
+The $BCF$ algorithm detected both subgroups in `r ncov_10_both_deteced %>% dplyr::filter(result_names == 'bcf_results') %>% dplyr::pull(n)` data sets, while the $SBCF$  detected both subgroups in `r ncov_10_both_deteced %>% dplyr::filter(result_names == 's_bcf_results') %>% dplyr::pull(n)` data sets.
+
+
+```{r graph_10, fig.cap = '10 Covariates'}
+tibble::tibble(ID = 1:100) %>%
+  dplyr::left_join(
+    estimation_results_ncov_10 %>%
+      dplyr::select(subgroup, CCACE, result_names, ID), 
+    by = 'ID') %>%
+  dplyr::filter(subgroup %in% c('negative effect', 'positive effect')) %>%
+  ggplot2::ggplot(aes(x = ID, y = CCACE, color = result_names)) +
+  ggplot2::geom_point(size = 1.5, alpha = 0.95) +
+  ggplot2::theme_bw() +
+  ggplot2::facet_wrap('subgroup')+
+  ggplot2::geom_smooth(method = lm, formula = y ~ 1, se = FALSE)
+
+```
+
+\FloatBarrier
+
+# 50 Covaraites 
+
+```{r table_50, message = FALSE, warning = FALSE}
+estimation_results_ncov_50 %>%
+  dplyr::filter(subgroup %in% c('negative effect', 'positive effect')) %>%
+  dplyr::summarise(n = dplyr::n(), share = dplyr::n()/100, mean = mean(CCACE), sd = sd(CCACE)) %>%
+  tidyr::pivot_wider(names_from = result_names, values_from = c(n, share, mean, sd)) %>%
+  dplyr::relocate(subgroup, n_bcf_results, share_bcf_results, mean_bcf_results, sd_bcf_results) %>%
+  knitr::kable(booktabs = TRUE, linesep = "", format = 'latex',
+              caption= 'Results with $50$ Covariates.', 
+              digits = 3, 
+              col.names = c('subgroup', '$N$' ,'$share$', '$\\bar{CACCE}$', '$\\sigma_{CACCE}$',
+                             '$N$' ,'$share$', '$\\bar{CACCE}$', '$\\sigma_{CACCE}$'),  
+              escape = FALSE, align = 'lrrrrrrrr') %>% 
+  kable_styling(latex_options = c("striped", "hold_position")) %>%
+  kableExtra::add_header_above(c('', 'BCF ' = 4, 'S BCF' = 4))
+```
+
+The $BCF$ algorithm detected both subgroups in `r ncov_50_both_deteced %>% dplyr::filter(result_names == 'bcf_results') %>% dplyr::pull(n)` data sets, while the $SBCF$  detected both subgroups in `r ncov_50_both_deteced %>% dplyr::filter(result_names == 's_bcf_results') %>% dplyr::pull(n)` data sets.
+
+
+```{r graph_50, fig.cap = '50 Covariates'}
+tibble::tibble(ID = 1:100) %>%
+  dplyr::left_join(
+    estimation_results_ncov_50 %>%
+      dplyr::select(subgroup, CCACE, result_names, ID), 
+    by = 'ID') %>%
+  dplyr::filter(subgroup %in% c('negative effect', 'positive effect')) %>%
+  ggplot2::ggplot(aes(x = ID, y = CCACE, color = result_names)) +
+  ggplot2::geom_point(size = 1.5, alpha = 0.95) +
+  ggplot2::theme_bw() +
+  ggplot2::facet_wrap('subgroup')+
+  ggplot2::geom_smooth(method = lm, formula = y ~ 1, se = FALSE)
+```
+
+\FloatBarrier
+
+# 100 Covaraites 
+
+\FloatBarrier
+
+```{r table_100, message = FALSE, warning = FALSE}
+estimation_results_ncov_100 %>%
+  dplyr::filter(subgroup %in% c('negative effect', 'positive effect')) %>%
+  dplyr::summarise(n = dplyr::n(), share = dplyr::n()/100, mean = mean(CCACE), sd = sd(CCACE)) %>%
+  tidyr::pivot_wider(names_from = result_names, values_from = c(n, share, mean, sd)) %>%
+  dplyr::relocate(subgroup, n_bcf_results, share_bcf_results, mean_bcf_results, sd_bcf_results) %>%
+  knitr::kable(booktabs = TRUE, linesep = "", format = 'latex',
+              caption= 'Results with $100$ Covariates.', 
+              digits = 3, 
+              col.names = c('subgroup', '$N$' ,'$share$', '$\\bar{CACCE}$', '$\\sigma_{CACCE}$',
+                             '$N$' ,'$share$', '$\\bar{CACCE}$', '$\\sigma_{CACCE}$'),  
+              escape = FALSE, align = 'lrrrrrrrr') %>% 
+  kable_styling(latex_options = c("striped", "hold_position")) %>%
+  kableExtra::add_header_above(c('', 'BCF ' = 4, 'S BCF' = 4))
+```
+
+The $BCF$ algorithm detected both subgroups in `r ncov_100_both_deteced %>% dplyr::filter(result_names == 'bcf_results') %>% dplyr::pull(n)` data sets, while the $SBCF$  detected both subgroups in `r ncov_100_both_deteced %>% dplyr::filter(result_names == 's_bcf_results') %>% dplyr::pull(n)` data sets.
+
+```{r graph_100, fig.cap = '100 Covariates'}
+tibble::tibble(ID = 1:100) %>%
+  dplyr::left_join(
+    estimation_results_ncov_100 %>%
+      dplyr::select(subgroup, CCACE, result_names, ID), 
+    by = 'ID') %>%
+  dplyr::filter(subgroup %in% c('negative effect', 'positive effect')) %>%
+  ggplot2::ggplot(aes(x = ID, y = CCACE, color = result_names)) +
+  ggplot2::geom_point(size = 1.5, alpha = 0.95) +
+  ggplot2::theme_bw() +
+  ggplot2::facet_wrap('subgroup')+
+  ggplot2::geom_smooth(method = lm, formula = y ~ 1, se = FALSE)
+```
