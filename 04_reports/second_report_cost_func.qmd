@@ -235,7 +235,7 @@ dplyr::bind_rows(
                         escape = FALSE) %>% 
   kableExtra::pack_rows("Odds Ratio times sqrt N", 3, 4,
                         escape = FALSE)  %>%
-  kableExtra::pack_rows("$Odds Ratio times N$", 5, 6,
+  kableExtra::pack_rows("Odds Ratio times N", 5, 6,
                         escape = FALSE) 
 ```
 
@@ -310,18 +310,4 @@ dplyr::bind_rows(
   kableExtra::pack_rows("Odds Ratio times N", 5, 6,
                         escape = FALSE) 
 ```
-
-
-
-
-
-
-\FloatBarrier
-\newpage
-
-# Results with odd-ratio-$\sqrt{n}-$cost function
-
-The cost for a variable selected in the binary tree is defined as: 
-
-$$cost_i = \dfrac{\max \{p\}}{p_i} \ \sqrt{n}$$
 
