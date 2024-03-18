@@ -13,6 +13,7 @@ source(here::here('01_code/packages.R'))
 # @param null effect size for null condition (default: 0)
 # @param seq effect size (default: 2) # why ? 
 # @param compliance compliance rate (default: 0.75) # why ? 
+# @param base_line_effect 
 #
 # @return
 # A list containing the different variables in the generated dataset (y,z,w,X).
@@ -22,7 +23,7 @@ source(here::here('01_code/packages.R'))
 #
 # @export
 generate_dataset <- function(n = 1000, p = 100, rho = 0, null = 0, effect_size = 2,
-                             compliance = 0.75, covariates = 'cont-cov') {
+                             compliance = 0.75, covariates = 'cont-cov', base_line_effect = TRUE) {
   
   if(!covariates == 'cont-cov') {
     # Generate Variables
