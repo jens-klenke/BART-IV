@@ -15,7 +15,7 @@ tictoc::tic()
 for (i in seq_along(p)) {
   p_i <- p[i]
   for (j in 1:100) {
-    generate_dataset(n = 1000, p = p_i, covariates = covariates) %>%
+    generate_dataset(n = 1000, p = p_i, covariates = covariates, base_line_effect = T) %>%
     saveRDS(file =here::here(
       paste0('00_sim_data/ncovs_', p_i, '_', covariates,
              '/dataset_ncovs', p_i, '_', j)

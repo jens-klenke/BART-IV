@@ -1,5 +1,4 @@
 ############## Packages ################
-source(here::here('01_code/packages.R'))
 # @title
 # Generate Dataset for BCF-IV Example
 #
@@ -13,7 +12,8 @@ source(here::here('01_code/packages.R'))
 # @param null effect size for null condition (default: 0)
 # @param seq effect size (default: 2) # why ? 
 # @param compliance compliance rate (default: 0.75) # why ? 
-# @param base_line_effect 
+# @param base_line_effect; implementation of the DGP by Caron et al. (2021)
+# @param uncorrelated; implementation of the DGP by Caron et al. (2021) 
 #
 # @return
 # A list containing the different variables in the generated dataset (y,z,w,X).
@@ -22,42 +22,72 @@ source(here::here('01_code/packages.R'))
 # dataset <- generate_dataset()
 #
 # @export
-generate_dataset <- function(n = 1000, p = 100, rho = 0, null = 0, effect_size = 2,
-                             compliance = 0.75, covariates = 'cont-cov', base_line_effect = TRUE) {
+generate_dataset <- function(n = 1000, p = 100, rho = 0, null = 0, 
+                             effect_size = 2, compliance = 0.75, 
+                             covariates = 'cont-cov', base_line_effect = TRUE, 
+                             share_d = 0.5, uncorrelated = T) {
   
-  if(!covariates == 'cont-cov') {
-    # Generate Variables
-    mu <- rep(0, p)
-    Sigma <- matrix(rho, nrow = p, ncol = p) + diag(p) * (1 - rho)
-    rawvars <- mvrnorm(n = n, mu = mu, Sigma = Sigma)
-    pvars <- pnorm(rawvars)
-    binomvars <- qbinom(pvars, 1, 0.5) 
-    X <- binomvars
+  # number of discrete variables 
+  n_d <- floor(P*share_d)
+  
+  # 
+  if(!base_line_effect){
+    # descrete case
+    if(!covariates == 'cont-cov') {
+      # Generate Variables
+      mu <- rep(0, p)
+      Sigma <- matrix(rho, nrow = p, ncol = p) + diag(p) * (1 - rho)
+      rawvars <- mvrnorm(n = n, mu = mu, Sigma = Sigma)
+      pvars <- pnorm(rawvars)
+      binomvars <- qbinom(pvars, 1, 0.5) 
+      X <- binomvars
+    }
+    
+    # continuous case
+    if(covariates == 'cont-cov') {
+      # Generate Variables
+      mu <- rep(0, p)
+      Sigma <- matrix(rho, nrow = p, ncol = p) + diag(p) * (1 - rho)
+      rawvars <- mvrnorm(n = n, mu = mu, Sigma = Sigma)
+      pvars <- pnorm(rawvars)
+      binomvars <- qbinom(pvars, 1, 0.5) 
+      X <- cbind(binomvars[, 1:2], rawvars[, -c(1, 2)])
+      }
   }
   
-  if(covariates == 'cont-cov') {
-    # Generate Variables
-    mu <- rep(0, p)
-    Sigma <- matrix(rho, nrow = p, ncol = p) + diag(p) * (1 - rho)
-    rawvars <- mvrnorm(n = n, mu = mu, Sigma = Sigma)
-    pvars <- pnorm(rawvars)
-    binomvars <- qbinom(pvars, 1, 0.5) 
-    X <- cbind(binomvars[, 1:2], rawvars[, -c(1, 2)])
+  if(base_line_effect){
+    X <- get_features(N=n, P=p, n_d = n_d, uncorrelated = uncorrelated)
   }
   
   
   # x1 and x2 needed for heterogeneous effects
   x1 <- X[, 1]
   x2 <- X[, 2]
-
+  
+  
   # Generate unit level observed exposure
   w1 <- rbinom(n, 1, compliance)
   w0 <- numeric(n)
   
-  # Generate unit level potential outcome
-  y0 <- rnorm(n)
-  y1 <- numeric(n)
+  if(!base_line_effect){
+    # Generate unit level potential outcome
+    y0 <- rnorm(n)
+    y1 <- numeric(n)
+  }
   
+  if(base_line_effect){
+    mu <-
+      # floor(p/2) -> Number of discrete variables
+      3 + 1.5*sin(pi*X[, n_d + 1]) + 0.5*(X[, n_d + 2] - 0.5)^2 + 
+      1.5*(2-abs(X[, n_d + 3])) +
+      # first and second discrete variable
+      1.5*X[, n_d + 4]*(0.5*(X[, 1] + 1)+ 0.5*(X[, 2] + 1))
+    
+    # Generate unit level potential outcome
+    y0 <- mu + rnorm(n)
+    y1 <- numeric(n)
+  }
+
   # Generate Heterogeneity - only depends on x1 and x2  
   y1[x1 == 0 & x2 == 0] <- y0[x1 == 0 & x2 == 0] + w1[x1 == 0 & x2 == 0] * effect_size
   y1[x1 == 0 & x2 == 1] <- y0[x1 == 0 & x2 == 1] + w1[x1 == 0 & x2 == 1] * null
