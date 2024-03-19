@@ -28,7 +28,7 @@ generate_dataset <- function(n = 1000, p = 100, rho = 0, null = 0,
                              share_d = 0.5, uncorrelated = T) {
   
   # number of discrete variables 
-  n_d <- floor(P*share_d)
+  n_d <- floor(p*share_d)
   
   # 
   if(!base_line_effect){

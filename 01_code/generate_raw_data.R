@@ -28,4 +28,4 @@ for (i in seq_along(p)) {
 
 tictoc::toc()
 
-dataset <- generate_dataset(n = 100, p = 100, covariates = 'cont-cov')
+dataset <- generate_dataset(n = 10, p = 10, base_line_effect = T)
