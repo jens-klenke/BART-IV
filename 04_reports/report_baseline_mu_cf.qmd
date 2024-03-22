@@ -66,42 +66,7 @@ estimation_results_ncov_100 <- estimation_results %>%
   dplyr::group_by(result_names, subgroup)
 
 
-## odda-ratio sqrt n
-estimation_results_sqrtn <- estimation_results_raw_sqrtn %>%
-  # unnest results
-  tidyr::unnest(results) %>%
-  # # name results 
-  dplyr::mutate(result_names = names(results)) %>%
-  # parse ID 
-  dplyr::mutate(ID = readr::parse_number(str_extract(path_in, "_(?:.(?!_))+$"))) %>%
-  # delselect unimportant variables
-  dplyr::select(-c(row_num, path_in)) %>%
-  #  filter for main results
-  dplyr::filter(result_names %in% c('bcf_results', 's_bcf_results')) %>%
-  # force same datatype
-  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, node = as.character(node)))) %>%
-  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, CCACE = as.double(CCACE)))) %>%
-  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, pvalue = as.double(pvalue)))) %>%
-  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, Weak_IV_test = as.double(Weak_IV_test)))) %>%
-  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, Pi_obs = as.double(Pi_obs)))) %>%
-  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, ITT = as.double(ITT)))) %>%
-  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, Pi_compliers = as.double(Pi_compliers)))) %>%
-  # unnest bcf and bcfs results
-  tidyr::unnest(results) %>%
-  dplyr::arrange(ncov, ID) %>%
-  dplyr::mutate(subgroup = dplyr::case_when(
-    node == 'x1>=0.5 & x2>=0.5' | node == 'x2>=0.5 & x1>=0.5' |
-    node == 'x2> 0.5 & x1> 0.5' | node == 'x1> 0.5 & x2> 0.5' ~ 'negative effect',
-    node == 'x2< 0.5 & x1< 0.5' | node == 'x1< 0.5 & x2< 0.5' |
-    node == 'x2<=0.5 & x1<=0.5' | node == 'x1<=0.5 & x2<=0.5' ~ 'positive effect',
-    .default = NA)
-    )
-
-estimation_results_ncov_10_sqrtn <- estimation_results_sqrtn %>%
-  dplyr::filter(ncov == 10) %>%
-  dplyr::group_by(result_names, subgroup)
-
-ncov_10_both_deteced_sqrtn <- estimation_results_ncov_10_sqrtn %>%
+ncov_10_both_detected <- estimation_results_ncov_10 %>%
   dplyr::filter(subgroup %in% c('negative effect', 'positive effect')) %>%
   dplyr::group_by(result_names, ID) %>%
   dplyr::count() %>%
@@ -109,186 +74,23 @@ ncov_10_both_deteced_sqrtn <- estimation_results_ncov_10_sqrtn %>%
   dplyr::group_by(result_names) %>%
   dplyr::summarise(n = dplyr::n())
 
-estimation_results_ncov_50_sqrtn <- estimation_results_sqrtn %>%
-  dplyr::filter(ncov == 50) %>%
-  dplyr::group_by(result_names, subgroup)
-
-ncov_50_both_deteced_sqrtn <- estimation_results_ncov_50_sqrtn %>%
-  dplyr::filter(subgroup %in% c('negative effect', 'positive effect')) %>%
-  dplyr::group_by(result_names, ID) %>%
-  dplyr::count() %>%
-  dplyr::filter(n == 2) %>%
-  dplyr::group_by(result_names) %>%
-  dplyr::summarise(n = dplyr::n())
-
-estimation_results_ncov_100_sqrtn <- estimation_results_sqrtn %>%
-  dplyr::filter(ncov == 100) %>%
-  dplyr::group_by(result_names, subgroup)
-
-ncov_100_both_deteced_sqrtn <- estimation_results_ncov_100_sqrtn %>%
-  dplyr::filter(subgroup %in% c('negative effect', 'positive effect')) %>%
-  dplyr::group_by(result_names, ID) %>%
-  dplyr::count() %>%
-  dplyr::filter(n == 2) %>%
-  dplyr::group_by(result_names) %>%
-  dplyr::summarise(n = dplyr::n())
-
-# odds ratio * n 
-
-estimation_results_n <- estimation_results_raw_n %>%
-  # unnest results
-  tidyr::unnest(results) %>%
-  # # name results 
-  dplyr::mutate(result_names = names(results)) %>%
-  # parse ID 
-  dplyr::mutate(ID = readr::parse_number(str_extract(path_in, "_(?:.(?!_))+$"))) %>%
-  # delselect unimportant variables
-  dplyr::select(-c(row_num, path_in)) %>%
-  #  filter for main results
-  dplyr::filter(result_names %in% c('bcf_results', 's_bcf_results')) %>%
-  # force same datatype
-  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, node = as.character(node)))) %>%
-  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, CCACE = as.double(CCACE)))) %>%
-  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, pvalue = as.double(pvalue)))) %>%
-  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, Weak_IV_test = as.double(Weak_IV_test)))) %>%
-  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, Pi_obs = as.double(Pi_obs)))) %>%
-  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, ITT = as.double(ITT)))) %>%
-  dplyr::mutate(results = purrr::map(results, ~ dplyr::mutate(.x, Pi_compliers = as.double(Pi_compliers)))) %>%
-  # unnest bcf and bcfs results
-  tidyr::unnest(results) %>%
-  dplyr::arrange(ncov, ID) %>%
-  dplyr::mutate(subgroup = dplyr::case_when(
-    node == 'x1>=0.5 & x2>=0.5' | node == 'x2>=0.5 & x1>=0.5' |
-    node == 'x2> 0.5 & x1> 0.5' | node == 'x1> 0.5 & x2> 0.5' ~ 'negative effect',
-    node == 'x2< 0.5 & x1< 0.5' | node == 'x1< 0.5 & x2< 0.5' |
-    node == 'x2<=0.5 & x1<=0.5' | node == 'x1<=0.5 & x2<=0.5' ~ 'positive effect',
-    .default = NA)
-    )
-
-estimation_results_ncov_10_n <- estimation_results_n %>%
-  dplyr::filter(ncov == 10) %>%
-  dplyr::group_by(result_names, subgroup)
-
-ncov_10_both_deteced_n <- estimation_results_ncov_10_n %>%
-  dplyr::filter(subgroup %in% c('negative effect', 'positive effect')) %>%
-  dplyr::group_by(result_names, ID) %>%
-  dplyr::count() %>%
-  dplyr::filter(n == 2) %>%
-  dplyr::group_by(result_names) %>%
-  dplyr::summarise(n = dplyr::n())
-
-estimation_results_ncov_50_n <- estimation_results_n %>%
-  dplyr::filter(ncov == 50) %>%
-  dplyr::group_by(result_names, subgroup)
-
-ncov_50_both_deteced_n <- estimation_results_ncov_50_n %>%
-  dplyr::filter(subgroup %in% c('negative effect', 'positive effect')) %>%
-  dplyr::group_by(result_names, ID) %>%
-  dplyr::count() %>%
-  dplyr::filter(n == 2) %>%
-  dplyr::group_by(result_names) %>%
-  dplyr::summarise(n = dplyr::n())
-
-estimation_results_ncov_100_n <- estimation_results_n %>%
-  dplyr::filter(ncov == 100) %>%
-  dplyr::group_by(result_names, subgroup)
-
-ncov_100_both_deteced_n <- estimation_results_ncov_100_n %>%
-  dplyr::filter(subgroup %in% c('negative effect', 'positive effect')) %>%
-  dplyr::group_by(result_names, ID) %>%
-  dplyr::count() %>%
-  dplyr::filter(n == 2) %>%
-  dplyr::group_by(result_names) %>%
-  dplyr::summarise(n = dplyr::n())
 ```
 
-# Results for $10$ Covaraites 
+# Results 
 
-```{r table_10, message = FALSE, warning = FALSE}
+```{r table, message = FALSE, warning = FALSE}
 dplyr::bind_rows(
-  # odds ratio 
+  # N = 10 
   estimation_results_ncov_10 %>%
     analyse_df(),
-  # odds ratio * sqrt(n)
-  estimation_results_ncov_10_sqrtn %>%
-    analyse_df(),
-  # odds ratio * n
-  estimation_results_ncov_10_n %>%
-    analyse_df()) %>%
-  knitr::kable(booktabs = TRUE, linesep = "", format = 'latex',
-              caption= 'Results with $10$ Covariates.', 
-              digits = 3, 
-              col.names = 
-                c(' ',
-                  '$N$' ,'$share$', '$\\bar{CACCE}$', 
-                  '$\\sigma_{CACCE}$', 'both',
-                  '$N$' ,'$share$', '$\\bar{CACCE}$', 
-                  '$\\sigma_{CACCE}$', 'both'),  
-              escape = FALSE, align = 'lrrrrrrrrrr') %>% 
-  kable_styling(latex_options = c("striped", "hold_position")) %>%
-  kableExtra::add_header_above(c('', 'BCF ' = 5, 'S BCF' = 5)) %>%
-  kableExtra::pack_rows("Odds Ratio", 1, 2, 
-                        escape = FALSE) %>% 
-  kableExtra::pack_rows("Odds Ratio times sqrt N", 3, 4,
-                        escape = FALSE)  %>%
-  kableExtra::pack_rows("Odds Ratio times N", 5, 6,
-                        escape = FALSE) 
-```
-
-\FloatBarrier
-
-# 50 Covaraites 
-
-```{r table_50, message = FALSE, warning = FALSE}
-dplyr::bind_rows(
-  # odds ratio 
+  # N = 50
   estimation_results_ncov_50 %>%
     analyse_df(),
-  # odds ratio * sqrt(n)
-  estimation_results_ncov_50_sqrtn %>%
-    analyse_df(),
-  # odds ratio * n
-  estimation_results_ncov_50_n %>%
-    analyse_df()) %>%
-  knitr::kable(booktabs = TRUE, linesep = "", format = 'latex',
-              caption= 'Results with $50$ Covariates.', 
-              digits = 3, 
-              col.names = 
-                c(' ',
-                  '$N$' ,'$share$', '$\\bar{CACCE}$', 
-                  '$\\sigma_{CACCE}$', 'both',
-                  '$N$' ,'$share$', '$\\bar{CACCE}$', 
-                  '$\\sigma_{CACCE}$', 'both'),  
-              escape = FALSE, align = 'lrrrrrrrrrr') %>% 
-  kable_styling(latex_options = c("striped", "hold_position")) %>%
-  kableExtra::add_header_above(c('', 'BCF ' = 5, 'S BCF' = 5)) %>%
-  kableExtra::pack_rows("Odds Ratio", 1, 2, 
-                        escape = FALSE) %>% 
-  kableExtra::pack_rows("Odds Ratio times sqrt N", 3, 4,
-                        escape = FALSE)  %>%
-  kableExtra::pack_rows("Odds Ratio times N", 5, 6,
-                        escape = FALSE) 
-```
-
-\FloatBarrier
-
-# 100 Covaraites 
-
-\FloatBarrier
-
-```{r table_100, message = FALSE, warning = FALSE}
-dplyr::bind_rows(
-  # odds ratio 
+  # N = 100 
   estimation_results_ncov_100 %>%
-    analyse_df(),
-  # odds ratio * sqrt(n)
-  estimation_results_ncov_100_sqrtn %>%
-    analyse_df(),
-  # odds ratio * n
-  estimation_results_ncov_100_n %>%
     analyse_df()) %>%
   knitr::kable(booktabs = TRUE, linesep = "", format = 'latex',
-              caption= 'Results with $100$ Covariates.', 
+              caption= 'Results.', 
               digits = 3, 
               col.names = 
                 c(' ',
@@ -299,11 +101,12 @@ dplyr::bind_rows(
               escape = FALSE, align = 'lrrrrrrrrrr') %>% 
   kable_styling(latex_options = c("striped", "hold_position")) %>%
   kableExtra::add_header_above(c('', 'BCF ' = 5, 'S BCF' = 5)) %>%
-  kableExtra::pack_rows("Odds Ratio", 1, 2, 
+  kableExtra::pack_rows("P = 10", 1, 2, 
                         escape = FALSE) %>% 
-  kableExtra::pack_rows("Odds Ratio times sqrt N", 3, 4,
+  kableExtra::pack_rows("P = 50", 3, 4,
                         escape = FALSE)  %>%
-  kableExtra::pack_rows("Odds Ratio times N", 5, 6,
+  kableExtra::pack_rows("P = 100", 5, 6,
                         escape = FALSE) 
 ```
+
 
