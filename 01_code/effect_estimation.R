@@ -8,7 +8,7 @@ invisible(sapply(list.files(here::here('01_code/functions'), full.names = TRUE),
        source))
 
 # parallel plan
-future::plan(multisession, workers = 20)
+future::plan(multisession, workers = 10)
 options(future.globals.maxSize = 2147483648) # 2GB  
 
 # # reading data 
@@ -89,8 +89,11 @@ sim_results <- data %>%
   dplyr::mutate(results = furrr::future_pmap(., wrapper_function, .progress = TRUE))
 tictoc::toc()
 
-
-
+################################################################################
+#####                                 save                                #####
+################################################################################
+saveRDS(sim_results, here::here('03_sim_results/baseline_mu.rds'))
+saveRDS(sim_results, 'C:/Users/jens.klenke/Dropbox/jens/sim_data/baseline_mu.rds')
 
 
 
