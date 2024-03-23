@@ -1,3 +1,9 @@
+# bartMan
+# https://github.com/AlanInglis/bartMan?tab=readme-ov-file
+
+# Visualize BART models and get their decision rules, variable importances etc. 
+
+
 # load packages 
 ############## Packages ################
 source(here::here('01_code/packages.R'))
@@ -149,9 +155,9 @@ p.score <- glm(z ~ x[-index,],
 pihat <- predict(p.score, as.data.frame(x[-index,]))
 
 # Perform the Bayesian Causal Forest  to calculate the Proportion of Compliers (pic)
-pic_bcf_tree <- quiet(bartCause::bartc(w[-index], z[-index], x[-index,],
-                                       n.samples = n_sim, n.burn = n_burn, 
-                                       n.chains = 2L))
+pic_bcf_tree <- SimDesign::quiet(bartCause::bartc(w[-index], z[-index], x[-index,],
+                                                  n.samples = n_sim, n.burn = n_burn, 
+                                                  n.chains = 2L))
 tau_bcf_pic <- bartCause::extract(pic_bcf_tree, type = "ite")
 pic_bcf <- apply(tau_bcf_pic, 2, mean)
 # workaround! 
@@ -181,9 +187,14 @@ names(bcf_exp)[2:length(bcf_exp)] <- names(inference)[-(1:3)]
 ## SBART
 s_bcf_itt.tree <- SparseBCF::SparseBCF(y[-index], z[-index], x[-index,], 
                                        pihat = pihat,
-                       nsim = n_sim, nburn = n_burn,
-                       sparse=T
-                       )
+                                       nsim = n_sim, nburn = n_burn,
+                                       sparse=T,
+                                       OOB=T,
+                                       x_pred_mu = x[-index,],
+                                       pi_pred=pihat,
+                                       x_pred_tau = x[-index,],
+                                       save_trees_mu_dir = paste(gewtd(), "/01_code/trees/mu_trees.txt", sep="")
+)
 
 
 
@@ -223,6 +234,7 @@ plot(post_split_probs)
 var_costs <- scales::rescale(post_split_probs , to=c(10, 1))
 # default cost value is 1 in rpart
 # scaling between 10 and 1 is chosen arbitrary here, guidance?
+var_costs2 <- max(post_split_probs)/post_split_probs
 
 # binary tree for sparse trees
 s_bcf_fit.tree <- rpart(s_bcf_tauhat ~ .,
@@ -231,11 +243,29 @@ s_bcf_fit.tree <- rpart(s_bcf_tauhat ~ .,
                         maxdepth = max_depth,
                         cp=cp,
                         minsplit=minsplit,
-                        cost=var_costs)
+                        cost=var_costs2)
 rpart.plot(s_bcf_fit.tree)
 
+#### visualization with bartMan ####
+
+set.seed(99)
+dbartModel <- dbarts::bart(s_bcf_exp[,-1],
+                           s_bcf_tauhat,
+                           ntree = 50,
+                           keeptrees = TRUE,
+                           nskip = 100,
+                           ndpost = 1000
+)
+
+fData <- s_bcf_exp[,-1]
+fData$s_bcf_tauhat <- s_bcf_tauhat
+dbT <- bartMan::extractTreeData(model = dbartModel, data = fData)
+dbT$structure
+bartMan::treeBarPlot(treeData = dbT, topTrees = 10, iter = 100, treeNo = NULL)
 
 
-
-
-
+dbT$structure %>% 
+  dplyr::select(var) %>%
+  dplyr::group_by(var)%>%
+  dplyr::count(sort=TRUE)%>%
+  print(n=100)
