@@ -78,7 +78,7 @@ ncov_10_both_detected <- estimation_results_ncov_10 %>%
 
 # Results 
 
-```{r table, message = FALSE, warning = FALSE}
+```{r table, message = FALSE, warning = FALSE, eval = FALSE}
 dplyr::bind_rows(
   # N = 10 
   estimation_results_ncov_10 %>%
