@@ -147,7 +147,7 @@ own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 3000, n_sim = 7000,
     'bcf_tauhat' = bcf_tauhat,
     's_bcf_tauhat' = s_bcf_tauhat,
     'bcf_exp' = bcf_exp,
-    's_bcf_exp' = s_bcf_exp,
+    's_bcf_exp' = s_bcf_exp
     )
   )
 }
