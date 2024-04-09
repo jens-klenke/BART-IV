@@ -13,7 +13,6 @@ invisible(sapply(list.files(here::here('01_code/functions'), full.names = TRUE),
 data <- readRDS(url('https://uni-duisburg-essen.sciebo.de/s/Rt7sNPFwaVw1lr3/download'))
 
 df <- data %>% 
-  dplyr::slice_head(n = 1) %>%
   tidyr::unnest(results) %>%
   # # name results 
   dplyr::mutate(result_names = names(results)) %>%
@@ -43,30 +42,24 @@ df_1 <- df %>%
     result_names == 's_bcf_exp' ~ s_bcf_tauhat,
   )) %>%
   # group by method and dataset
-  dplyr::group_by(result_names, subgroups, ID) %>%
+  dplyr::group_by(result_names, subgroups, ID, ncov) %>%
   dplyr::summarise(mean = mean(tauhat), sd = sd(tauhat),
                    median = median(tauhat), min = min(tauhat),
                    max = max(tauhat))
 
-df_1 
+df_1 %>%
+  dplyr::filter(result_names == 'bcf_exp') %>%
+  ggplot2::ggplot(aes(x = median)) +
+  ggplot2::geom_density() +
+  ggplot2::facet_grid(ncov ~ subgroups) +
+  ggplot2::theme_bw()
 
 
+df_1 %>%
+  dplyr::filter(result_names == 's_bcf_exp') %>%
+  ggplot2::ggplot(aes(x = median)) +
+  ggplot2::geom_density() +
+  ggplot2::facet_grid(ncov ~ subgroups) +
+  ggplot2::theme_bw()
 
-
-  
-  
-
-# mean of y
-df %>%
-  dplyr::summarise(y_bar = mean(y), y_sd = sd(y))
-
-df %>%
-  dplyr::mutate(subgroups = dplyr::case_when(
-    x1 == 0 & x2 == 0 ~ 'positive_effect',
-    x1 == 1 & x2 == 1 ~ 'negative_effect',
-    .default = NA
-  )) %>%
-  dplyr::filter(!is.na(subgroups)) %>%
-  dplyr::group_by(subgroups) %>%
-  dplyr::summarise(y_bar = mean(y), y_sd = sd(y))
 
