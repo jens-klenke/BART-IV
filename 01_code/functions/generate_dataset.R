@@ -76,6 +76,8 @@ generate_dataset <- function(n = 1000, p = 100, rho = 0, null = 0,
   }
   
   if(base_line_effect){
+    # Shrinkage Bayesian Causal Forests for Heterogeneous Treatment Effects Estimation
+    # Alberto Caron, Gianluca Baio & Ioanna Manolopoulou 2022
     mu <-
       # floor(p/2) -> Number of discrete variables
       3 + 1.5*sin(pi*X[, n_d + 1]) + 0.5*(X[, n_d + 2] - 0.5)^2 + 
@@ -94,6 +96,13 @@ generate_dataset <- function(n = 1000, p = 100, rho = 0, null = 0,
   y1[x1 == 1 & x2 == 0] <- y0[x1 == 1 & x2 == 0] + w1[x1 == 1 & x2 == 0] * null
   y1[x1 == 1 & x2 == 1] <- y0[x1 == 1 & x2 == 1] + w1[x1 == 1 & x2 == 1] * -effect_size
   
+  # True tau
+  tau_true <- numeric(n)
+  tau_true[x1 == 0 & x2 == 0] <- w1[x1 == 0 & x2 == 0] * effect_size
+  tau_true[x1 == 0 & x2 == 1] <- w1[x1 == 0 & x2 == 1] * null
+  tau_true[x1 == 1 & x2 == 0] <- w1[x1 == 1 & x2 == 0] * null
+  tau_true[x1 == 1 & x2 == 1] <- w1[x1 == 1 & x2 == 1] * -effect_size
+  
   # Generate Random Instrument
   z <- rbinom(n, 1, 0.5)
   
@@ -102,7 +111,7 @@ generate_dataset <- function(n = 1000, p = 100, rho = 0, null = 0,
   y <- z * y1 + (1 - z) * y0
   
   # Observed data
-  dataset <- list(y = y, z = z, w = w, X = X)
+  dataset <- list(y = y, z = z, w = w, X = X, tau_true = tau_true)
   
   return(dataset)
 }

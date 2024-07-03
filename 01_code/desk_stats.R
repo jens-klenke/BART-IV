@@ -25,8 +25,6 @@ df <- data %>%
 
 
 df_1 <- df %>%
-  # dplyr::slice_head(n = 1) %>%
-#  dplyr::filter(result_names == 's_bcf_exp') %>%
   # unnest results to get the individual estimates 
   tidyr::unnest(results) %>%
   # code subgroups
