@@ -26,8 +26,8 @@ get_features <- function(N, P, n_d = n_d, uncorrelated = T) {
   
   # Transform in continuous and binary covariates
   #X = matrix(NA, N, 10)
-  D = qbinom(unif[, 1:n_d], 1, 0.3)
-  C = qnorm(unif[, 1:n_d])
+  D = qbinom(unif[, 1:n_d], 1, 0.3) # Very low
+  C = qnorm(unif[, (n_d+1):P])
   
   
   return(cbind(D, C))

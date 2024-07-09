@@ -1,3 +1,7 @@
+#'
+#'
+#'
+
 own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 3000, n_sim = 7000, 
                    inference_ratio = 0.5, max_depth = 2, cp = 0.01, 
                    minsplit = 30, adj_method = "holm", seed = 42, cost = TRUE) {
