@@ -23,8 +23,9 @@ pacman::p_load(
   stringr,
   kableExtra,
   rpart.plot,
-  BayesIV, # https://github.com/fbargaglistoffi/BCF-IV/tree/master
-  SparseBCF # https://github.com/albicaron/SparseBCF
+  devtools,
+  BayesIV, # https://github.com/fbargaglistoffi/BCF-IV/tree/master install_github("fbargaglistoffi/BCF-IV", ref="master")
+  SparseBCF # https://github.com/albicaron/SparseBCF   devtools::install_github("albicaron/SparseBCF")
 )
 
 
