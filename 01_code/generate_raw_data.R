@@ -18,14 +18,14 @@ for (i in seq_along(p)) {
   for (j in 1:100) {
     generate_dataset(n = 1000, p = p_i, covariates = covariates, base_line_effect = T, uncorrelated = uncorrelated) %>%
     saveRDS(file =here::here(
-      paste0('00_sim_data/baseline_try_', p_i,'/dataset_ncovs', p_i, '_correlated_', j)
+      paste0('00_sim_data/baseline_try_correlated_confounded_', p_i,'/dataset_ncovs', p_i, '_correlated_', j)
                 )
     )
     if(j %% 10 == 0)
-      cat( j, "100 Dataset of n covariates", p_i, "finished. \n")
+      cat( j, " of 100 Dataset with", p_i, "covariates finished. \n")
   }
 }
 
 tictoc::toc()
 
-dataset <- generate_dataset(n = 10, p = 10, base_line_effect = T)
+#dataset <- generate_dataset(n = 10, p = 10, base_line_effect = T)
