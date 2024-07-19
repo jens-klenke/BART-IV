@@ -9,8 +9,7 @@ invisible(sapply(list.files(here::here('01_code/functions'), full.names = TRUE),
 
 ## load data
 ### Data to big for Github -> download from -> Sciebo/BART-IV-Data 
-#load(url('https://uni-duisburg-essen.sciebo.de/s/CeIqRbFwJaiJ9K7/download'))
-load('C:/Users/Jens Klenke/Dropbox/jens/sim_data/baseline_try_correlated.RData')
+load(url('https://uni-duisburg-essen.sciebo.de/s/JGDL7T2UhVIq7DW/download'))
 
 df <- sim_results %>% 
   tidyr::unnest(results) %>%
@@ -76,13 +75,30 @@ binary_results %<>%
                 Pi_compliers = as.double(Pi_compliers)
                 )
 
+
+obs_counts_complete <- binary_results %>%
+  tidyr::expand(ncov, subgroup, result_names) %>%
+  dplyr::left_join(
+    binary_results %>%
+      dplyr::group_by(ncov, subgroup, result_names) %>%
+      dplyr::summarise(n = dplyr::n(), .groups = 'drop'),
+    by = c("ncov", "subgroup", "result_names")
+  ) %>%
+  tidyr::replace_na(list(n = 0))
+
 binary_results %>%
   ggplot2::ggplot(aes(x = CCACE)) +
   ggplot2::geom_density() +
   ggplot2::facet_grid(ncov ~ subgroup + result_names) +
-  ggplot2::theme_bw()
+  ggplot2::theme_bw() +
+  # Add number of observations as text
+  geom_text(data = obs_counts_complete, aes(x = Inf, y = Inf, label = paste("n =", n)),
+            hjust = 1.1, vjust = 1.1, size = 3, color = 'blue')
 
-# BCF poorly! SBCF better and almost unaffected by high number of covariates!
+
+#  ggplot2::geom_text(aes(label=after_stat(sum)), y = 0, stat = 'count', colour = 'blue', size=4) +
+# BCF poorly! (100 ncovs no detection with correlation) 
+# SBCF better and almost unaffected by high number of covariates!
 binary_results %>%
   dplyr::filter(subgroup %in% c('negative effect', 'positive effect')) %>%
   dplyr::group_by(subgroup, ncov, result_names) %>%
