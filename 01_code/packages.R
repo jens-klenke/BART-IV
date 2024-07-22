@@ -20,7 +20,7 @@ pacman::p_load(
   AER,
   bartCause,
   pryr,
-  dpylr,
+  dplyr,
   tidyr,
   stringr,
   kableExtra,
