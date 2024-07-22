@@ -20,6 +20,8 @@ pacman::p_load(
   AER,
   bartCause,
   pryr,
+  dpylr,
+  tidyr,
   stringr,
   kableExtra,
   rpart.plot,
