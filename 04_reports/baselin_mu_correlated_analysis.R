@@ -75,25 +75,14 @@ binary_results %<>%
                 Pi_compliers = as.double(Pi_compliers)
                 )
 
-
-obs_counts_complete <- binary_results %>%
-  tidyr::expand(ncov, subgroup, result_names) %>%
-  dplyr::left_join(
-    binary_results %>%
-      dplyr::group_by(ncov, subgroup, result_names) %>%
-      dplyr::summarise(n = dplyr::n(), .groups = 'drop'),
-    by = c("ncov", "subgroup", "result_names")
-  ) %>%
-  tidyr::replace_na(list(n = 0))
-
 binary_results %>%
   ggplot2::ggplot(aes(x = CCACE)) +
   ggplot2::geom_density() +
   ggplot2::facet_grid(ncov ~ subgroup + result_names) +
   ggplot2::theme_bw() +
   # Add number of observations as text
-  geom_text(data = obs_counts_complete, aes(x = Inf, y = Inf, label = paste("n =", n)),
-            hjust = 1.1, vjust = 1.1, size = 3, color = 'blue')
+  geom_text(data = get_counts(binary_results), aes(x = Inf, y = Inf, label = paste("n =", n)),
+            hjust = 1.1, vjust = 1.1, size = 3, color = '#004c93')
 
 
 #  ggplot2::geom_text(aes(label=after_stat(sum)), y = 0, stat = 'count', colour = 'blue', size=4) +

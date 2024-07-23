@@ -23,3 +23,37 @@ analyse_df <- function(data, ...){
     dplyr::relocate(subgroup, n_bcf_results, share_bcf_results,
                     mean_bcf_results, sd_bcf_results, both_bcf_results)
 }
+
+## get counts for the plot 
+get_counts <- function(data, group.by = c('ncov', 'subgroup', 'result_names')){
+  # Convert character vector to symbols
+  vars_group <- syms(group.by)
+  
+  data %<>% 
+    # make grid
+    tidyr::expand(!!!vars_group) %>%
+    dplyr::left_join(
+      data %>%
+        dplyr::group_by(!!!vars_group) %>%
+        dplyr::summarise(n = dplyr::n(), .groups = 'drop'),
+      by = group.by
+    ) %>%
+    tidyr::replace_na(list(n = 0)) %>%
+    dplyr::arrange(!!!vars_group)
+  
+  # return data
+  return(data)
+  
+}
+
+# get vlines in effects
+get_vline <- function(data , group.by = c('ncov', 'subgroup', 'result_names')){
+  # Convert character vector to symbols
+  vars_group <- syms(group.by)
+  
+  data %<>%
+    tidyr::expand(!!!vars_group) %>%
+    dplyr::mutate(x_line = ifelse(subgroup == 'positive effect', 2, -2))
+  
+  return(data)
+}
