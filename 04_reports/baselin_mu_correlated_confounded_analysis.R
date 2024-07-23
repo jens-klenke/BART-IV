@@ -83,7 +83,7 @@ binary_results %>%
   # Add number of observations as text
   geom_text(data = get_counts(binary_results), aes(x = Inf, y = Inf, label = paste("n =", n)),
             hjust = 1.1, vjust = 1.1, size = 3, color = '#004c93') +
-  geom_vline(data = get_vline(binary_results), aes(xintercept = x_line), color = '#004c93')
+  geom_vline(data = get_vline(binary_results), aes(xintercept = x_line), color = '#004c93', linewidth = 0.75, linetype = 'longdash')
 
 
 
