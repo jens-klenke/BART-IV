@@ -1,1 +1,32 @@
 \chapter{Simulation study}
+
+
+Performance criteria according to bargagli-stoffi: 
+
+1. Average number of truly discovered heterogeneous subgroups corresponding to the nodes of the generated CART (proportion of correctly discovered subgroups);
+
+2. Monte Carlo estimated bias for the heterogeneous subgroups:
+\begin{equation}
+\text{Bias}_m(I_\text{inf}) = \frac{1}{N_\text{inf}} \sum_{i=1}^{N_\text{inf}} \sum_{l=1}^{L} \left( \tau_{\text{cace},i}(\ell) - \hat{\tau}_{\text{cace},i}(\ell, \Pi_m, I_\text{inf}) \right),
+\end{equation}
+\begin{equation}
+\text{Bias}(I_\text{inf}) = \frac{1}{M} \sum_{m=1}^{M} \text{Bias}_m(I_\text{inf}),
+\end{equation}
+where $\Pi_m$ is the partition selected in simulation $m$, $L$ is the number of subgroups with heterogeneous effects (i.e., two for the case of strong heterogeneity and four for the case of slight heterogeneity), and $N_\text{inf}$ is the number of observations in the inference sample.
+
+3. Monte Carlo estimated MSE for the heterogeneous subgroups:
+\begin{equation}
+\text{MSE}_m(I_\text{inf}) = \frac{1}{N_\text{inf}} \sum_{i=1}^{N_\text{inf}} \sum_{l=1}^{L} \left( \tau_{\text{cace},i}(\ell) - \hat{\tau}_{\text{cace},i}(\ell, \Pi_m, I_\text{inf}) \right)^2,
+\end{equation}
+\begin{equation}
+\text{MSE}(I_\text{inf}) = \frac{1}{M} \sum_{m=1}^{M} \text{MSE}_m(I_\text{inf});
+\end{equation}
+
+4. Monte Carlo coverage, computed as the average proportion of units for which the estimated 95\% confidence interval of the causal effect in the assigned leaf includes the true value, for the heterogeneous subgroups:
+\begin{equation}
+C_m(I_\text{inf}) = \frac{1}{N_\text{inf}} \sum_{i=1}^{N_\text{inf}} \sum_{l=1}^{L} \left( \tau_{\text{cace},i}(\ell) \in \hat{\text{CI}}_{95} \left( \hat{\tau}_{\text{cace},i}(\ell, \Pi_m, I_\text{inf}) \right) \right),
+\end{equation}
+\begin{equation}
+C(I_\text{inf}) = \frac{1}{M} \sum_{m=1}^{M} C_m(I_\text{inf}).
+\end{equation}
+

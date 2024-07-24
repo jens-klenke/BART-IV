@@ -10,6 +10,6 @@
 \contentsline {section}{\numberline {3.1}Sparse Bayesian Causal Forest}{5}{section.3.1}%
 \contentsline {section}{\numberline {3.2}Sparse BCF-IV}{5}{section.3.2}%
 \contentsline {chapter}{\numberline {4}Simulation study}{6}{chapter.4}%
-\contentsline {chapter}{\numberline {5}Empirical application}{7}{chapter.5}%
-\contentsline {chapter}{\numberline {6}Discussion}{8}{chapter.6}%
+\contentsline {chapter}{\numberline {5}Empirical application}{8}{chapter.5}%
+\contentsline {chapter}{\numberline {6}Discussion}{9}{chapter.6}%
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 
