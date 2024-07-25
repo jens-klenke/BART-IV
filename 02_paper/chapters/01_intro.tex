@@ -29,11 +29,8 @@
 \end{itemize}
 
 
-
-\section{Contribution}
-
 \begin{itemize}
-    \item - BART benefits %(@linero_softbart_2022):
+    \item - BART benefits in general %(@linero_softbart_2022):
     \begin{itemize}
         \item good performance in high-noise settings 
         \item shrinkage to/emphasize on low-order interactions
@@ -46,3 +43,42 @@
     \end{itemize}
     \item Research proposal: Rewrite the BCF-IV model with SoftBART instead of BART prior to account for sparsity
 \end{itemize}
+
+
+
+\section{Contribution}
+
+We contribute to the literature on machine learning techniques designed to uncover heterogeneous effects while addressing imperfect compliance by developing specialized adaptations of tree-based algorithms.
+Specifically, we generalize Bayesian Instrumental Variable Causal Forest (BCF-IV) from \citep{bargagli-stoffi_heterogeneous_2022}. 
+BCF-IV is a semi-parametric Bayesian regression model that builds directly on the Bayesian Additive Regression Trees (BART) algorithm (Chipman et al., 2010).
+Instead of using BART fur pure predictions of outcomes, BCF-IV is designed to identify and estimate heterogeneous effects within the subpopulation of units that comply with the treatment assignment, known as compliers. 
+Consequently, the estimated effects can be considered doubly local, representing subgroup effects within the compliers subpopulation.
+BCF-IV identifies heterogeneity through an interpretable tree structure, with each node representing a distinct subgroup.
+For each leaf node of the generated tree, BCF-IV supports multiple hypothesis test adjustments to control the Type I error rate (familywise error rate) or the false discovery rate. 
+
+In our work, we extend BCF-IV in several ways. First, we use the shrinkage prior adaptation of BART (SoftBART) as proposed in \citep{linero_bayesian_2018,linero_bayesian_2018-1}.
+More precisely, by dividing the conditional Intention-To-Treat (cITT) effects with the corresponding conditional Proportion of Compliers (cPC), one can show to arrive at the conditional Complier Average Causal Effect (cCACE).
+In the discovery step the original BCF-IV algorithm of \citep{bargagli-stoffi_heterogeneous_2022} uses the Bayesian Causal Forest (BCF) \citep{hahn_bayesian_2020} to estimate the cITT effects.  
+BCF is a nonlinear regression model that builds upon BART and is proposed for estimating heterogeneous treatment effects. It is specifically designed for scenarios characterized by small effect sizes, heterogeneous effects, and significant confounding by observables.
+First, BCF addresses the issue of highly biased treatment effect estimates in the presence of strong confounding by incorporating an estimate of the propensity function directly into the response model. 
+Thereby, it induces a covariate-dependent prior on the regression function. 
+Second, BCF allows for the separate regularization of treatment effect heterogeneity from the prognostic effect of control variables. 
+Conventional response surface modeling approaches often fail to adequately model regularization over effect heterogeneity.
+Instead, BCF enables an informative shrinkage towards homogeneity such that one is able to control the degree of regularization over effect heterogeneity.
+In our work, we generalize the cITT effect estimation by replacing BCF with the Shrinkage Bayesian Causal Forest (SBCF) proposed by \citep{caron_shrinkage_2022}.
+SBCF extends BCF by using additional priors proposed in SoftBART that enable to adjust the influence of each covariate based on the number of corresponding splits in the tree ensemble.
+These priors enhance the model's adaptability to sparse data-generating processes and facilitate fully Bayesian feature shrinkage within the framework for estimating treatment effects.
+Consequently, it improves to uncover the moderating factors that drive heterogeneity when there is sparsity in the data.  
+Moreover, this method allows the incorporation of prior knowledge regarding relevant confounding covariates and the relative magnitude of their impact on the outcome.
+
+Second, BCF-IV uses a single binary tree based on the CART model of (Breiman1984) to analyse possible heterogeneity patterns within cCACE.
+In our work, we use posterior splitting probabilities retrieved from SBCF as a measure of variable importance within the \texttt{cost}-argument of \texttt{rpart}. 
+These are scalings to be applied when considering splits, so the improvement on splitting on a variable is divided by its cost in deciding which split to choose in \texttt{rpart}.
+
+
+Open questions for further contributions. Use Random Forests (Causal Rule Ensemble) instead of single CART for subgroup discovery? 
+More rigorous Bayesian estimation by replacing \texttt{ivreg} with \texttt{brms} (implementation of credible intervals, estimation error, counterparts to something like weak instrument tests, bayesian model averaging)? 
+
+
+
+
