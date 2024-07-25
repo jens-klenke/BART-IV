@@ -71,6 +71,7 @@ w0 <- dataset$w0
 z <- dataset$z
 x <- dataset$X
 
+# https://evalf20.classes.andrewheiss.com/example/cace/ 
 # visualize compliance structure - oracle (if we would know status through w1 w0)
 dataset %>%
   as_tibble() %>%
