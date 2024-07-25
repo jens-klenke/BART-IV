@@ -3,8 +3,8 @@
 
 # Load necessary library
 # if not already installed
-install.packages("brms")
-install.packages("AER")  
+#install.packages("brms")
+#install.packages("AER")  
 library(AER)
 library(brms)
 
@@ -66,8 +66,8 @@ dataset <- generate_dataset()
 
 y <- dataset$y
 w <- dataset$w
-w1 <- dataset$w1
-w0 <- dataset$w0
+w1 <- dataset$w1 # does not work w1 and w0 usually are not stored  
+w0 <- dataset$w0 # does not work
 z <- dataset$z
 x <- dataset$X
 
@@ -188,7 +188,6 @@ bcf_exp <- as.data.frame(cbind(bcf_tauhat, x[-index,]))
 
 # repair names? !! by me 
 names(bcf_exp)[2:length(bcf_exp)] <- names(inference)[-(1:3)]
-
 
 'sparse BCF'
 ##### sparse BCF -> BCF https://github.com/albicaron/SparseBCF
