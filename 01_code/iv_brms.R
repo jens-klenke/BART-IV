@@ -375,6 +375,7 @@ Adj_pvalue[which(bcfiv_correction$leaves==1)] <- adj
 
 # Store Results
 bcfivResults <- cbind(as.data.frame(bcfivMat), Adj_pvalue)
+bcfivResults_bayes <- as.data.frame(bcfivMat_bayesian)
 
 
 
