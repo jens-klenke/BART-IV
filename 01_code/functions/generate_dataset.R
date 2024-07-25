@@ -112,7 +112,7 @@ generate_dataset <- function(n = 1000, p = 100, rho = 0, null = 0,
   y <- z * y1 + (1 - z) * y0
   
   # Observed data
-  dataset <- list(y = y, z = z, w = w, X = X, tau_true = tau_true)
+  dataset <- list(y = y, z = z, w = w, w1=w1, w0=w0, X = X, tau_true = tau_true)
   
   return(dataset)
 }
