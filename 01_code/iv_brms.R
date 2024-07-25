@@ -66,8 +66,49 @@ dataset <- generate_dataset()
 
 y <- dataset$y
 w <- dataset$w
+w1 <- dataset$w1
+w0 <- dataset$w0
 z <- dataset$z
 x <- dataset$X
+
+# https://evalf20.classes.andrewheiss.com/example/cace/ 
+# visualize compliance structure - oracle (if we would know status through w1 w0)
+dataset %>%
+  as_tibble() %>%
+  mutate(status=case_when((w1==1 & w0==0) ~ "Complier",
+                          # because we have one-sided compliance assumption, 
+                          # we do not have always-takers!!
+                          (w1==1 & w0==1) ~ "Always-taker",
+                          (w1==0 & w0==0) ~ "Never-taker", 
+                          (w1==0 & w0==1) ~ "Defier")
+  ) %>%
+  ggplot(aes(y = y, x = as.factor(z))) + 
+  geom_point(aes(color = status, shape=as.factor(w)),
+             position = position_jitter(height = NULL, width = 0.25)) + 
+  facet_wrap(vars(status)) + 
+  labs(color = "Type of person", shape = "Observed compliance by w",
+       x = "Control/Treatment assignment by random instrument z", y = "Outcome") +
+  scale_color_viridis_d(option = "plasma", end = 0.85) +
+  theme_bw()
+
+# visualize compliance structure - observed
+dataset %>%
+  as_tibble() %>%
+  mutate(status=case_when((w1==1 & w0==0) ~ "Complier",
+                          # because we have one-sided compliance assumption, 
+                          # we do not have always-takers!!
+                          (w1==1 & w0==1) ~ "Always-taker",
+                          (w1==0 & w0==0) ~ "Never-taker", 
+                          (w1==0 & w0==1) ~ "Defier")
+  ) %>%
+  ggplot(aes(y = y, x = as.factor(w))) + 
+  geom_point(aes(color = status, shape=as.factor(w)),
+             position = position_jitter(height = NULL, width = 0.25)) + 
+  facet_wrap(vars(as.factor(z))) + 
+  labs(color = "Type of person", shape = "Compliance/Instrument",
+       x = "Observed compliance by w", y = "Outcome") +
+  scale_color_viridis_d(option = "plasma", end = 0.85) +
+  theme_bw()
 
 # Parameters
 binary = FALSE
