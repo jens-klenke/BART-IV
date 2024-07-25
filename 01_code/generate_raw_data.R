@@ -9,16 +9,18 @@ invisible(sapply(list.files(here::here('01_code/functions'), full.names = TRUE),
 # loop over parameters
 p <- c(10, 50, 100)
 covariates <- 'cont-cov'
-uncorrelated <- FALSE
+uncorrelated <- TRUE
+effect_size <- 1
 
 tictoc::tic()
 
 for (i in seq_along(p)) {
   p_i <- p[i]
   for (j in 1:100) {
-    generate_dataset(n = 1000, p = p_i, covariates = covariates, base_line_effect = T, uncorrelated = uncorrelated) %>%
+    generate_dataset(n = 1000, p = p_i, covariates = covariates, base_line_effect = T, uncorrelated = uncorrelated,
+                     effect_size = effect_size) %>%
     saveRDS(file =here::here(
-      paste0('00_sim_data/baseline_try_correlated_confounded_', p_i,'/dataset_ncovs', p_i, '_correlated_', j)
+      paste0('00_sim_data/effect_1/baseline_uncorrelated_', p_i,'/dataset_ncovs_', p_i, '_uncorrelated_', j)
                 )
     )
     if(j %% 10 == 0)

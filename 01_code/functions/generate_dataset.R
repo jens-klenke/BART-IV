@@ -82,9 +82,9 @@ generate_dataset <- function(n = 1000, p = 100, rho = 0, null = 0,
     mu <-
       # n_d number of discrete variables 
       3 + 1.5*sin(pi*X[, n_d + 1]) + 0.5*(X[, n_d + 2] - 0.5)^2 + 
-      1.5*(2-abs(X[, n_d + 3]))  +
+      1.5*(2-abs(X[, n_d + 3])) # +
       # first and second discrete variable
-      1.5*X[, n_d + 4]*(X[, 1] + 1) # can not find this part
+    #  1.5*X[, n_d + 4]*(X[, 1] + 1) # can not find this part
     
     # Generate unit level potential outcome
     y0 <- mu + rnorm(n)
