@@ -105,7 +105,7 @@ dataset %>%
   geom_point(aes(color = status, shape=as.factor(w)),
              position = position_jitter(height = NULL, width = 0.25)) + 
   facet_wrap(vars(as.factor(z))) + 
-  labs(color = "Type of person", shape = "Compliance/Instrument",
+  labs(color = "Type of person", shape = "Observed compliance by w",
        x = "Observed compliance by w", y = "Outcome") +
   scale_color_viridis_d(option = "plasma", end = 0.85) +
   theme_bw()
