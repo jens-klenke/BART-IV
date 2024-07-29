@@ -47,13 +47,13 @@ get_counts <- function(data, group.by = c('ncov', 'subgroup', 'result_names')){
 }
 
 # get vlines in effects
-get_vline <- function(data , group.by = c('ncov', 'subgroup', 'result_names')){
+get_vline <- function(data, effect = 2, group.by = c('ncov', 'subgroup', 'result_names')){
   # Convert character vector to symbols
   vars_group <- syms(group.by)
   
   data %<>%
     tidyr::expand(!!!vars_group) %>%
-    dplyr::mutate(x_line = ifelse(subgroup == 'positive effect', 2, -2))
+    dplyr::mutate(x_line = ifelse(subgroup == 'positive effect', as.numeric(effect), as.numeric(paste0('-',effect))))
   
   return(data)
 }
