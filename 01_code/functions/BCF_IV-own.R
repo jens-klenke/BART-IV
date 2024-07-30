@@ -135,7 +135,7 @@ own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 3000, n_sim = 7000,
   
   s_bcf_ivResults <- extract_causal_rules(s_bcf_fit.tree, inference = inference, adj_method = adj_method)
 
-  theretical_results <- estimate_subgroups(inference)
+  theoretical_results <- estimate_subgroups(inference)
   ######################################################
   ####             Step 4: Return results           ####
   ######################################################
@@ -152,7 +152,7 @@ own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 3000, n_sim = 7000,
     's_bcf_tauhat' = s_bcf_tauhat,
     'bcf_exp' = bcf_exp,
     's_bcf_exp' = s_bcf_exp,
-    'theretical_results' = theretical_results 
+    'theoretical_results' = theoretical_results 
     )
   )
 }

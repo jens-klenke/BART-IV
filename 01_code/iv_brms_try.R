@@ -8,7 +8,7 @@
 library(AER)
 library(brms)
 
-set.seed(123)  # For reproducibility
+set.seed(123456)  # For reproducibility
 
 # Sample size
 n <- 1000
@@ -36,17 +36,19 @@ summary(iv_model)
 
 # Perform Bayesian IV regression using brms
 # First stage: regress X on Z
-first_stage <- brm(X ~ Z, data = data, chains = 2, iter = 2000, warmup = 1000)
+stan_model_first_stage <- brm(X ~ Z, data = data, chains = 4, iter = 2000, warmup = 1000, 
+                   save_model = "05_stan_code/brms_first_stage.stan",  silent = 2, refresh = 0)
 
 # Extract fitted values (predicted X)
 data$X_hat <- fitted(first_stage)[,1]
 
 # Second stage: regress Y on X_hat
-second_stage <- brm(Y ~ X_hat, data = data, chains = 2, iter = 2000, warmup = 1000)
+stan_model_second_stage <- brm(Y ~ X_hat, data = data, chains = 4, iter = 2000, warmup = 1000,
+                    save_model = "05_stan_code/brms_second_stage.stan", silent = 2, refresh = 0)
 
+saveRDS(stan_model_second_stage, file = '05_stan_code/brms_second_stage.rds')
 # Summarize the Bayesian IV model
 summary(second_stage)
-
 
 #### second test  ####
 
