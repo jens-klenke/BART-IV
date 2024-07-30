@@ -1,4 +1,4 @@
-estimate_subgroups <- function(inference, ...){
+estimate_theoretical_subgroups <- function(inference, ...){
   
   # store matrix
   

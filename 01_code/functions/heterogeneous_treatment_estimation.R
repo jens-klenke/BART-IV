@@ -1,5 +1,5 @@
 # used insite BCF_IV-own estimation
-extract_causal_rules <- function(fit.tree, inference, adj_method){
+heterogeneous_treatment_estimation <- function(fit.tree, inference, adj_method){
   # rules end terminal nodes?
   rules <- as.numeric(row.names(fit.tree$frame[fit.tree$numresp]))
   
@@ -20,6 +20,10 @@ extract_causal_rules <- function(fit.tree, inference, adj_method){
   # Run an IV Regression on the Root
   iv.root <- ivreg(y ~ w | z,  
                    data = inference) # inference dataset
+  
+  # bayes IV estimation
+  parameters <- brms_iv_function(inference, stan_model_first_stage, stan_model_second_stage)
+  
   summary <- summary(iv.root, diagnostics = TRUE)
   iv.effect.root <-  summary$coef[2,1]
   p.value.root <- summary$coef[2,4]

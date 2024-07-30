@@ -1,6 +1,7 @@
 # bcf_iv <- function(
 # Data 
 dataset <- readRDS(data$path_in[27])
+dataset <- readRDS(here::here('00_sim_data/effect_2/baselinemu_ncovs_10/dataset_ncovs10_1'))
 
 y <- dataset$y
 w <- dataset$w
@@ -27,7 +28,7 @@ x_names <- paste0('x', 1:ncol(x))
   
   # Split data into Discovery and Inference
   set.seed(seed)
-  index <- sample(nrow(x), nrow(x)*inference_ratio, replace=FALSE)
+  index <- sample(nrow(x), nrow(x)*inference_ratio, replace = FALSE)
   
   # Initialize total dataset
   iv.data <- as.data.frame(cbind(y, w, z, x))
@@ -45,6 +46,7 @@ x_names <- paste0('x', 1:ncol(x))
   p.score <- glm(z ~ x[-index,],
                  family = binomial,
                  data = discovery)
+  
   pihat <- predict(p.score, as.data.frame(x[-index,]))
   
   # Perform the Bayesian Causal Forest  to calculate the Proportion of Compliers (pic)
@@ -160,11 +162,11 @@ x_names <- paste0('x', 1:ncol(x))
     
     
     ######################################################
-    ####  Step 3: Extract the Causal Rules (Nodes)    ####
+    ####  Step 3: Extract Rules and IV Estimation    ####
     ######################################################
     
-    bcf_ivResults <- extract_causal_rules(bcf_fit.tree, inference = inference, adj_method = adj_method)
+    bcf_ivResults <- heterogeneous_treatment_estimation(bcf_fit.tree, inference = inference, adj_method = adj_method)
     
-    s_bcf_ivResults <- extract_causal_rules(s_bcf_fit.tree, inference = inference, adj_method = adj_method)
+    s_bcf_ivResults <- heterogeneous_treatment_estimation(s_bcf_fit.tree, inference = inference, adj_method = adj_method)
     
     

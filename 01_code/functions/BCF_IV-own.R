@@ -128,14 +128,14 @@ own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 3000, n_sim = 7000,
   
   # print('Step 2 completed')
   ######################################################
-  ####  Step 3: Extract the Causal Rules (Nodes)    ####
+  ####    Step 3: Extract Rules and IV Estimation   ####
   ######################################################
 
-  bcf_ivResults <- extract_causal_rules(bcf_fit.tree, inference = inference, adj_method = adj_method)
+  bcf_ivResults <- heterogeneous_treatment_estimation(bcf_fit.tree, inference = inference, adj_method = adj_method)
   
-  s_bcf_ivResults <- extract_causal_rules(s_bcf_fit.tree, inference = inference, adj_method = adj_method)
+  s_bcf_ivResults <- heterogeneous_treatment_estimation(s_bcf_fit.tree, inference = inference, adj_method = adj_method)
 
-  theoretical_results <- estimate_subgroups(inference)
+  theoretical_results <- estimate_theoretical_subgroups(inference)
   ######################################################
   ####             Step 4: Return results           ####
   ######################################################
