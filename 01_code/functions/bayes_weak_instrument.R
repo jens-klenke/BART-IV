@@ -1,0 +1,1 @@
+bayes_weak_instrument <- function(mod, ...){}

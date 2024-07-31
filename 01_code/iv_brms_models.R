@@ -1,23 +1,20 @@
 library(AER)
 library(brms)
 
-set.seed(123456)  # For reproducibility
-
-# Sample size
-n <- 1000
-
-# Generate the instrument (Z)
-Z <- rnorm(n)
-
-# Generate confounder (U)
-U <- rnorm(n)
-# Generate the treatment (X), affected by Z and U
-X <- 0.5 * Z + 0.3 * U + rnorm(n)
-# Generate the outcome (Y), affected by X and U
-Y <- 2 * X + 0.5 * U + rnorm(n)
-
-# Combine into a data frame ## needs to be changed! 
-data <- data.frame(Y, X, Z, U)
+# old example data 
+#set.seed(123456)  # For reproducibility
+## Sample size
+#n <- 1000
+## Generate the instrument (Z)
+#Z <- rnorm(n)
+## Generate confounder (U)
+#U <- rnorm(n)
+## Generate the treatment (X), affected by Z and U
+#X <- 0.5 * Z + 0.3 * U + rnorm(n)
+## Generate the outcome (Y), affected by X and U
+#Y <- 2 * X + 0.5 * U + rnorm(n)
+## Combine into a data frame ## needs to be changed! 
+#data <- data.frame(Y, X, Z, U)
 
 # example dataset 
 dataset <- readRDS(here::here('00_sim_data/effect_2/baselinemu_ncovs_10/dataset_ncovs10_1'))

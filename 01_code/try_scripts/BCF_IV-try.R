@@ -1,6 +1,21 @@
-# bcf_iv <- function(
+## try script for function own_bcf_iv '01_code/functions/BCF_IV-own.R' ----
+
+# load packages 
+############## Packages ################
+source(here::here('01_code/packages.R'))
+# some packages have to be implemented by hand (from github)
+
+# source all files in the functions folder
+invisible(sapply(list.files(here::here('01_code/functions'), full.names = TRUE), 
+                 source))
+
+# parallel plan
+future::plan(multisession, workers = 10)
+options(future.globals.maxSize = 2147483648) # 2GB  
+
+
 # Data 
-dataset <- readRDS(data$path_in[27])
+# dataset <- readRDS(data$path_in[27])
 dataset <- readRDS(here::here('00_sim_data/effect_2/baselinemu_ncovs_10/dataset_ncovs10_1'))
 
 y <- dataset$y
@@ -18,7 +33,7 @@ cp = 0.01
 minsplit = 30
 adj_method = "holm"
 seed = 42
-cost = 'both'
+cost = TRUE
 
 x_names <- paste0('x', 1:ncol(x))
     

@@ -8,43 +8,46 @@
 library(AER)
 library(brms)
 
-set.seed(123456)  # For reproducibility
-
-# Sample size
-n <- 1000
-
-# Generate the instrument (Z)
-Z <- rnorm(n)
-
-# Generate confounder (U)
-U <- rnorm(n)
-
-# Generate the treatment (X), affected by Z and U
-X <- 0.5 * Z + 0.3 * U + rnorm(n)
-
-# Generate the outcome (Y), affected by X and U
-Y <- 2 * X + 0.5 * U + rnorm(n)
-
+#set.seed(123456)  # For reproducibility
+## Sample size
+#n <- 1000
+## Generate the instrument (Z)
+#Z <- rnorm(n)
+## Generate confounder (U)
+#U <- rnorm(n)
+## Generate the treatment (X), affected by Z and U
+#X <- 0.5 * Z + 0.3 * U + rnorm(n)
+## Generate the outcome (Y), affected by X and U
+#Y <- 2 * X + 0.5 * U + rnorm(n)
 # Combine into a data frame
-data <- data.frame(Y, X, Z, U)
+#data <- data.frame(Y, X, Z, U)
+dataset <- readRDS(here::here('00_sim_data/effect_2/baselinemu_ncovs_10/dataset_ncovs10_1'))
+y <- dataset$y
+w <- dataset$w
+z <- dataset$z
+x <- dataset$X
+data <- as.data.frame(cbind(y, w, z, x))
 
 # Estimate the treatment effect using IV (Z as instrument for X)
-iv_model <- ivreg(Y ~ X | Z, data = data)
+iv_model <- ivreg(y ~ w | z, data = data)
 
 # Summarize the IV model
-summary(iv_model)
+iv_summary <- summary(iv_model, diagnostics = TRUE)
+iv_summary$diagnostics[1, 4]
 
 # Perform Bayesian IV regression using brms
 # First stage: regress X on Z
-stan_model_first_stage <- brm(X ~ Z, data = data, chains = 4, iter = 2000, warmup = 1000, 
-                   save_model = "05_stan_code/brms_first_stage.stan",  silent = 2, refresh = 0)
+stan_model_first_stage <- brm(w ~ z, data = data, chains = 4, iter = 2000, warmup = 1000)
+                   #, save_model = "05_stan_code/brms_first_stage.stan",  silent = 2, refresh = 0)
 
-# Extract fitted values (predicted X)
-data$X_hat <- fitted(first_stage)[,1]
+summary(stan_model_first_stage)
+
+# Extract fitted values (predicted w)
+data$w_hat <- fitted(stan_model_first_stage)[,1]
 
 # Second stage: regress Y on X_hat
-stan_model_second_stage <- brm(Y ~ X_hat, data = data, chains = 4, iter = 2000, warmup = 1000,
-                    save_model = "05_stan_code/brms_second_stage.stan", silent = 2, refresh = 0)
+stan_model_second_stage <- brm(Y ~ X_hat, data = data, chains = 4, iter = 2000)
+                               #, warmup = 1000, save_model = "05_stan_code/brms_second_stage.stan", silent = 2, refresh = 0)
 
 saveRDS(stan_model_second_stage, file = '05_stan_code/brms_second_stage.rds')
 # Summarize the Bayesian IV model
