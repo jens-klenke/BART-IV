@@ -10,24 +10,12 @@ invisible(sapply(list.files(here::here('01_code/functions'), full.names = TRUE),
 p <- c(10, 50, 100)
 covariates <- 'cont-cov'
 uncorrelated <- TRUE
+baseline_effect <- TRUE
 effect_size <- 1
+compliance <- 0.75
 
+# running the function 
 tictoc::tic()
-
-for (i in seq_along(p)) {
-  p_i <- p[i]
-  for (j in 1:100) {
-    generate_dataset(n = 1000, p = p_i, covariates = covariates, base_line_effect = T, uncorrelated = uncorrelated,
-                     effect_size = effect_size) %>%
-    saveRDS(file =here::here(
-      paste0('00_sim_data/effect_1/baseline_uncorrelated_', p_i,'/dataset_ncovs_', p_i, '_uncorrelated_', j)
-                )
-    )
-    if(j %% 10 == 0)
-      cat( j, " of 100 Dataset with", p_i, "covariates finished. \n")
-  }
-}
-
+wrapper_data_generation(p_vec = p, covariates = covariates, uncorrelated = T, effect_size = 2, 
+                        baseline_effect = TRUE, compliance = compliance)
 tictoc::toc()
-
-#dataset <- generate_dataset(n = 10, p = 10, base_line_effect = T)

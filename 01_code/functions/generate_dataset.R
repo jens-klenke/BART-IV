@@ -56,14 +56,12 @@ generate_dataset <- function(n = 1000, p = 100, rho = 0, null = 0,
   }
   
   if(base_line_effect){
-    X <- get_features(N=n, P=p, n_d = n_d, uncorrelated = uncorrelated)
+    X <- get_features(N = n, P = p, n_d = n_d, uncorrelated = uncorrelated)
   }
-  
   
   # x1 and x2 needed for heterogeneous effects
   x1 <- X[, 1]
   x2 <- X[, 2]
-  
   
   # Generate unit level observed exposure
   w1 <- rbinom(n, 1, compliance)
