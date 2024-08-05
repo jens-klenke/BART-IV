@@ -1,5 +1,9 @@
 ## try script for function heterogeneous_treatment_estimation  in '01_code/functions/heterogeneous_treatment_estimation.R' ----
 
+# load stan models ----
+stan_model_first_stage <- readRDS(here::here("05_stan_code/brms_first_stage.rds"))
+stan_model_second_stage <- readRDS(here::here("05_stan_code/brms_second_stage.rds"))
+
 # Parameters ----
 fit.tree <- bcf_fit.tree
 s_bcf_fit.tree
@@ -19,7 +23,7 @@ names(bcfivMat) <- c("node", "CCACE", "pvalue", "Weak_IV_test",
                      "Pi_obs", "ITT", "Pi_compliers")
 
 bayes_ivMat <- as.data.frame(matrix(NA, nrow = length(rules), ncol =7))
-names(bcfivMat) <- c("node", "CCACE", "CCACE l-95% CI", "CCACE u-95% CI", 
+names(bayes_ivMat) <- c("node", "CCACE", "CCACE l-95% CI", "CCACE u-95% CI", 
                      "Pi_obs", "ITT", "Pi_compliers")
 
 # Generate Leaves (end notes) Indicator
@@ -35,6 +39,8 @@ iv.root <- ivreg(y ~ w | z,
 
 # bayes IV estimation
 bayes_iv.root <- brms_iv_function(inference, stan_model_first_stage, stan_model_second_stage)
+# weak instrument? 
+# https://github.com/zeileis/ivreg/blob/main/R/ivregMethods.R
 
 summary <- summary(iv.root, diagnostics = TRUE)
 iv.effect.root <-  summary$coef[2,1]
@@ -53,8 +59,6 @@ bcfivMat[1, ] <- c(NA , round(iv.effect.root, 4), p.value.root,
 
 bayes_ivMat[1, ] <- c(NA , round(bayes_iv.root[2, 1], 4), round(bayes_iv.root[2, 3], 4), round(bayes_iv.root[2, 4], 4),
                          round(proportion.root, 4), round(itt.root, 4), round(compliers.root, 4))
-
-
 
 # Initialize New Data
 names(inference) <- paste(names(inference), sep="")
