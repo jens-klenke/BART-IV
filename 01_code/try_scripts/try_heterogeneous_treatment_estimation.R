@@ -83,18 +83,9 @@ for (i in rules[-1]){
   if (length(unique(subset$w))!= 1 & length(unique(subset$z))!= 1 & nrow(subset) >2){
     iv.reg <- ivreg(y ~ w | z,  
                     data = subset)
-    summary <- summary(iv.reg, diagnostics = TRUE)
-    iv.effect <-  summary$coef[2,1]
-    p.value <- summary$coef[2,4]
-    p.value.weak.iv <- summary$diagnostics[1,4]
-    compliers <- length(which(subset$z==subset$w))/nrow(subset)
-    itt <- iv.effect*compliers
     
-    # Proportion of observations in the node
-    proportion.node <- nrow(subset)/nrow(inference)
-    
-    ####   Step 5: Output the Values of each CCACE   ####
-    bcfivMat[i,] <- iv_summary_func(iv.root, subset, inference, sub_pop)
+    #### Step 5: Output the Values of each CCACE   ####
+    bcfivMat[i,] <- iv_summary_func(iv.reg, subset, inference, sub_pop)
     
   }
   
