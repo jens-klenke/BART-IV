@@ -42,27 +42,18 @@ bayes_iv.root <- brms_iv_function(inference, stan_model_first_stage, stan_model_
 # weak instrument? 
 # https://github.com/zeileis/ivreg/blob/main/R/ivregMethods.R
 
-summary <- summary(iv.root, diagnostics = TRUE)
-iv.effect.root <-  summary$coef[2,1]
-p.value.root <- summary$coef[2,4]
-p.value.weak.iv.root <- summary$diagnostics[1,4]
-proportion.root <- 1
-# share of compilers in root
-compliers.root <- length(which(inference$z==inference$w))/nrow(inference)
-itt.root <- iv.effect.root*compliers.root
 
 # Store Results for Root
-bcfivMat[1, ] <- c(NA , round(iv.effect.root, 4), p.value.root,
-                   p.value.weak.iv.root, round(proportion.root, 4), 
-                   round(itt.root, 4), round(compliers.root, 4))
+bcfivMat[1, ] <- iv_summary_func(iv.root, inference, inference, sub_pop = 'root')
 
-
+# doing it later
 bayes_ivMat[1, ] <- c(NA , round(bayes_iv.root[2, 1], 4), round(bayes_iv.root[2, 3], 4), round(bayes_iv.root[2, 4], 4),
                          round(proportion.root, 4), round(itt.root, 4), round(compliers.root, 4))
 
 # Initialize New Data
 names(inference) <- paste(names(inference), sep="")
 
+# i = 1
 # Run a loop to get the rules (sub-populations)
 for (i in rules[-1]){
   # Create a Vector to Store all the Dimensions of a Rule
@@ -103,10 +94,8 @@ for (i in rules[-1]){
     proportion.node <- nrow(subset)/nrow(inference)
     
     ####   Step 5: Output the Values of each CCACE   ####
+    bcfivMat[i,] <- iv_summary_func(iv.root, subset, inference, sub_pop)
     
-    bcfivMat[i,] <- c(sub_pop, round(iv.effect, 4), p.value, 
-                      p.value.weak.iv, round(proportion.node, 4), 
-                      round(itt, 4), round(compliers, 4))
   }
   
   if (!(length(unique(subset$w))!= 1 & length(unique(subset$z))!= 1 & nrow(subset) >2)){
