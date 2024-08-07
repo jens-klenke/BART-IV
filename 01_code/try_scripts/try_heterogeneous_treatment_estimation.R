@@ -42,13 +42,9 @@ bayes_iv.root <- brms_iv_function(inference, stan_model_first_stage, stan_model_
 # weak instrument? 
 # https://github.com/zeileis/ivreg/blob/main/R/ivregMethods.R
 
-
 # Store Results for Root
 bcfivMat[1, ] <- iv_summary_func(iv.root, inference, inference, sub_pop = 'root')
-
-# doing it later
-bayes_ivMat[1, ] <- c(NA , round(bayes_iv.root[2, 1], 4), round(bayes_iv.root[2, 3], 4), round(bayes_iv.root[2, 4], 4),
-                         round(proportion.root, 4), round(itt.root, 4), round(compliers.root, 4))
+bayes_ivMat[1, ] <- iv_summary_func(bayes_iv.root, inference, inference, sub_pop = 'root', bayes = T)
 
 # Initialize New Data
 names(inference) <- paste(names(inference), sep="")
@@ -81,16 +77,23 @@ for (i in rules[-1]){
   
   # Run the IV Regression
   if (length(unique(subset$w))!= 1 & length(unique(subset$z))!= 1 & nrow(subset) >2){
+    # OLS 
     iv.reg <- ivreg(y ~ w | z,  
                     data = subset)
     
+    # Bayes 
+    bayes_iv <- brms_iv_function(inference, stan_model_first_stage, stan_model_second_stage)
+    
     #### Step 5: Output the Values of each CCACE   ####
     bcfivMat[i,] <- iv_summary_func(iv.reg, subset, inference, sub_pop)
+    
+    bayes_ivMat[i, ] <- iv_summary_func(bayes_iv, subset, inference, sub_pop, bayes = T)
     
   }
   
   if (!(length(unique(subset$w))!= 1 & length(unique(subset$z))!= 1 & nrow(subset) >2)){
     bcfivMat[i,] <- c(sub_pop, 'est_problem', NA, NA, NA, NA, NA)
+    bayes_ivMat[i, ] <- c(sub_pop, 'est_problem', NA, NA, NA, NA, NA)
   }
   
   # Delete data
@@ -99,14 +102,19 @@ for (i in rules[-1]){
 
 # Adjust P.values 
 bcfiv_correction <- cbind(as.data.frame(bcfivMat), leaves)
-adj <- round(p.adjust( as.numeric(bcfiv_correction$pvalue[which(bcfiv_correction$leaves==1)]) ,  paste(adj_method)), 5)
-Adj_pvalue <- rep(NA, length(rules)) 
+adj <-stats::p.adjust(as.numeric(bcfiv_correction$pvalue[which(bcfiv_correction$leaves==1)]),
+                      paste(adj_method))
+Adj_pvalue <- rep(NA, length(rules))
 Adj_pvalue[which(bcfiv_correction$leaves==1)] <- adj
 
 # Store Results
-bcfivResults <- cbind(as.data.frame(bcfivMat), Adj_pvalue)
+# changed by Jens, leaves denote End nodes
+bcfivResults <- cbind(as.data.frame(bcfivMat), leaves, Adj_pvalue)
+
+bayes_ivResults <- cbind(as.data.frame(bayes_ivMat), leaves)
 
 #### Return Results ####
- # return(bcfivResults)
+#  return(list('bcfivResults' = bcfivResults,
+#              'bayes_ivResults' = bayes_ivResults))
 
 

@@ -4,7 +4,9 @@
 
 own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 3000, n_sim = 7000, 
                    inference_ratio = 0.5, max_depth = 2, cp = 0.01, 
-                   minsplit = 30, adj_method = "holm", seed = 42, cost = TRUE) {
+                   minsplit = 30, adj_method = "holm", seed = 42, cost = TRUE, 
+                   stan_model_first_stage = stan_model_first_stage, 
+                   stan_model_second_stage = stan_model_second_stage, ...) {
   
   ######################################################
   ####         Step 0: Initialize the Data          ####
@@ -131,9 +133,11 @@ own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 3000, n_sim = 7000,
   ####    Step 3: Extract Rules and IV Estimation   ####
   ######################################################
 
-  bcf_ivResults <- heterogeneous_treatment_estimation(bcf_fit.tree, inference = inference, adj_method = adj_method)
+  bcf_ivResults <- heterogeneous_treatment_estimation(bcf_fit.tree, inference = inference, adj_method = adj_method,
+                                                      stan_model_first_stage, stan_model_second_stage)
   
-  s_bcf_ivResults <- heterogeneous_treatment_estimation(s_bcf_fit.tree, inference = inference, adj_method = adj_method)
+  s_bcf_ivResults <- heterogeneous_treatment_estimation(s_bcf_fit.tree, inference = inference, adj_method = adj_method,
+                                                        stan_model_first_stage, stan_model_second_stage)
 
   theoretical_results <- estimate_theoretical_subgroups(inference)
   ######################################################
@@ -143,15 +147,15 @@ own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 3000, n_sim = 7000,
   
   return(
     list(
-    'bcf_results' = bcf_ivResults,
-    's_bcf_results' = s_bcf_ivResults,
-    'pic' = pic_bcf,
-    'bcf_itt' = bcf_itt,
-    's_bcf_itt'= s_bcf_itt,
-    'bcf_tauhat' = bcf_tauhat,
-    's_bcf_tauhat' = s_bcf_tauhat,
-    'bcf_exp' = bcf_exp,
-    's_bcf_exp' = s_bcf_exp,
+    'bcf_results' = bcf_ivResults, # results BART, IV and Bayes
+    's_bcf_results' = s_bcf_ivResults, # results Soft BART IV and Bayes
+#    'pic' = pic_bcf, # Proportion of Compliers (pic)
+#    'bcf_itt' = bcf_itt,
+#    's_bcf_itt'= s_bcf_itt,
+#    'bcf_tauhat' = bcf_tauhat,
+#    's_bcf_tauhat' = s_bcf_tauhat,
+#    'bcf_exp' = bcf_exp, # posterior of treatment effects and Design Matrix
+#    's_bcf_exp' = s_bcf_exp, # posterior of treatment effects and Design Matrix
     'theoretical_results' = theoretical_results 
     )
   )

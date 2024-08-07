@@ -175,13 +175,12 @@ x_names <- paste0('x', 1:ncol(x))
       rpart.plot::rpart.plot(s_bcf_fit.tree)
     }
     
-    
     ######################################################
     ####  Step 3: Extract Rules and IV Estimation    ####
     ######################################################
     
-    bcf_ivResults <- heterogeneous_treatment_estimation(bcf_fit.tree, inference = inference, adj_method = adj_method)
+    bcf_ivResults <- heterogeneous_treatment_estimation(bcf_fit.tree, inference = inference, adj_method = adj_method,
+                                                        stan_model_first_stage, stan_model_second_stage)
     
-    s_bcf_ivResults <- heterogeneous_treatment_estimation(s_bcf_fit.tree, inference = inference, adj_method = adj_method)
-    
-    
+    s_bcf_ivResults <- heterogeneous_treatment_estimation(s_bcf_fit.tree, inference = inference, adj_method = adj_method,
+                                                          stan_model_first_stage, stan_model_second_stage)

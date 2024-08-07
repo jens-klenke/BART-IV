@@ -1,5 +1,5 @@
 get_iv_summary <- function(mod, inference, ...){
-
+  
   # get summary
   summary <- summary(mod, diagnostics = TRUE)
   iv.effect <-  summary$coef[2,1]
