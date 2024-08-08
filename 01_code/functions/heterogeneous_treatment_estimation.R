@@ -1,8 +1,8 @@
 # used insite BCF_IV-own estimation
 heterogeneous_treatment_estimation <- function(
     fit.tree, inference, adj_method,
-    stan_model_first_stage = get("stan_model_first_stage", envir = .GlobalEnv),
-    stan_model_second_stage = get("stan_model_second_stage", envir = .GlobalEnv), ...){
+    stan_model_first_stage = stan_model_first_stage,
+    stan_model_second_stage = stan_model_second_stage, ...){
   # rules end terminal nodes?
   rules <- as.numeric(row.names(fit.tree$frame[fit.tree$numresp]))
   
