@@ -1,8 +1,6 @@
 # used insite BCF_IV-own estimation
 heterogeneous_treatment_estimation <- function(
-    fit.tree, inference, adj_method,
-    stan_model_first_stage = stan_model_first_stage,
-    stan_model_second_stage = stan_model_second_stage, ...){
+    fit.tree, inference, adj_method, ...){
   # rules end terminal nodes?
   rules <- as.numeric(row.names(fit.tree$frame[fit.tree$numresp]))
   
@@ -28,15 +26,15 @@ heterogeneous_treatment_estimation <- function(
                    data = inference) # inference dataset
   
   # bayes IV estimation
-  bayes_iv.root <- brms_iv_function(inference, stan_model_first_stage, stan_model_second_stage)
-                                 #get("stan_model_first_stage", envir = .GlobalEnv), 
-                                 #get("stan_model_second_stage", envir = .GlobalEnv))
+  bayes_iv.root <- brms_iv_function(inference,i = 'root')
   
   # Store Results for Root
   # Store Results for Root
   bcfivMat[1, ] <- iv_summary_func(iv.root, inference, inference, sub_pop = 'root')
   bayes_ivMat[1, ] <- iv_summary_func(bayes_iv.root, inference, inference, 
                                       sub_pop = 'root', bayes = TRUE)
+  
+  print(paste0('number of rules ', nrow(bcfivMat)))
 
   # Initialize New Data
   names(inference) <- paste(names(inference), sep="")
@@ -73,7 +71,7 @@ heterogeneous_treatment_estimation <- function(
       iv.reg <- ivreg(y ~ w | z, data = subset)
       
       # Bayes 
-      bayes_iv <- brms_iv_function(subset, stan_model_first_stage, stan_model_second_stage)
+      bayes_iv <- brms_iv_function(subset, i)
                                    # get("stan_model_first_stage", envir = .GlobalEnv), 
                                    # get("stan_model_second_stage", envir = .GlobalEnv)) #
       

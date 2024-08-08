@@ -4,9 +4,7 @@
 
 own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 3000, n_sim = 7000, 
                    inference_ratio = 0.5, max_depth = 2, cp = 0.01, 
-                   minsplit = 30, adj_method = "holm", seed = 42, cost = TRUE, 
-                   stan_model_first_stage = stan_model_first_stage, 
-                   stan_model_second_stage = stan_model_second_stage, ...) {
+                   minsplit = 30, adj_method = "holm", seed = 42, cost = TRUE, ...) {
   
   ######################################################
   ####         Step 0: Initialize the Data          ####
@@ -133,11 +131,9 @@ own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 3000, n_sim = 7000,
   ####    Step 3: Extract Rules and IV Estimation   ####
   ######################################################
 
-  bcf_ivResults <- heterogeneous_treatment_estimation(bcf_fit.tree, inference = inference, adj_method = adj_method,
-                                                      stan_model_first_stage, stan_model_second_stage)
+  bcf_ivResults <- heterogeneous_treatment_estimation(bcf_fit.tree, inference = inference, adj_method = adj_method)
   
-  s_bcf_ivResults <- heterogeneous_treatment_estimation(s_bcf_fit.tree, inference = inference, adj_method = adj_method,
-                                                        stan_model_first_stage, stan_model_second_stage)
+  s_bcf_ivResults <- heterogeneous_treatment_estimation(s_bcf_fit.tree, inference = inference, adj_method = adj_method)
 
   theoretical_results <- estimate_theoretical_subgroups(inference)
   ######################################################

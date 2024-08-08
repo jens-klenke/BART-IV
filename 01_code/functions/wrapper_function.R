@@ -1,10 +1,7 @@
-wrapper_function <- function(path_in, row_num, stan_model_first_stage, 
-                             stan_model_second_stage, ...){
+wrapper_function <- function(path_in, row_num, ...){
   data <- readRDS(path_in)
   
-  results <- own_bcf_iv(data$y, data$w, data$z, data$X, 
-                        stan_model_first_stage = stan_model_first_stage, 
-                        stan_model_second_stage = stan_model_first_stage)
+  results <- own_bcf_iv(data$y, data$w, data$z, data$X)
   
   print(paste('Dataset', row_num, 'completed.'))
   

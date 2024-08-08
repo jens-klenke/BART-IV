@@ -29,18 +29,18 @@ data <- tibble::tibble(
                 stan_model_second_stage = list(stan_model_second_stage))
 
 try <- data %>%
-  sample_n(1)
+  sample_n(10)
   
 # 
 
 tictoc::tic()
-sim_results <- try %>%
+sim_results_pmap <- try %>%
   dplyr::mutate(results = purrr::pmap(., wrapper_function, .progress = TRUE))
 tictoc::toc()
 
 tictoc::tic()
 sim_results <- try %>%
-  dplyr::mutate(results = furrr::future_pmap(., wrapper_function, .progress = TRUE))
+  dplyr::mutate(results = furrr::future_pmap(., wrapper_function, .progress = TRUE, .options = furrr_options(seed = T)))
 tictoc::toc()
 
 # tictoc::tic()

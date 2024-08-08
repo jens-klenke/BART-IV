@@ -6,6 +6,7 @@ stan_model_second_stage <- readRDS(here::here("05_stan_code/brms_second_stage.rd
 
 # Parameters ----
 fit.tree <- bcf_fit.tree
+fit.tree <- s_bcf_fit.tree
 s_bcf_fit.tree
 inference
 adj_method
@@ -38,7 +39,7 @@ iv.root <- ivreg(y ~ w | z,
                  data = inference) # inference dataset
 
 # bayes IV estimation
-bayes_iv.root <- brms_iv_function(inference, stan_model_first_stage, stan_model_second_stage)
+bayes_iv.root <- brms_iv_function(inference, stan_model_first_stage, stan_model_second_stage, i = 'root')
 # weak instrument? 
 # https://github.com/zeileis/ivreg/blob/main/R/ivregMethods.R
 
@@ -82,7 +83,7 @@ for (i in rules[-1]){
                     data = subset)
     
     # Bayes 
-    bayes_iv <- brms_iv_function(inference, stan_model_first_stage, stan_model_second_stage)
+    bayes_iv <- brms_iv_function(subset, stan_model_first_stage, stan_model_second_stage, i = i)
     
     #### Step 5: Output the Values of each CCACE   ####
     bcfivMat[i,] <- iv_summary_func(iv.reg, subset, inference, sub_pop)

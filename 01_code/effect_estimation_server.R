@@ -15,23 +15,25 @@ options(future.globals.maxSize = 2147483648) # 2GB
 data <- tibble::tibble(
   # path for loading data
   path_in = list.files(
-    here::here("00_sim_data/"), recursive = TRUE, full.names = TRUE)
-  ) %>%
-  # filtering for desired data
-  dplyr::filter(str_detect(path_in, 'correlated_confounded')) %>%
-  dplyr::mutate(ncov = readr::parse_number(stringr::str_extract(path_in, pattern = 'ncovs[0-9]*')),
-                row_num = paste(dplyr::row_number(), 'of', max(dplyr::row_number())))
+    here::here("00_sim_data/effect.2"), recursive = TRUE, full.names = TRUE)
+) %>%
+  #  dplyr::filter(str_detect(path_in, 'try')) %>%
+  dplyr::mutate(ncov = readr::parse_number(stringr::str_extract(path_in, pattern = 'ncov.[0-9]*'), 
+                                           locale =  readr::locale(decimal_mark = ",")),
+                row_num = paste(dplyr::row_number(), 'of', max(dplyr::row_number()))) %>%
+  dplyr::mutate(stan_model_first_stage = list(stan_model_first_stage),
+                stan_model_second_stage = list(stan_model_second_stage))
 
-# 
+
+#tictoc::tic()
+#sim_results <- data %>%
+#  dplyr::mutate(results = purrr::pmap(., wrapper_function, .progress = TRUE))
+#tictoc::toc()
+
 tictoc::tic()
-sim_results <- data %>%
-  dplyr::mutate(results = furrr::future_pmap(., wrapper_function, .progress = TRUE))
+sim_results <- try %>%
+  dplyr::mutate(results = furrr::future_pmap(., wrapper_function, .progress = TRUE, .options = furrr_options(seed = T)))
 tictoc::toc()
-
-# tictoc::tic()
-# sim_results <- data %>%
-#   dplyr::mutate(results = purrr::pmap(., wrapper_function, .progress = TRUE))
-# tictoc::toc()
 
 save(sim_results, file ='Z:/Data/baseline_try_correlated_confounded.RData')
 
