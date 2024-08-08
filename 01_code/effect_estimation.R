@@ -8,8 +8,8 @@ invisible(sapply(list.files(here::here('01_code/functions'), full.names = TRUE),
        source))
 
 # load stan models ----
-stan_model_first_stage <- readRDS(here::here("05_stan_code/brms_first_stage.rds"))
-stan_model_second_stage <- readRDS(here::here("05_stan_code/brms_second_stage.rds"))
+#stan_model_first_stage <- readRDS(here::here("05_stan_code/brms_first_stage.rds"))
+#stan_model_second_stage <- readRDS(here::here("05_stan_code/brms_second_stage.rds"))
 
 # parallel plan
 future::plan(multisession, workers = 10)
@@ -24,12 +24,10 @@ data <- tibble::tibble(
 #  dplyr::filter(str_detect(path_in, 'try')) %>%
   dplyr::mutate(ncov = readr::parse_number(stringr::str_extract(path_in, pattern = 'ncov.[0-9]*'), 
                                            locale =  readr::locale(decimal_mark = ",")),
-                row_num = paste(dplyr::row_number(), 'of', max(dplyr::row_number()))) %>%
-  dplyr::mutate(stan_model_first_stage = list(stan_model_first_stage),
-                stan_model_second_stage = list(stan_model_second_stage))
+                row_num = paste(dplyr::row_number(), 'of', max(dplyr::row_number())))
 
 try <- data %>%
-  sample_n(10)
+  sample_n(1)
   
 # 
 

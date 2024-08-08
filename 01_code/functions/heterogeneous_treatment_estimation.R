@@ -34,7 +34,7 @@ heterogeneous_treatment_estimation <- function(
   bayes_ivMat[1, ] <- iv_summary_func(bayes_iv.root, inference, inference, 
                                       sub_pop = 'root', bayes = TRUE)
   
-  print(paste0('number of rules ', nrow(bcfivMat)))
+#  print(paste0('number of rules ', nrow(bcfivMat)))
 
   # Initialize New Data
   names(inference) <- paste(names(inference), sep="")
