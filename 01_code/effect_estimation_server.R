@@ -31,7 +31,9 @@ data <- tibble::tibble(
 
 tictoc::tic()
 sim_results <- data %>%
-  dplyr::mutate(results = furrr::future_pmap(., wrapper_function, .progress = TRUE, .options = furrr_options(seed = T)))
+  dplyr::mutate(results = furrr::future_pmap(., wrapper_function, 
+                                             .progress = TRUE, 
+                                             .options = furrr_options(seed = T)))
 tictoc::toc()
 
 save(sim_results, file ='Z:/Data/bayes_iv-try.RData')
