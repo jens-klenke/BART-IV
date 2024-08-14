@@ -8,7 +8,7 @@ invisible(sapply(list.files(here::here('01_code/functions'), full.names = TRUE),
                  source))
 
 # parallel plan
-future::plan(multisession, workers = 40) # base::floor(parallel::detectCores()*0.75))
+future::plan(multisession, workers = 50) # base::floor(parallel::detectCores()*0.75))
 options(future.globals.maxSize = 2147483648) # 2GB  
 
 # reading data -----
@@ -17,7 +17,7 @@ data <- tibble::tibble(
   path_in = list.files(
     here::here("00_sim_data/effect.2"), recursive = TRUE, full.names = TRUE)
 ) %>%
-  #  dplyr::filter(str_detect(path_in, 'try')) %>%
+  dplyr::filter(str_detect(path_in, 'ef.2_co.0.75_baseline.ef_correlated')) %>%
   dplyr::mutate(ncov = readr::parse_number(stringr::str_extract(path_in, pattern = 'ncov.[0-9]*'), 
                                            locale =  readr::locale(decimal_mark = ",")),
                 row_num = paste(dplyr::row_number(), 'of', max(dplyr::row_number())))
@@ -36,7 +36,7 @@ sim_results <- data %>%
                                              .options = furrr_options(seed = T)))
 tictoc::toc()
 
-save(sim_results, file ='Z:/Data/bayes_iv-try.RData')
+save(sim_results, file ='Z:/Data/ef.2_co.0.75_baseline.ef_correlated.RData')
 
 quit()
 
