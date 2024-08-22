@@ -12,7 +12,7 @@ covariates <- 'cont-cov'
 uncorrelated <- TRUE
 baseline_effect <- TRUE
 effect_size <- 1 # effect size as a function?
-compliance <- 0.75
+compliance <- 0.5
 confounded <- TRUE
 
 # confounded missing
