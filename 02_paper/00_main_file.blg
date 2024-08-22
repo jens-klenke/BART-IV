@@ -8,45 +8,49 @@ A level-1 auxiliary file: chapters/04_sim_study.aux
 A level-1 auxiliary file: chapters/05_emp_appl.aux
 A level-1 auxiliary file: chapters/06_discussion.aux
 The style file: agsm.bst
-Database file #1: refs/paper_bibtex_file.bib
-You've used 5 entries,
+Database file #1: refs/BART_IV_paper.bib
+Warning--I didn't find a database entry for "Angrist1996"
+Warning--I didn't find a database entry for "AngristPischke2008"
+Warning--I didn't find a database entry for "ImbensRubin2015"
+You've used 6 entries,
             2909 wiz_defined-function locations,
-            688 strings with 6826 characters,
-and the built_in function-call counts, 21248 in all, are:
-= -- 3445
-> -- 281
+            701 strings with 7200 characters,
+and the built_in function-call counts, 26172 in all, are:
+= -- 4267
+> -- 328
 < -- 0
-+ -- 1620
-- -- 84
-* -- 1869
-:= -- 4253
-add.period$ -- 9
-call.type$ -- 5
-change.case$ -- 70
-chr.to.int$ -- 5
-cite$ -- 5
-duplicate$ -- 80
-empty$ -- 188
-format.name$ -- 101
-if$ -- 3813
++ -- 2008
+- -- 98
+* -- 2304
+:= -- 5221
+add.period$ -- 10
+call.type$ -- 6
+change.case$ -- 84
+chr.to.int$ -- 6
+cite$ -- 6
+duplicate$ -- 96
+empty$ -- 224
+format.name$ -- 121
+if$ -- 4700
 int.to.chr$ -- 5
 int.to.str$ -- 0
-missing$ -- 5
-newline$ -- 27
-num.names$ -- 53
-pop$ -- 8
+missing$ -- 6
+newline$ -- 31
+num.names$ -- 63
+pop$ -- 11
 preamble$ -- 1
-purify$ -- 75
+purify$ -- 90
 quote$ -- 0
-skip$ -- 64
+skip$ -- 76
 stack$ -- 0
-substring$ -- 4881
-swap$ -- 15
-text.length$ -- 70
+substring$ -- 6052
+swap$ -- 18
+text.length$ -- 84
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 20
+type$ -- 24
 warning$ -- 0
-while$ -- 115
+while$ -- 138
 width$ -- 0
-write$ -- 81
+write$ -- 94
+(There were 3 warnings)

@@ -1,22 +1,92 @@
-\chapter{Potential Outcomes and IV}
+\chapter{Potential outcomes and irregular assignmnet}
+
+We follow the setup of \cite{bargagli_stoffi_causal_2020} and \cite{bargagli-stoffi_heterogeneous_2022} who follow the usual notation of the Rubin's causal model. 
+
+Given a set of $N$ units, indexed by $i = 1, \ldots, N$, we denote with $Y_i$ a generic outcome variable, with $W_i$ a binary treatment indicator, with $X$ an $N \times P$ matrix of $P$ control variables, and with $X_i$ the $i$-th $P$-dimensional row vector of covariates.
+Let us define the pair of potential outcomes $Y_i(W_i)$ by using the Stable Unit Treatment Value Assumption (SUTVA). Therefore, it holds that $Y_i(W_i = 1) = Y_i(1)$ for a unit $i$ under assignment to the treatment group and $Y_i(W_i = 0) = Y_i(0)$ under assignment to control group.
+Despite one is unable to observe both potential outcomes at the same time for each individual one is able to observe the potential outcome that aligns with the assigned treatment status:
+
+\[
+Y_i^{\text{obs}} = Y_i(1)W_i + Y_i(0)(1 - W_i).
+\]
+
+Under the strong ignorability assumptions of (1) unconfoundedness, 
+
+\[
+Y_i(W_i) \perp\!\!\!\perp W_i \mid X_i, 
+\tag{1}
+\]
+
+and (2) common support
+
+\[
+0 < \Pr(W_i = 1 \mid X_i = x) < 1 \quad \forall \, x \in X,
+\tag{2}
+\]
+
+we operate under the regular assignment mechanism which (1) prevents the existence of unmeasured confounding and (2) allows for unbiased treatment effect estimation in support of the covariate space. 
+Using strong ignorability, one can define the CATE by
+
+\[
+\tau(x) = \mathbb{E}[Y_i^{\text{obs}} \mid W_i = 1, X_i = x] - \mathbb{E}[Y_i^{\text{obs}} \mid W_i = 0, X_i = x].
+\tag{4}
+\]
+
+to analyse heterogeneous treatment effects. In this work, we deviate from this regular assignment mechanism and operate under the scenario of an irregular assignment mechanism.
+This irregular assignment mechanism allows for a violation of compliance between treatment assignment and treatment receipt such that just the assignment to treatment is assumed to be unconfounded but the treatment receipt might be confounded.
+A remedy to the issue of confoundedness in treatment receipt is the Instrumental Variable (IV) approach.
+A proper instrumental variable, $Z_i$, affects treatment receipt, $W_i$, while not being allowed to affect $Y_i$ directly such that treatment receipt depends on the treatment assignment by $W_i(Z_i)$.
+Based on the functional relation between $W_i$ and $Z_i$ and in case of a binary treatment variable, one can define four subgroups of individuals, $G_i$, such that  
+\begin{align*}
+   G_i=
+   \begin{cases}
+      C,& \text{if } W_i(Z_i = 0) = 0, W_i(Z_i = 1) = 1 \\
+      D,& \text{if } W_i(Z_i = 0) = 1, W_i(Z_i = 1) = 0 \\
+      AT,& \text{if } W_i(Z_i = 0) = 1, W_i(Z_i = 1) = 1 \\
+      NT,& \text{if }W_i(Z_i = 0) = 0, W_i(Z_i = 1) = 0
+   \end{cases}.
+\end{align*}
+
+Based on these subgrops, an IV setting can be formalized by the four assumptions \citep{Angrist1996} of exclusion restriction, 
+\begin{align}
+   Y_i(0) = Y_i(1), \text{ for } G_i \in \{AT, NT \},
+\end{align}
+monotonicity, 
+\begin{align}
+   W_i(1) \geq W_i(0) \rightarrow \pi_D = 0,
+\end{align}
+existence of compliers, 
+\begin{align}
+   P(W_i(0) < W_i(1)) > 0 \rightarrow \pi_C \ne 0,
+\end{align}
+and unconfoundedness of the instrumental variable  
+\begin{align}
+   Z_i \perp (Y_i(0, 0), Y_i(0, 1), Y_i(1, 0), Y_i(1, 1), W_i(0), W_i(1)).
+\end{align}
+
+If these assumptions hold the Complier Average Causal Effect (CACE),
+
+\[
+\tau_{\text{CACE}} = \frac{\text{ITT}_{Y,C}}{\pi_C} = \frac{\mathbb{E}[Y_i \mid Z_i = 1] - \mathbb{E}[Y_i \mid Z_i = 0]}{\mathbb{E}[W_i \mid Z_i = 1] - \mathbb{E}[W_i \mid Z_i = 0]},
+\tag{5}
+\]
+
+can be estimated from observational data. The numerator represents the average effect of the instrument, also referred to as the Intention-To-Treat (ITT) effect. 
+The denominator represents the overall proportion of units that comply with the treatment assignment, also referred to as the proportion of compliers \cite{Angrist1996}.
+CACE is also sometimes referred to as Local Average Treatment Effects (see \cite{AngristPischke2008}) and represents the estimate of the causal effect of the assignment to treatment on the principal outcome, $Y_i$, for the subpopulation of compliers \cite{ImbensRubin2015}.
 
 
 
-\section{Potential Outcomes and ITT}
+In this paper, we consider the following conditional version of CATE. The conditional CACE, $\tau_{\text{CACE}}(x)$, can be thought of as the CACE for a sub-population of observations defined by a vector of characteristics $x$:
 
-\begin{itemize}
- \item $Y_i$: outcome variable; $W_i$: treatment variable; $Z_i$: instrumental variable
- \item $\mathbb{X}$: $N \times P$ matrix of control variables
- \item $G_i$: sub-populations of units
- \begin{itemize}
-    \item $G_i=C: W_i(Z_i = 0) = 0, Wi(Zi = 1) = 1$
-    \item $G_i=D: W_i(Z_i = 0) = 1, W_i(Z_i = 1) = 0$
-    \item $G_i=AT: W_i(Z_i = 0) = 1, W_i(Z_i = 1) = 1$
-    \item $G_i=NT: W_i(Z_i = 0) = 0, W_i(Z_i = 1) = 0$
- \end{itemize}
-\end{itemize} 
+\[
+\tau_{\text{CACE}}(x) = \frac{\text{ITT}_{Y,C}(x)}{\pi_C(x)} = \frac{\mathbb{E}[Y_i \mid Z_i = 1, X_i = x] - \mathbb{E}[Y_i \mid Z_i = 0, X_i = x]}{\mathbb{E}[W_i \mid Z_i = 1, X_i = x] - \mathbb{E}[W_i \mid Z_i = 0, X_i = x]},
+\tag{6}
+\]
 
-Given the Stable Unit Treatment Value Assumption (SUTVA), one can postulate the existence of potential outcomes $Y_i(W_i)$ such that $Y_i^{obs} = Y_i(1)W_i + Y_i(0)(1-W_i)$.
+where the numerator is the conditional intention-to-treat (ITT) effect, and the denominator is the conditional proportion of compliers \cite{Angrist1996}.
+
+
 
 One can directly get from the data the effect of the assignment to treatment: 
 $$
@@ -27,28 +97,9 @@ ITT_Y &= \mathbb{E}[Y_i|Z_i=1] - \mathbb{E}[Y_i|Z_i=0] \\
 $$
 
 
-\section{IV assumptions}
-
-Assumptions to infer Complier Average Causal Effect (CACE),  
-
-$$
-\tau^{cace} = ITT_{Y,C} = \frac{\mathbb{E}[Y_i|Z_i=1]-\mathbb{E}[Y_i|Z_i=0]}{\mathbb{E}[W_i|Z_i=1]-\mathbb{E}[W_i|Z_i=0]} = \frac{ITT_Y}{\pi_C}, 
-$$ 
-
-and its conditional version (cCACE),
-
-$$
-\tau^{cace}(x) = \frac{\mathbb{E}[Y_i|Z_i=1, \mathbb{X}_i=x]-\mathbb{E}[Y_i|Z_i=0, \mathbb{X}_i=x]}{\mathbb{E}[W_i|Z_i=1, \mathbb{X}_i=x]-\mathbb{E}[W_i|Z_i=0, \mathbb{X}_i=x]} = \frac{ITT_Y(x)}{\pi_C(x)}. 
-$$ 
-
-\hspace{0.2cm}\\
-1. exclusion restriction: $Y_i(0) = Y_i(1), \text{ for } G_i \in \{AT, NT \}.$ \\
-2. monotonicity: $W_i(1) \geq W_i(0) \rightarrow \pi_D = 0.$ \\
-3. existence of compliers: $P(W_i(0) < W_i(1)) > 0 \rightarrow \pi_C \ne 0.$ \\
-4. unconfoundedness of the instrument: $Z_i \perp (Y_i(0, 0), Y_i(0, 1), Y_i(1, 0), Y_i(1, 1), W_i(0), W_i(1)).$
 
 
-\section{Estimation}
+
 
 The conditional CACE can be estimated in a generic sub-sample (i.e., for each $\mathbf{X}_i \in \mathbb{X}_j$ , where $\mathbb{X}_j$ is a
 generic node of the discovered tree, like a non-terminal node or a leaf) as:

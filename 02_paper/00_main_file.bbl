@@ -1,5 +1,13 @@
 \begin{thebibliography}{xx}
 
+\harvarditem{Bargagli~Stoffi \harvardand\
+  Gnecco}{2020}{bargagli_stoffi_causal_2020}
+Bargagli~Stoffi, F.~J. \harvardand\ Gnecco, G.  \harvardyearleft
+  2020\harvardyearright , `Causal tree with instrumental variable: an extension
+  of the causal tree framework to irregular assignment mechanisms', {\em
+  International Journal of Data Science and Analytics} {\bf 9}(3),~315--337.
+\newline\harvardurl{https://doi.org/10.1007/s41060-019-00187-z}
+
 \harvarditem[Bargagli-Stoffi et~al.]{Bargagli-Stoffi, Witte \harvardand\
   Gnecco}{2022}{bargagli-stoffi_heterogeneous_2022}
 Bargagli-Stoffi, F.~J., Witte, K.~D. \harvardand\ Gnecco, G.  \harvardyearleft

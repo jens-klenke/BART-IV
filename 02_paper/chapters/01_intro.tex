@@ -48,8 +48,10 @@
 
 \section{Contribution}
 
-We contribute to the literature on machine learning techniques designed to uncover heterogeneous effects while addressing imperfect compliance by developing specialized adaptations of tree-based algorithms.
-Specifically, we generalize Bayesian Instrumental Variable Causal Forest (BCF-IV) from \citep{bargagli-stoffi_heterogeneous_2022}. 
+We contribute to the literature on machine learning techniques designed to uncover heterogeneous effects while addressing imperfect compliance by developing adaptations of tree-based algorithms.
+Most of the recent scientific contributions in this area revolve around estimating the Conditional Average Treatment Effect (CATE) by combining machine learning algorithms with the potential outcome framework under a regular assignment mechanism (litertaure overview here).
+In this work, we focus on the estimation of the conditional Complier Average Causal Effect (cCACE) which is the treatment effect on the subgroup of compliers under the usual four assumptions within an IV framework. 
+Specifically, we generalize Bayesian Instrumental Variable Causal Forest (BCF-IV) from \citep{bargagli-stoffi_heterogeneous_2022} to estimate cCACE precisely when there are many covariates. 
 BCF-IV is a semi-parametric Bayesian regression model that builds directly on the Bayesian Additive Regression Trees (BART) algorithm (Chipman et al., 2010).
 Instead of using BART fur pure predictions of outcomes, BCF-IV is designed to identify and estimate heterogeneous effects within the subpopulation of units that comply with the treatment assignment, known as compliers. 
 Consequently, the estimated effects can be considered doubly local, representing subgroup effects within the compliers subpopulation.

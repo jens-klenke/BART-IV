@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.4.20)  25 JUL 2024 09:30
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.4.20)  22 AUG 2024 15:54
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1193,7 +1193,7 @@ File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 
 
 ] [2]
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 75.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 77.
  (/usr/local/texlive/2022/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
@@ -1202,7 +1202,7 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 
-Overfull \hbox (13.2295pt too wide) in paragraph at lines 74--77
+Overfull \hbox (13.2295pt too wide) in paragraph at lines 76--79
 []\T1/lmr/m/n/10.95 (-20) Second, BCF-IV uses a sin-gle bi-nary tree based on the CART model of (Breiman1984)
  []
 
@@ -1211,23 +1211,35 @@ Overfull \hbox (13.2295pt too wide) in paragraph at lines 74--77
 
  (./chapters/02_PO.tex
 chapter 2.
-
-Overfull \hbox (35.58386pt too wide) in paragraph at lines 44--49
-\T1/lmr/m/n/10.95 (-20) 4. un-con-found-ed-ness of the in-stru-ment: $\OML/lmm/m/it/10.95 Z[] \OMS/lmsy/m/n/10.95 ? \OT1/lmr/m/n/10.95 (-20) (\OML/lmm/m/it/10.95 Y[]\OT1/lmr/m/n/10.95 (-20) (0\OML/lmm/m/it/10.95 ; \OT1/lmr/m/n/10.95 (-20) 0)\OML/lmm/m/it/10.95 ; Y[]\OT1/lmr/m/n/10.95 (-20) (0\OML/lmm/m/it/10.95 ; \OT1/lmr/m/n/10.95 (-20) 1)\OML/lmm/m/it/10.95 ; Y[]\OT1/lmr/m/n/10.95 (-20) (1\OML/lmm/m/it/10.95 ; \OT1/lmr/m/n/10.95 (-20) 0)\OML/lmm/m/it/10.95 ; Y[]\OT1/lmr/m/n/10.95 (-20) (1\OML/lmm/m/it/10.95 ; \OT1/lmr/m/n/10.95 (-20) 1)\OML/lmm/m/it/10.95 ; W[]\OT1/lmr/m/n/10.95 (-20) (0)\OML/lmm/m/it/10.95 ; W[]\OT1/lmr/m/n/10.95 (-20) (1))\OML/lmm/m/it/10.95 :$ 
- []
-
 [4
 
 
 
 
 
-]) [5]
+]
+
+Package natbib Warning: Citation `Angrist1996' on page 5 undefined on input line 50.
+
+
+Package natbib Warning: Citation `Angrist1996' on page 5 undefined on input line 75.
+
+
+Package natbib Warning: Citation `AngristPischke2008' on page 5 undefined on input line 76.
+
+
+Package natbib Warning: Citation `ImbensRubin2015' on page 5 undefined on input line 76.
+
+[5]
+
+Package natbib Warning: Citation `Angrist1996' on page 6 undefined on input line 87.
+
+) [6]
 \openout2 = `chapters/03_BCF_IV.aux'.
 
  (./chapters/03_BCF_IV.tex
 chapter 3.
-) [6
+) [7
 
 
 
@@ -1238,18 +1250,18 @@ chapter 3.
 
  (./chapters/04_sim_study.tex
 chapter 4.
-[7
+[8
 
 
 
 
 
-]) [8]
+]) [9]
 \openout2 = `chapters/05_emp_appl.aux'.
 
  (./chapters/05_emp_appl.tex
 chapter 5.
-) [9
+) [10
 
 
 
@@ -1260,64 +1272,68 @@ chapter 5.
 
  (./chapters/06_discussion.tex
 chapter 6.
-) [10
+) [11
 
 
 
 
 
 ] (./00_main_file.bbl
-Underfull \hbox (badness 10000) in paragraph at lines 5--11
+Underfull \hbox (badness 10000) in paragraph at lines 13--19
 \T1/lmr/bx/n/10.95 (+20) URL: \T1/lmr/m/it/10.95 (+20) https://projecteuclid.org/journals/annals-of-applied-statistics/volume-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 5--11
+Underfull \hbox (badness 10000) in paragraph at lines 13--19
 \T1/lmr/m/it/10.95 (+20) 16/issue-3/Heterogeneous-causal-effects-with-imperfect-compliance--A-Bayesian-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 24--30
+Underfull \hbox (badness 10000) in paragraph at lines 32--38
 \T1/lmr/bx/n/10.95 (+20) URL: \T1/lmr/m/it/10.95 (+20) https://projecteuclid.org/journals/bayesian-analysis/volume-15/issue-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 24--30
+Underfull \hbox (badness 10000) in paragraph at lines 32--38
 \T1/lmr/m/it/10.95 (+20) 3/Bayesian-Regression-Tree-Models-for-Causal-Inference--Regularization-
  []
 
 
-Underfull \hbox (badness 2073) in paragraph at lines 32--39
+Underfull \hbox (badness 2073) in paragraph at lines 40--47
 \T1/lmr/m/n/10.95 (+20) dic-tion and Vari-able Se-lec-tion', \T1/lmr/m/it/10.95 (+20) Jour-nal of the Amer-i-can Sta-tis-ti-cal As-
  []
 
 
-Underfull \hbox (badness 4913) in paragraph at lines 32--39
+Underfull \hbox (badness 4913) in paragraph at lines 40--47
 \T1/lmr/m/it/10.95 (+20) so-ci-a-tion \T1/lmr/bx/n/10.95 (+20) 113\T1/lmr/m/n/10.95 (+20) (522), 626--636.  Pub-lisher: Tay-lor & Fran-cis _eprint:
  []
 
-) [11
+[12
 
 
 
 
-] (./00_main_file.aux (./chapters/01_intro.aux) (./chapters/02_PO.aux) (./chapters/03_BCF_IV.aux) (./chapters/04_sim_study.aux) (./chapters/05_emp_appl.aux) (./chapters/06_discussion.aux))
+]) [13]
+
+Package natbib Warning: There were undefined citations.
+
+(./00_main_file.aux (./chapters/01_intro.aux) (./chapters/02_PO.aux) (./chapters/03_BCF_IV.aux) (./chapters/04_sim_study.aux) (./chapters/05_emp_appl.aux) (./chapters/06_discussion.aux))
 Package rerunfilecheck Info: File `00_main_file.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 36118 strings out of 478268
- 713675 string characters out of 5846347
- 1254003 words of memory out of 5000000
+ 36149 strings out of 478268
+ 714090 string characters out of 5846347
+ 1254005 words of memory out of 5000000
  53387 multiletter control sequences out of 15000+600000
- 552808 words of font info for 164 fonts, out of 8000000 for 9000
+ 553730 words of font info for 175 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 108i,20n,133p,10684b,550s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 108i,20n,133p,10684b,612s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}</usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmex10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmmi6.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr17.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr6.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmri10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmro10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on 00_main_file.pdf (14 pages, 336205 bytes).
+Output written on 00_main_file.pdf (16 pages, 344814 bytes).
 PDF statistics:
- 283 PDF objects out of 1000 (max. 8388607)
- 224 compressed objects within 3 object streams
- 41 named destinations out of 1000 (max. 500000)
- 49781 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 292 PDF objects out of 1000 (max. 8388607)
+ 231 compressed objects within 3 object streams
+ 50 named destinations out of 1000 (max. 500000)
+ 49757 words of extra memory for PDF output out of 51595 (max. 10000000)
 
