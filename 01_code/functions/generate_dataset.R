@@ -25,7 +25,7 @@
 generate_dataset <- function(n = 1000, p = 100, rho = 0, null = 0, 
                              effect_size = 2, compliance = 0.75, 
                              covariates = 'cont-cov', base_line_effect = TRUE, 
-                             share_d = 0.4, uncorrelated = T) {
+                             share_d = 0.4, uncorrelated = T, confounded) {
   
   # number of discrete variables 
   n_d <- floor(p*share_d)
@@ -77,12 +77,26 @@ generate_dataset <- function(n = 1000, p = 100, rho = 0, null = 0,
     # Shrinkage Bayesian Causal Forests for Heterogeneous Treatment Effects Estimation
     # Alberto Caron, Gianluca Baio & Ioanna Manolopoulou 2022
     # p. 1208 sec. 5.1. Equation 17. # effect not correctly specified !
-    mu <-
-      # n_d number of discrete variables 
-      3 + 1.5*sin(pi*X[, n_d + 1]) + 0.5*(X[, n_d + 2] - 0.5)^2 + 
-      1.5*(2-abs(X[, n_d + 3])) # +
+    
+    if(!confounded){
+      mu <-
+        # n_d number of discrete variables 
+        3 + 1.5*sin(pi*X[, n_d + 1]) + 0.5*(X[, n_d + 2] - 0.5)^2 + 
+        1.5*(2-abs(X[, n_d + 3]))  # +
       # first and second discrete variable
-    #  1.5*X[, n_d + 4]*(X[, 1] + 1) # can not find this part
+      #  1.5*X[, n_d + 4]*(X[, 1] + 1) # can not find this part
+      
+    }
+    
+    if(confounded){
+      mu <-
+        # n_d number of discrete variables 
+        3 + 1.5*sin(pi*X[, n_d + 1]) + 0.5*(X[, n_d + 2] - 0.5)^2 + 
+        1.5*(2-abs(X[, n_d + 3]))  +
+        # first and second discrete variable
+        1.5*X[, n_d + 4]*(X[, 1] + 1) # can not find this part
+    }
+    
     
     # Generate unit level potential outcome
     y0 <- mu + rnorm(n)

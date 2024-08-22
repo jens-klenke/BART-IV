@@ -13,11 +13,12 @@ uncorrelated <- TRUE
 baseline_effect <- TRUE
 effect_size <- 1 # effect size as a function?
 compliance <- 0.75
+confounded <- TRUE
 
 # confounded missing
 
 # running the function 
 tictoc::tic()
 wrapper_data_generation(p_vec = p, covariates = covariates, uncorrelated = uncorrelated, effect_size = effect_size, 
-                        baseline_effect = TRUE, compliance = compliance)
+                        baseline_effect = TRUE, compliance = compliance, confounded = confounded)
 tictoc::toc()
