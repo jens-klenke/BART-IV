@@ -1,4 +1,10 @@
-iv_summary_func <- function(obj, subset, inference, sub_pop, pred_df, bayes = FALSE, ...){
+#iv_summary_func <- function(obj, subset, inference, sub_pop, pred_df, bayes = FALSE, ...){
+obj <- iv.root # IVREG
+obj <- bayes_iv.root # BAYES
+subset <- inference
+inference <- inference 
+sub_pop <- 'root'
+pred_df <- pred_root
   
   proportion <- nrow(subset)/nrow(inference)
   compliers <- length(which(subset$z==subset$w))/nrow(inference)
@@ -10,13 +16,13 @@ iv_summary_func <- function(obj, subset, inference, sub_pop, pred_df, bayes = FA
     p.value <- summary$coef[2,4]
     p.value.weak.iv <- summary$diagnostics[1,4]
     itt <- iv.effect*compliers
-    # add prediction
+    
     pred_df %<>%
       dplyr::mutate(tau_pred = iv.effect)
-    
+      
     # Store Results
     summary_vec <- tibble::tibble(
-      'node' = as.character(sub_pop), 
+      'node' = sub_pop, 
       'CCACE' = iv.effect, 
       'pvalue' = p.value,
       'Weak_IV_test' = p.value.weak.iv,
@@ -27,14 +33,14 @@ iv_summary_func <- function(obj, subset, inference, sub_pop, pred_df, bayes = FA
     )
     
   }
-  # bay 
+  # frequencies 
   if(bayes){
-    # add prediction
+    
     pred_df %<>%
       dplyr::mutate(tau_pred = obj[2, 1])
     
     summary_vec <- tibble::tibble(
-      "node" = as.character(sub_pop),
+      "node" = sub_pop,
       "CCACE" = obj[2, 1],
       "CCACE_l-95%_CI" = obj[2, 3],
       "CCACE_u-95%_CI" = obj[2, 4],
@@ -47,9 +53,6 @@ iv_summary_func <- function(obj, subset, inference, sub_pop, pred_df, bayes = FA
   }
   
   # return summary vector
-  return(summary_vec)
+  #return(summary_vec)
   
-}
-
-## summary IV function
-#iv_summary_func(iv.root, inference, inference, sub_pop = 'root', bayes = TRUE)
+#}

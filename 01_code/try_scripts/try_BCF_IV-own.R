@@ -18,14 +18,14 @@ options(future.globals.maxSize = 2147483648) # 2GB
 # dataset <- readRDS(data$path_in[27])
 dataset <- readRDS(here::here('00_sim_data/effect_2/baselinemu_ncovs_10/dataset_ncovs10_1'))
 dataset <- readRDS('C:/Users/jens.klenke/Documents/GitHub/BART-IV/00_sim_data/effect.2/compliance.0.75/uncorrelated/baseline.ef/ncov.50/ef.2_co.0.75_baseline.ef_uncorrelated_ncov.50_59')
-dataset <- readRDS('C:/Users/jens.klenke/Documents/GitHub/BART-IV/00_sim_data/effect.2/compliance.0.75/uncorrelated/baseline.ef/ncov.100/ef.2_co.0.75_baseline.ef_uncorrelated_ncov.100_68')
+dataset <- readRDS(here::here('00_sim_data/effect.2/compliance.0.75/uncorrelated/baseline.ef/ncov.100/ef.2_co.0.75_baseline.ef_uncorrelated_ncov.100_68'))
 
 y <- dataset$y
 w <- dataset$w
 z <- dataset$z
 x <- dataset$X
-
-# Parameters
+tau_true <- dataset$tau_true
+# Parameters,
 binary = FALSE
 n_burn = 1000
 n_sim = 1000
@@ -54,6 +54,8 @@ x_names <- paste0('x', 1:ncol(x))
   # Discovery and Inference Samples
   discovery <- iv.data[-index,]
   inference <- iv.data[index,]
+  
+  inference_tau <- tau_true[index] #NEW
   
   ######################################################
   ####  Step 1: Compute the Bayesian Causal Forest  ####
@@ -181,8 +183,14 @@ x_names <- paste0('x', 1:ncol(x))
     ####  Step 3: Extract Rules and IV Estimation    ####
     ######################################################
     
-    bcf_ivResults <- heterogeneous_treatment_estimation(bcf_fit.tree, inference = inference, adj_method = adj_method,
-                                                        stan_model_first_stage, stan_model_second_stage)
+    bcf_ivResults <- heterogeneous_treatment_estimation(bcf_fit.tree, inference = inference,
+                                                        adj_method = adj_method,
+                                                        stan_model_first_stage,
+                                                        stan_model_second_stage, 
+                                                        tau_true = tau_true) # NEW
     
-    s_bcf_ivResults <- heterogeneous_treatment_estimation(s_bcf_fit.tree, inference = inference, adj_method = adj_method,
-                                                          stan_model_first_stage, stan_model_second_stage)
+    s_bcf_ivResults <- heterogeneous_treatment_estimation(s_bcf_fit.tree, inference = inference,
+                                                          adj_method = adj_method,
+                                                          stan_model_first_stage,
+                                                          stan_model_second_stage,
+                                                          tau_true = tau_true) # NEW

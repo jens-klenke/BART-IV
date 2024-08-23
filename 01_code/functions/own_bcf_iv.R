@@ -131,9 +131,11 @@ own_bcf_iv <- function(y, w, z, x, binary = FALSE, n_burn = 3000, n_sim = 7000,
   ####    Step 3: Extract Rules and IV Estimation   ####
   ######################################################
 
-  bcf_ivResults <- heterogeneous_treatment_estimation(bcf_fit.tree, inference = inference, adj_method = adj_method)
+  bcf_ivResults <- heterogeneous_treatment_estimation(bcf_fit.tree, inference = inference,
+                                                      adj_method = adj_method, tau_true = tau_true)
   
-  s_bcf_ivResults <- heterogeneous_treatment_estimation(s_bcf_fit.tree, inference = inference, adj_method = adj_method)
+  s_bcf_ivResults <- heterogeneous_treatment_estimation(s_bcf_fit.tree, inference = inference,
+                                                        adj_method = adj_method, tau_true = tau_true)
 
   theoretical_results <- estimate_theoretical_subgroups(inference)
   ######################################################
