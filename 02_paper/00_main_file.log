@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.4.20)  22 AUG 2024 15:54
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.4.20)  23 AUG 2024 15:22
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1211,6 +1211,16 @@ Overfull \hbox (13.2295pt too wide) in paragraph at lines 76--79
 
  (./chapters/02_PO.tex
 chapter 2.
+
+Underfull \hbox (badness 10000) in paragraph at lines 7--9
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 23--25
+
+ []
+
 [4
 
 
@@ -1218,28 +1228,29 @@ chapter 2.
 
 
 ]
+Underfull \hbox (badness 10000) in paragraph at lines 41--43
 
-Package natbib Warning: Citation `Angrist1996' on page 5 undefined on input line 50.
-
-
-Package natbib Warning: Citation `Angrist1996' on page 5 undefined on input line 75.
+ []
 
 
-Package natbib Warning: Citation `AngristPischke2008' on page 5 undefined on input line 76.
-
-
-Package natbib Warning: Citation `ImbensRubin2015' on page 5 undefined on input line 76.
+Package natbib Warning: Citation `Angrist1996' on page 5 undefined on input line 74.
 
 [5]
 
-Package natbib Warning: Citation `Angrist1996' on page 6 undefined on input line 87.
+Package natbib Warning: Citation `Angrist1996' on page 6 undefined on input line 111.
 
-) [6]
+
+Package natbib Warning: Citation `AngristPischke2008' on page 6 undefined on input line 112.
+
+
+Package natbib Warning: Citation `ImbensRubin2015' on page 6 undefined on input line 112.
+
+[6]) [7]
 \openout2 = `chapters/03_BCF_IV.aux'.
 
  (./chapters/03_BCF_IV.tex
 chapter 3.
-) [7
+) [8
 
 
 
@@ -1250,18 +1261,18 @@ chapter 3.
 
  (./chapters/04_sim_study.tex
 chapter 4.
-[8
+[9
 
 
 
 
 
-]) [9]
+]) [10]
 \openout2 = `chapters/05_emp_appl.aux'.
 
  (./chapters/05_emp_appl.tex
 chapter 5.
-) [10
+) [11
 
 
 
@@ -1272,7 +1283,7 @@ chapter 5.
 
  (./chapters/06_discussion.tex
 chapter 6.
-) [11
+) [12
 
 
 
@@ -1308,12 +1319,12 @@ Underfull \hbox (badness 4913) in paragraph at lines 40--47
 \T1/lmr/m/it/10.95 (+20) so-ci-a-tion \T1/lmr/bx/n/10.95 (+20) 113\T1/lmr/m/n/10.95 (+20) (522), 626--636.  Pub-lisher: Tay-lor & Fran-cis _eprint:
  []
 
-[12
+[13
 
 
 
 
-]) [13]
+]) [14]
 
 Package natbib Warning: There were undefined citations.
 
@@ -1322,18 +1333,18 @@ Package rerunfilecheck Info: File `00_main_file.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 36149 strings out of 478268
- 714090 string characters out of 5846347
+ 36175 strings out of 478268
+ 714440 string characters out of 5846347
  1254005 words of memory out of 5000000
- 53387 multiletter control sequences out of 15000+600000
- 553730 words of font info for 175 fonts, out of 8000000 for 9000
+ 53397 multiletter control sequences out of 15000+600000
+ 554239 words of font info for 181 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  108i,20n,133p,10684b,612s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}</usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmex10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmmi6.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr17.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr6.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmri10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmro10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on 00_main_file.pdf (16 pages, 344814 bytes).
+Output written on 00_main_file.pdf (17 pages, 352006 bytes).
 PDF statistics:
- 292 PDF objects out of 1000 (max. 8388607)
- 231 compressed objects within 3 object streams
- 50 named destinations out of 1000 (max. 500000)
+ 318 PDF objects out of 1000 (max. 8388607)
+ 256 compressed objects within 3 object streams
+ 54 named destinations out of 1000 (max. 500000)
  49757 words of extra memory for PDF output out of 51595 (max. 10000000)
 
