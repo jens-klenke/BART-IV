@@ -17,6 +17,7 @@ pred_df <- pred_root
     p.value.weak.iv <- summary$diagnostics[1,4]
     itt <- iv.effect*compliers
     
+    # prediction
     pred_df %<>%
       dplyr::mutate(tau_pred = iv.effect)
       
@@ -36,6 +37,7 @@ pred_df <- pred_root
   # frequencies 
   if(bayes){
     
+    # metrics
     pred_df %<>%
       dplyr::mutate(tau_pred = obj[2, 1])
     
@@ -51,6 +53,11 @@ pred_df <- pred_root
     )
     
   }
+  
+  # compute metrics
+  summary_vec$pehe_bias <- PEHE_fun(pred_df$tau_pred, pred_df$tau_true)
+  summary_vec$node_bias <- bias_fun(pred_df$tau_pred, pred_df$tau_true)
+  
   
   # return summary vector
   #return(summary_vec)

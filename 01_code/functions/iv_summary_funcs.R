@@ -46,6 +46,10 @@ iv_summary_func <- function(obj, subset, inference, sub_pop, pred_df, bayes = FA
     
   }
   
+  # compute metrics
+  summary_vec$pehe_bias <- PEHE_fun(pred_df$tau_pred, pred_df$tau_true)
+  summary_vec$node_bias <- bias_fun(pred_df$tau_pred, pred_df$tau_true)
+  
   # return summary vector
   return(summary_vec)
   

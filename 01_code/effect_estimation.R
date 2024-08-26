@@ -30,7 +30,6 @@ try <- data %>%
   sample_n(1)
   
 # 
-
 tictoc::tic()
 sim_results_pmap <- try %>%
   dplyr::mutate(results = purrr::pmap(., wrapper_function, .progress = TRUE))
@@ -46,7 +45,7 @@ tictoc::toc()
 #   dplyr::mutate(results = purrr::pmap(., wrapper_function, .progress = TRUE))
 # tictoc::toc()
 
-saveRDS(sim_results, here::here('03_sim_results/discrete_covariates_cost_func_n.rds'))
+# saveRDS(sim_results, here::here('03_sim_results/discrete_covariates_cost_func_n.rds'))
 
 ################################################################################
 #####                          continuous data                              #####

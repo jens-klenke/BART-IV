@@ -14,7 +14,9 @@ heterogeneous_treatment_estimation <- function(
     "Pi_obs" = rep(NA_real_, length(rules)),
     "ITT" = rep(NA_real_, length(rules)),
     "Pi_compliers" = rep(NA_real_, length(rules)),
-    "pred" = rep(NA, length(rules))
+    "pred" = rep(NA, length(rules)),
+    "pehe" = rep(NA, length(rules)),
+    "bias" = rep(NA, length(rules))
   )
   
   bayes_ivMat <- tibble::tibble(
@@ -25,7 +27,9 @@ heterogeneous_treatment_estimation <- function(
     "Pi_obs" = rep(NA_real_, length(rules)),
     "ITT" = rep(NA_real_, length(rules)),
     "Pi_compliers" = rep(NA_real_, length(rules)),
-    "pred" = rep(NA, length(rules))
+    "pred" = rep(NA, length(rules)),
+    "pehe" = rep(NA, length(rules)),
+    "bias" = rep(NA, length(rules))
   )
   
   # prediction dataframe
@@ -46,18 +50,14 @@ heterogeneous_treatment_estimation <- function(
                    data = inference) # inference dataset
   
   # bayes IV estimation
-  bayes_iv.root <- brms_iv_function(inference,i = 'root')
+  bayes_iv.root <- brms_iv_function(inference, i = 'root')
   
-  # Store Results for Root
   # Store Results for Root
   bcfivMat[1, ] <- iv_summary_func(iv.root, inference, inference, 
                                    sub_pop = 'root', pred_df)
   bayes_ivMat[1, ] <- iv_summary_func(bayes_iv.root, inference, inference, 
                                       sub_pop = 'root', pred_df, bayes = TRUE)
   
-  print('root')
-#  print(paste0('number of rules ', nrow(bcfivMat)))
-
   # Initialize New Data
   names(inference) <- paste(names(inference), sep="")
   
@@ -111,12 +111,12 @@ heterogeneous_treatment_estimation <- function(
     }
     
     if (!(length(unique(subset$w))!= 1 & length(unique(subset$z))!= 1 & nrow(subset) >2)){
-      bcfivMat[i,] <- c(sub_pop, 'est_problem', NA, NA, NA, NA, NA)
-      bayes_ivMat[i, ] <- c(sub_pop, 'est_problem', NA, NA, NA, NA, NA)
+      bcfivMat[i,] <- c(sub_pop, 'est_problem', NA, NA, NA, NA, NA, NA, NA)
+      bayes_ivMat[i, ] <- c(sub_pop, 'est_problem', NA, NA, NA, NA, NA, NA, NA)
     }
     
     # print argument 
-    print(i)
+       # print(i)
     # Delete data
     rm(subset)
   }
@@ -136,6 +136,28 @@ heterogeneous_treatment_estimation <- function(
   
   bayes_ivResults <- bayes_ivMat %>%
     dplyr::mutate('leaves' = leaves)
+  
+  ## Add overall metrics (only leaves) ----
+  # bcf
+  leaves_bcfiv_pred <- bcfivResults %>%
+    dplyr::filter(leaves == 1) %>%
+    dplyr::select(pred) %>%
+    tidyr::unnest(pred)
+  
+  bcfivResults %<>%
+    dplyr::mutate(pehe_leaves = PEHE_fun(leaves_bcfiv_pred$tau_true, leaves_bcfiv_pred$tau_pred),
+                  bias_leaves = bias_fun(leaves_bcfiv_pred$tau_true, leaves_bcfiv_pred$tau_pred))
+  
+  # bayes
+  leaves_bayes_iv_pred <- bayes_ivResults %>%
+    dplyr::filter(leaves == 1) %>%
+    dplyr::select(pred) %>%
+    tidyr::unnest(pred)
+  
+  bayes_ivResults %<>%
+    dplyr::mutate(pehe_leaves = PEHE_fun(leaves_bayes_iv_pred$tau_true, leaves_bayes_iv_pred$tau_pred),
+                  bias_leaves = bias_fun(leaves_bayes_iv_pred$tau_true, leaves_bayes_iv_pred$tau_pred))
+  
 
   #### Return Results ####
   return(list('bcfivResults' = bcfivResults,
