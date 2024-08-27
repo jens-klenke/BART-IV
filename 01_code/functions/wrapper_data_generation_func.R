@@ -1,6 +1,6 @@
 #'
 #' 
-wrapper_data_generation <- function(H = 100, n = 1000, p_vec, covariates, uncorrelated, effect_size, baseline_effect, compliance = 0.75, confounded) {
+wrapper_data_generation <- function(path, H = 100, n = 1000, p_vec, covariates, uncorrelated, effect_size, baseline_effect, compliance = 0.75, confounded) {
   # function head 
   
   baseline <- ifelse(baseline_effect, 'baseline.ef', 'no.baseline.ef')
@@ -11,12 +11,9 @@ wrapper_data_generation <- function(H = 100, n = 1000, p_vec, covariates, uncorr
     # get number of covvariates  
     p <- p_vec[i]  
     # folder path 
-    folder_path <- here::here('00_sim_data', 
-                              paste0('effect.', effect_size),
-                              paste0('compliance.', compliance),
-                              uncorrelated_data,
-                              paste0(baseline, conf),
-                              paste0('ncov.', p))
+    folder_path <- paste0(path, '\\effect.', effect_size, '\\compliance.', 
+                          compliance, '\\', uncorrelated_data, '\\', baseline, conf, 
+                          '\\', 'ncov.', p)
     
     # name of the dataset
     data_name <- paste0('ef.', effect_size, '_',
