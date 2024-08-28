@@ -14,17 +14,18 @@ future::plan(multisession, workers = 10)
 options(future.globals.maxSize = 2147483648) # 2GB  
 
 
-# Data 
-# dataset <- readRDS(data$path_in[27])
-dataset <- readRDS(here::here('00_sim_data/effect_2/baselinemu_ncovs_10/dataset_ncovs10_1'))
-dataset <- readRDS(here::here('00_sim_data/effect.2/compliance.0.75/uncorrelated/baseline.ef/ncov.50/ef.2_co.0.75_baseline.ef_uncorrelated_ncov.50_59'))
-dataset <- readRDS(here::here('00_sim_data/effect.2/compliance.0.75/uncorrelated/baseline.ef/ncov.100/ef.2_co.0.75_baseline.ef_uncorrelated_ncov.100_68'))
+# Data only try data! -> SIM Data in Sciebo
+path_in <- list.files(
+  here::here('00_sim_data'), recursive = TRUE, full.names = TRUE)
+
+dataset <- readRDS(path_in[1])
 
 y <- dataset$y
 w <- dataset$w
 z <- dataset$z
 x <- dataset$X
 tau_true <- dataset$tau_true
+
 # Parameters,
 binary = FALSE
 n_burn = 1000
