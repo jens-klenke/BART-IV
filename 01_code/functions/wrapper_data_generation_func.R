@@ -1,6 +1,6 @@
 #'
 #' 
-wrapper_data_generation <- function(path, H = 100, n = 1000, p_vec, covariates, uncorrelated, effect_size, baseline_effect, compliance = 0.75, confounded) {
+wrapper_data_generation <- function(path, H = 500, n = 1000, p_vec, covariates, uncorrelated, effect_size, baseline_effect, compliance = 0.75, confounded) {
   # function head 
   
   baseline <- ifelse(baseline_effect, 'baseline.ef', 'no.baseline.ef')
@@ -31,9 +31,9 @@ wrapper_data_generation <- function(path, H = 100, n = 1000, p_vec, covariates, 
     for (j in 1:H){
       generate_dataset(n = n, p = p, covariates = covariates, base_line_effect = baseline_effect, uncorrelated = uncorrelated,
                        effect_size = effect_size, confounded = confounded) %>%
-        saveRDS(file = paste0(folder_path, '/', data_name, '_', j))
+        saveRDS(file = paste0(folder_path, '/', data_name, '_', j, '.rds'))
       # printing
-      if(j %% 10 == 0)
+      if(j %% 100 == 0)
         cat( j, " of 100 Dataset with", p, "covariates finished. \n")
     }
     
