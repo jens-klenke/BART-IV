@@ -5,7 +5,7 @@ heterogeneous_treatment_estimation <- function(
   # rules end terminal nodes
   rules <- as.numeric(row.names(fit.tree$frame[fit.tree$numresp]))
   
-  # Initialize Outputs
+  # Initialize Outputs # NEW
   bcfivMat <- tibble::tibble(
     "node" = rep(NA_character_, length(rules)),
     "CCACE" = rep(NA_real_, length(rules)),
@@ -15,8 +15,10 @@ heterogeneous_treatment_estimation <- function(
     "ITT" = rep(NA_real_, length(rules)),
     "Pi_compliers" = rep(NA_real_, length(rules)),
     "pred" = rep(NA, length(rules)),
-    "pehe" = rep(NA, length(rules)),
-    "bias" = rep(NA, length(rules))
+    "node_coverage" = rep(NA, length(rules)),
+    "node_pehe" = rep(NA, length(rules)),
+    "node_bias" = rep(NA, length(rules)),
+    "node_abs_bias" = rep(NA, length(rules))
   )
   
   bayes_ivMat <- tibble::tibble(
@@ -28,9 +30,12 @@ heterogeneous_treatment_estimation <- function(
     "ITT" = rep(NA_real_, length(rules)),
     "Pi_compliers" = rep(NA_real_, length(rules)),
     "pred" = rep(NA, length(rules)),
-    "pehe" = rep(NA, length(rules)),
-    "bias" = rep(NA, length(rules))
+    "node_coverage" = rep(NA, length(rules)),
+    "node_pehe" = rep(NA, length(rules)),
+    "node_bias" = rep(NA, length(rules)),
+    "node_abs_bias" = rep(NA, length(rules))
   )
+  
   
   # prediction dataframe
   pred_df <- tibble::tibble(
@@ -145,8 +150,14 @@ heterogeneous_treatment_estimation <- function(
     tidyr::unnest(pred)
   
   bcfivResults %<>%
-    dplyr::mutate(pehe_leaves = PEHE_fun(leaves_bcfiv_pred$tau_true, leaves_bcfiv_pred$tau_pred),
-                  bias_leaves = bias_fun(leaves_bcfiv_pred$tau_true, leaves_bcfiv_pred$tau_pred))
+    dplyr::mutate(
+      # Pehe leaves
+      pehe_leaves = PEHE_fun(leaves_bcfiv_pred$tau_true, leaves_bcfiv_pred$tau_pred),
+      # bias leaves
+      bias_leaves = bias_fun(leaves_bcfiv_pred$tau_true, leaves_bcfiv_pred$tau_pred),
+      # coverage leaves
+      coverage_leaves = mean(leaves_bcfiv_pred$coverage)
+      )
   
   # bayes
   leaves_bayes_iv_pred <- bayes_ivResults %>%
@@ -155,9 +166,14 @@ heterogeneous_treatment_estimation <- function(
     tidyr::unnest(pred)
   
   bayes_ivResults %<>%
-    dplyr::mutate(pehe_leaves = PEHE_fun(leaves_bayes_iv_pred$tau_true, leaves_bayes_iv_pred$tau_pred),
-                  bias_leaves = bias_fun(leaves_bayes_iv_pred$tau_true, leaves_bayes_iv_pred$tau_pred))
-  
+    dplyr::mutate(
+      # Pehe leaves
+      pehe_leaves = PEHE_fun(leaves_bayes_iv_pred$tau_true, leaves_bayes_iv_pred$tau_pred),
+      # bias leaves
+      bias_leaves = bias_fun(leaves_bayes_iv_pred$tau_true, leaves_bayes_iv_pred$tau_pred),
+      # coverage leaves
+      coverage_leaves = mean(leaves_bayes_iv_pred$coverage)
+    )
 
   #### Return Results ####
   return(list('bcfivResults' = bcfivResults,

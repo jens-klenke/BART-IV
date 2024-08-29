@@ -22,6 +22,11 @@ pred_df <- pred_root
       dplyr::mutate(tau_pred = iv.effect, 
                     coverage = coverage_95_fun(summary, .$tau_true))
       
+    # node coverage 
+    cove <- pred_df %>%
+      dplyr::summarise(mean(coverage))
+    
+    print(cove)
     # Store Results
     summary_vec <- tibble::tibble(
       'node' = sub_pop, 
@@ -31,7 +36,8 @@ pred_df <- pred_root
       'Pi_obs' = proportion, 
       'ITT' = itt,
       'Pi_compliers' = compliers, 
-      'pred_df' = list(pred_df)
+      'pred_df' = list(pred_df), 
+      'node_coverage' = unlist(pred_df$coverage)
     )
     
   }
@@ -43,6 +49,10 @@ pred_df <- pred_root
       dplyr::mutate(tau_pred = obj[2, 1],
                     coverage = coverage_95_fun(obj, .$tau_true, bayes = TRUE))
     
+    # node coverage 
+    cove <- pred_df %>%
+      dplyr::summarise(mean(coverage))
+    
     summary_vec <- tibble::tibble(
       "node" = sub_pop,
       "CCACE" = obj[2, 1],
@@ -51,7 +61,8 @@ pred_df <- pred_root
       "Pi_obs" = proportion,
       "ITT" = obj[2, 1]*compliers,
       "Pi_compliers" = compliers,
-      'pred_df' = list(pred_df)
+      'pred_df' = list(pred_df),
+      'node_coverage' = mean(pred_df$coverage)
     )
     
   }

@@ -1,5 +1,4 @@
 ## try script for function heterogeneous_treatment_estimation  in '01_code/functions/heterogeneous_treatment_estimation.R' ----
-
 # fit.tree, inference, adj_method, inference_tau
 
 # load stan models ----
@@ -31,9 +30,10 @@ bcfivMat <- tibble::tibble(
   "ITT" = rep(NA_real_, length(rules)),
   "Pi_compliers" = rep(NA_real_, length(rules)),
   "pred" = rep(NA, length(rules)),
-  "pehe" = rep(NA, length(rules)),
-  "bias" = rep(NA, length(rules)),
-  "abs_bias" = rep(NA, length(rules))
+  "node_coverage" = rep(NA, length(rules)),
+  "node_pehe" = rep(NA, length(rules)),
+  "node_bias" = rep(NA, length(rules)),
+  "node_abs_bias" = rep(NA, length(rules))
 )
 
 bayes_ivMat <- tibble::tibble(
@@ -45,9 +45,10 @@ bayes_ivMat <- tibble::tibble(
   "ITT" = rep(NA_real_, length(rules)),
   "Pi_compliers" = rep(NA_real_, length(rules)),
   "pred" = rep(NA, length(rules)),
-  "pehe" = rep(NA, length(rules)),
-  "bias" = rep(NA, length(rules)),
-  "abs_bias" = rep(NA, length(rules))
+  "node_coverage" = rep(NA, length(rules)),
+  "node_pehe" = rep(NA, length(rules)),
+  "node_bias" = rep(NA, length(rules)),
+  "node_abs_bias" = rep(NA, length(rules))
 )
 
 pred_df <- tibble::tibble(
@@ -158,8 +159,14 @@ leaves_bcfiv_pred <- bcfivResults %>%
   tidyr::unnest(pred)
 
 bcfivResults %<>%
-  dplyr::mutate(pehe_leaves = PEHE_fun(leaves_bcfiv_pred$tau_true, leaves_bcfiv_pred$tau_pred),
-                bias_leaves = bias_fun(leaves_bcfiv_pred$tau_true, leaves_bcfiv_pred$tau_pred))
+  dplyr::mutate(
+    # Pehe leaves
+    pehe_leaves = PEHE_fun(leaves_bcfiv_pred$tau_true, leaves_bcfiv_pred$tau_pred),
+    # bias leaves
+    bias_leaves = bias_fun(leaves_bcfiv_pred$tau_true, leaves_bcfiv_pred$tau_pred),
+    # coverage leaves
+    coverage_leaves = mean(leaves_bcfiv_pred$coverage)
+    )
 
 # bayes
 leaves_bayes_iv_pred <- bayes_ivResults %>%
@@ -168,8 +175,14 @@ leaves_bayes_iv_pred <- bayes_ivResults %>%
   tidyr::unnest(pred)
 
 bayes_ivResults %<>%
-  dplyr::mutate(pehe_leaves = PEHE_fun(leaves_bayes_iv_pred$tau_true, leaves_bayes_iv_pred$tau_pred),
-                bias_leaves = bias_fun(leaves_bayes_iv_pred$tau_true, leaves_bayes_iv_pred$tau_pred))
+  dplyr::mutate(
+    # Pehe leaves
+    pehe_leaves = PEHE_fun(leaves_bayes_iv_pred$tau_true, leaves_bayes_iv_pred$tau_pred),
+    # bias leaves
+    bias_leaves = bias_fun(leaves_bayes_iv_pred$tau_true, leaves_bayes_iv_pred$tau_pred),
+    # coverage leaves
+    coverage_leaves = mean(leaves_bayes_iv_pred$coverage)
+    )
 
 #### Return Results ####
 #  return(list('bcfivResults' = bcfivResults,
