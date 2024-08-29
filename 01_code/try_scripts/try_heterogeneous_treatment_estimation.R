@@ -32,7 +32,8 @@ bcfivMat <- tibble::tibble(
   "Pi_compliers" = rep(NA_real_, length(rules)),
   "pred" = rep(NA, length(rules)),
   "pehe" = rep(NA, length(rules)),
-  "bias" = rep(NA, length(rules))
+  "bias" = rep(NA, length(rules)),
+  "abs_bias" = rep(NA, length(rules))
 )
 
 bayes_ivMat <- tibble::tibble(
@@ -45,7 +46,8 @@ bayes_ivMat <- tibble::tibble(
   "Pi_compliers" = rep(NA_real_, length(rules)),
   "pred" = rep(NA, length(rules)),
   "pehe" = rep(NA, length(rules)),
-  "bias" = rep(NA, length(rules))
+  "bias" = rep(NA, length(rules)),
+  "abs_bias" = rep(NA, length(rules))
 )
 
 pred_df <- tibble::tibble(

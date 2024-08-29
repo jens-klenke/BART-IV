@@ -9,6 +9,10 @@ source(here::here('01_code/packages.R'))
 invisible(sapply(list.files(here::here('01_code/functions'), full.names = TRUE), 
                  source))
 
+# load stan models ----
+stan_model_first_stage <- readRDS(here::here("05_stan_code/brms_first_stage.rds"))
+stan_model_second_stage <- readRDS(here::here("05_stan_code/brms_second_stage.rds"))
+
 # parallel plan
 future::plan(multisession, workers = 10)
 options(future.globals.maxSize = 2147483648) # 2GB  

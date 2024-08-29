@@ -17,9 +17,10 @@ pred_df <- pred_root
     p.value.weak.iv <- summary$diagnostics[1,4]
     itt <- iv.effect*compliers
     
-    # prediction
+    # prediction and coverage 
     pred_df %<>%
-      dplyr::mutate(tau_pred = iv.effect)
+      dplyr::mutate(tau_pred = iv.effect, 
+                    coverage = coverage_95_fun(summary, .$tau_true))
       
     # Store Results
     summary_vec <- tibble::tibble(
@@ -39,7 +40,8 @@ pred_df <- pred_root
     
     # metrics
     pred_df %<>%
-      dplyr::mutate(tau_pred = obj[2, 1])
+      dplyr::mutate(tau_pred = obj[2, 1],
+                    coverage = coverage_95_fun(obj, .$tau_true, bayes = TRUE))
     
     summary_vec <- tibble::tibble(
       "node" = sub_pop,
@@ -55,11 +57,16 @@ pred_df <- pred_root
   }
   
   # compute metrics
-  summary_vec$pehe_bias <- PEHE_fun(pred_df$tau_pred, pred_df$tau_true)
+  summary_vec$node_pehe <- PEHE_fun(pred_df$tau_pred, pred_df$tau_true)
   summary_vec$node_bias <- bias_fun(pred_df$tau_pred, pred_df$tau_true)
-  
+  summary_vec$node_abs_bias <- abs_bias_fun(pred_df$tau_pred, pred_df$tau_true)
   
   # return summary vector
   #return(summary_vec)
   
 #}
+
+
+
+  
+# Oracl Algorithm 
