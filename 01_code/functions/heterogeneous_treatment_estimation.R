@@ -155,6 +155,8 @@ heterogeneous_treatment_estimation <- function(
       pehe_leaves = PEHE_fun(leaves_bcfiv_pred$tau_true, leaves_bcfiv_pred$tau_pred),
       # bias leaves
       bias_leaves = bias_fun(leaves_bcfiv_pred$tau_true, leaves_bcfiv_pred$tau_pred),
+      # abs bias leaves
+      abs_bias_leaves = abs_bias_fun(leaves_bcfiv_pred$tau_true, leaves_bcfiv_pred$tau_pred),
       # coverage leaves
       coverage_leaves = mean(leaves_bcfiv_pred$coverage)
       )
@@ -171,6 +173,8 @@ heterogeneous_treatment_estimation <- function(
       pehe_leaves = PEHE_fun(leaves_bayes_iv_pred$tau_true, leaves_bayes_iv_pred$tau_pred),
       # bias leaves
       bias_leaves = bias_fun(leaves_bayes_iv_pred$tau_true, leaves_bayes_iv_pred$tau_pred),
+      # abs bias leaves
+      abs_bias_leaves = abs_bias_fun(leaves_bayes_iv_pred$tau_true, leaves_bayes_iv_pred$tau_pred),
       # coverage leaves
       coverage_leaves = mean(leaves_bayes_iv_pred$coverage)
     )

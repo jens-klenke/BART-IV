@@ -22,7 +22,7 @@ options(future.globals.maxSize = 2147483648) # 2GB
 path_in <- list.files(
   here::here('00_sim_data'), recursive = TRUE, full.names = TRUE)
 
-dataset <- readRDS(path_in[1])
+dataset <- readRDS(path_in[7])
 
 y <- dataset$y
 w <- dataset$w

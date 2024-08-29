@@ -14,10 +14,9 @@ options(future.globals.maxSize = 2147483648) # 2GB
 # reading data -----
 data <- tibble::tibble(
   # path for loading data
-  path_in = list.files(
-    here::here("00_sim_data/effect.1"), recursive = TRUE, full.names = TRUE)
+  path_in = list.files(sim_data_path(), recursive = TRUE, full.names = TRUE)
 ) %>%
-  dplyr::filter(str_detect(path_in, 'ef.1_co.0.5_baseline.ef_correlated')) %>%
+  dplyr::filter(str_detect(path_in, 'ef.2_co.0.75_baseline.ef_correlated__')) %>%
   dplyr::mutate(ncov = readr::parse_number(stringr::str_extract(path_in, pattern = 'ncov.[0-9]*'), 
                                            locale =  readr::locale(decimal_mark = ",")),
                 row_num = paste(dplyr::row_number(), 'of', max(dplyr::row_number())))
@@ -28,8 +27,8 @@ sim_results <- data %>%
                                              .progress = TRUE, 
                                              .options = furrr_options(seed = T)))
 tictoc::toc()
-save(sim_results, file ='Z:/Data/ef.1_co.0.5_baseline.ef_correlated.RData')
-save(sim_results, file = here::here('03_sim_results/effect.1/ef.1_co.0.5_baseline.ef_correlated.RData'))
+save(sim_results, file ='Z:/Data/ef.2_co.0.75_baseline.ef_correlated.RData')
+# save(sim_results, file = here::here('03_sim_results/effect.1/ef.1_co.0.5_baseline.ef_correlated.RData'))
 
 quit()
 

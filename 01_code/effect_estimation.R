@@ -18,7 +18,7 @@ options(future.globals.maxSize = 2147483648) # 2GB
 # reading data 
 data <- tibble::tibble(
   # path for loading data
-  path_in = list.files('C:\\Users\\Jens Klenke\\Documents\\BART-IV\\00_sim_data', # sim_data_path(),  
+  path_in = list.files(sim_data_path(), # 'C:\\Users\\Jens Klenke\\Documents\\BART-IV\\00_sim_data', #   
     recursive = TRUE, full.names = TRUE)
   ) %>%
 #  dplyr::filter(str_detect(path_in, 'effect.1')) %>%
