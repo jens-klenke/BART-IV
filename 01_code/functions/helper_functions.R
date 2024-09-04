@@ -9,7 +9,7 @@ sim_data_path <- function(...){
   # IBES Server
   if(base::Sys.info()["nodename"] == 'IBES-CALC01' & 
      base::Sys.info()["effective_user"] == 'jens.klenke'){
-    path <- 'Z:\\00_sim_data'
+    path <- 'E:\\jens.klenke\\00_sim_data'
   }
   
   cat('\n', 'Input path set to: \n' , 
