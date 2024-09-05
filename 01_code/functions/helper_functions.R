@@ -6,6 +6,12 @@ sim_data_path <- function(...){
     path <- 'C:\\Users\\Jens Klenke\\sciebo - Klenke, Jens (snjeklen@uni-duisburg-essen.de)@uni-duisburg-essen.sciebo.de\\BART_IV-data\\00_sim_data'
   }
   
+  # Office PC
+  if(base::Sys.info()["nodename"] == "OEK-PC-202201A" & 
+     base::Sys.info()["effective_user"] == "jens.klenke"){
+    path <- 'C:\\Users\\jens.klenke\\sciebo\\BART_IV-data\\00_sim_data'
+  }
+  
   # IBES Server
   if(base::Sys.info()["nodename"] == 'IBES-CALC01' & 
      base::Sys.info()["effective_user"] == 'jens.klenke'){

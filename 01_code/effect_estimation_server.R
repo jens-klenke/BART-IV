@@ -8,8 +8,8 @@ invisible(sapply(list.files(here::here('01_code/functions'), full.names = TRUE),
                  source))
 
 # parallel plan
-future::plan(multisession, workers = 50) # base::floor(parallel::detectCores()*0.75))
-options(future.globals.maxSize = 2147483648) # 2GB  
+#future::plan(multisession, workers = 50) # base::floor(parallel::detectCores()*0.75))
+#options(future.globals.maxSize = 2147483648) # 2GB  
 
 # reading data -----
 data <- tibble::tibble(
@@ -21,13 +21,17 @@ data <- tibble::tibble(
                                            locale =  readr::locale(decimal_mark = ",")),
                 row_num = paste(dplyr::row_number(), 'of', max(dplyr::row_number())))
 
+try <- data %>%
+  sample_n(1)
+
+
 tictoc::tic()
-sim_results <- data %>%
-  dplyr::mutate(results = furrr::future_pmap(., wrapper_function, 
-                                             .progress = TRUE, 
-                                             .options = furrr_options(seed = T)))
+sim_results_pmap <- try %>%
+  dplyr::mutate(results = purrr::pmap(., wrapper_function, .progress = TRUE))
 tictoc::toc()
-save(sim_results, file ='Z:/Data/ef.2_co.0.75_baseline.ef_correlated.RData')
+
+
+save(sim_results, file =' ')
 # save(sim_results, file = here::here('03_sim_results/effect.1/ef.1_co.0.5_baseline.ef_correlated.RData'))
 
 quit()

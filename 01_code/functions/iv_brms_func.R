@@ -5,12 +5,6 @@ brms_iv_function <- function(data, ...){
     #model_first_stage, 
     newdata = data)
   
-#  if(i == 'root'){
-#    print(paste('Root'))
-#  } else{
-#    print(paste('Loop i:', i))  
-#  }
-  
 #  print(paste('inside brms function:', nrow(data)))
   
   # Extract fitted values (predicted X)
@@ -23,8 +17,9 @@ brms_iv_function <- function(data, ...){
   
   # return parameters
   tau_hat <- summary(second_stage)$fixed
+  #  print(paste('effect:', summary(second_stage)$fixed[2, 1]))
   
-#  print(paste('effect:', summary(second_stage)$fixed[2, 1]))
+  rm(first_stage, second_stage)
   
   return(tau_hat)
 }

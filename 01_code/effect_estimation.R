@@ -35,26 +35,11 @@ sim_results_pmap <- try %>%
   dplyr::mutate(results = purrr::pmap(., wrapper_function, .progress = TRUE))
 tictoc::toc()
 
-tictoc::tic()
-sim_results <- try %>%
-  dplyr::mutate(results = furrr::future_pmap(., wrapper_function, .progress = TRUE, .options = furrr_options(seed = T)))
-tictoc::toc()
-
-# tictoc::tic()
-# sim_results <- data %>%
-#   dplyr::mutate(results = purrr::pmap(., wrapper_function, .progress = TRUE))
-# tictoc::toc()
+#tictoc::tic()
+#sim_results <- try %>%
+#  dplyr::mutate(results = furrr::future_pmap(., wrapper_function, .progress = TRUE, .options = furrr_options(seed = T)))
+#tictoc::toc()
 
 # saveRDS(sim_results, here::here('03_sim_results/discrete_covariates_cost_func_n.rds'))
 
-
-try <- data %>%
-  dplyr::mutate(effect = readr::parse_number(stringr::str_extract(path_in, "effect.\\d+"),
-                                             locale =  readr::locale(decimal_mark = ",")),
-                compliance = ifelse(str_detect(path_in, '0.75'), 0.75, 0.5),
-                uncorrelated = ifelse(str_detect(path_in, 'uncorrelated'), 'uncorrelated','correlated'),
-                confounded = ifelse(str_detect(path_in, 'baseline.efconfounded'), 'confounded', 'unconfounded')
-  ) %>%
-  dplyr::group_by(effect, compliance, uncorrelated, confounded, ncov) %>%
-  count()
 

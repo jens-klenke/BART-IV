@@ -63,6 +63,9 @@ heterogeneous_treatment_estimation <- function(
   bayes_ivMat[1, ] <- iv_summary_func(bayes_iv.root, inference, inference, 
                                       sub_pop = 'root', pred_df, bayes = TRUE)
   
+  # delete root estimations 
+  rm(iv.root, bayes_iv.root)
+  
   # Initialize New Data
   names(inference) <- paste(names(inference), sep="")
   
@@ -116,14 +119,14 @@ heterogeneous_treatment_estimation <- function(
     }
     
     if (!(length(unique(subset$w))!= 1 & length(unique(subset$z))!= 1 & nrow(subset) >2)){
-      bcfivMat[i,] <- c(sub_pop, 'est_problem', NA, NA, NA, NA, NA, NA, NA)
-      bayes_ivMat[i, ] <- c(sub_pop, 'est_problem', NA, NA, NA, NA, NA, NA, NA)
+      bcfivMat[i,] <-     c(sub_pop, 'est_problem', NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
+      bayes_ivMat[i, ] <- c(sub_pop, 'est_problem', NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
     }
     
     # print argument 
        # print(i)
-    # Delete data
-    rm(subset)
+    # Delete data and models
+    rm(subset, iv.reg, bayes_iv)
   }
   
   # Adjust P.values 
