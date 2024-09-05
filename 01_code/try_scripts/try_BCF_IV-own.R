@@ -17,7 +17,6 @@ stan_model_second_stage <- readRDS(here::here("05_stan_code/brms_second_stage.rd
 future::plan(multisession, workers = 10)
 options(future.globals.maxSize = 2147483648) # 2GB  
 
-
 # Data only try data! -> SIM Data in Sciebo
 path_in <- list.files(
   here::here('00_sim_data'), recursive = TRUE, full.names = TRUE)
