@@ -1,7 +1,7 @@
 brms_iv_function <- function(data, ...){
   # first stage 
-  first_stage <- brms:::update.brmsfit(
-    readRDS(here::here("05_stan_code/brms_first_stage.rds")),
+  first_stage <- brms:::update.brmsfit(stan_model_first_stage,
+#    readRDS(here::here("05_stan_code/brms_first_stage.rds")),
     #model_first_stage, 
     newdata = data)
   
@@ -12,7 +12,8 @@ brms_iv_function <- function(data, ...){
   
   # second stage 
   second_stage <- brms:::update.brmsfit(
-    readRDS(here::here("05_stan_code/brms_second_stage.rds")), #model_second_stage, 
+    stan_model_second_stage,
+#    readRDS(here::here("05_stan_code/brms_second_stage.rds")), #model_second_stage, 
     newdata = data)
   
   # return parameters
