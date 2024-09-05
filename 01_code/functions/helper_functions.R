@@ -18,6 +18,12 @@ sim_data_path <- function(...){
     path <- 'E:\\jens.klenke\\00_sim_data'
   }
   
+  # TS-02
+  if(base::Sys.info()["nodename"] == 'OEK-TS02' & 
+     base::Sys.info()["effective_user"] == 'jens.klenke'){
+    path <- 'C:\\Users\\jens.klenke\\Documents\\BART_IV-data'
+  }
+  
   cat('\n', 'Input path set to: \n' , 
       '\t -', crayon::yellow(path), '\n' 
       )
