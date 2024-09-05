@@ -139,6 +139,10 @@ own_bcf_iv <- function(y, w, z, x, tau_true, binary = FALSE, n_burn = 3000, n_si
                                                         adj_method = adj_method, tau_true = tau_true)
 
   theoretical_results <- estimate_theoretical_subgroups(inference)
+  
+  # clean temp data
+  unlink(tempdir(), recursive = TRUE, force = TRUE)
+  
   ######################################################
   ####             Step 4: Return results           ####
   ######################################################

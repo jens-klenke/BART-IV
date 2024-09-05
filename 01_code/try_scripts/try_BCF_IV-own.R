@@ -9,19 +9,22 @@ source(here::here('01_code/packages.R'))
 invisible(sapply(list.files(here::here('01_code/functions'), full.names = TRUE), 
                  source))
 
+# current temp directory
+tempdir()
+
 # load stan models ----
 stan_model_first_stage <- readRDS(here::here("05_stan_code/brms_first_stage.rds"))
 stan_model_second_stage <- readRDS(here::here("05_stan_code/brms_second_stage.rds"))
 
 # parallel plan
-future::plan(multisession, workers = 10)
-options(future.globals.maxSize = 2147483648) # 2GB  
+# future::plan(multisession, workers = 10)
+# options(future.globals.maxSize = 2147483648) # 2GB  
 
 # Data only try data! -> SIM Data in Sciebo
 path_in <- list.files(
   here::here('00_sim_data'), recursive = TRUE, full.names = TRUE)
 
-dataset <- readRDS(path_in[7])
+dataset <- readRDS(path_in[1])
 
 y <- dataset$y
 w <- dataset$w
@@ -193,8 +196,12 @@ x_names <- paste0('x', 1:ncol(x))
                                                         stan_model_second_stage, 
                                                         tau_true = tau_true) # NEW
     
+    unlink(tempdir(), recursive = TRUE)
+    
     s_bcf_ivResults <- heterogeneous_treatment_estimation(s_bcf_fit.tree, inference = inference,
                                                           adj_method = adj_method,
                                                           stan_model_first_stage,
                                                           stan_model_second_stage,
                                                           tau_true = tau_true) # NEW
+    
+    unlink(tempdir(), recursive = TRUE)

@@ -1,15 +1,9 @@
 brms_iv_function <- function(data, ...){
   # first stage 
-  first_stage <- brms:::update.brmsfit(
-    readRDS(here::here("05_stan_code/brms_first_stage.rds")),
+  first_stage <- brms:::update.brmsfit(stan_model_first_stage,
+#    readRDS(here::here("05_stan_code/brms_first_stage.rds")),
     #model_first_stage, 
     newdata = data)
-  
-#  if(i == 'root'){
-#    print(paste('Root'))
-#  } else{
-#    print(paste('Loop i:', i))  
-#  }
   
 #  print(paste('inside brms function:', nrow(data)))
   
@@ -18,13 +12,15 @@ brms_iv_function <- function(data, ...){
   
   # second stage 
   second_stage <- brms:::update.brmsfit(
-    readRDS(here::here("05_stan_code/brms_second_stage.rds")), #model_second_stage, 
+    stan_model_second_stage,
+#    readRDS(here::here("05_stan_code/brms_second_stage.rds")), #model_second_stage, 
     newdata = data)
   
   # return parameters
   tau_hat <- summary(second_stage)$fixed
+  #  print(paste('effect:', summary(second_stage)$fixed[2, 1]))
   
-#  print(paste('effect:', summary(second_stage)$fixed[2, 1]))
+  rm(first_stage, second_stage)
   
   return(tau_hat)
 }

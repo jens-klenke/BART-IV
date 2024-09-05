@@ -1,0 +1,7 @@
+r in `dplyr::mutate()`:
+ℹ In argument: `results = furrr::future_pmap(., wrapper_function, .progress = TRUE, .options = furrr_options(seed = T))`.
+Caused by error:
+ℹ In index: 24.
+Caused by error in `inDL()`:
+! kann shared object 'C:/Users/JENS~1.KLE/AppData/Local/Temp/4/RtmpkbhPZU/file558c55032d0.dll' nicht laden:
+  maximale Zahl von DLLs erreicht...
