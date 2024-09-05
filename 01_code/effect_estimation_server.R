@@ -30,6 +30,7 @@ sim_results_pmap <- try %>%
   dplyr::mutate(results = purrr::pmap(., wrapper_function, .progress = TRUE))
 tictoc::toc()
 
+unlink(tempdir(), recursive = TRUE)
 
 save(sim_results, file =' ')
 # save(sim_results, file = here::here('03_sim_results/effect.1/ef.1_co.0.5_baseline.ef_correlated.RData'))
