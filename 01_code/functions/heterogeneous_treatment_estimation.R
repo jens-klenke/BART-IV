@@ -120,28 +120,28 @@ heterogeneous_treatment_estimation <- function(
     
     if (!(length(unique(subset$w))!= 1 & length(unique(subset$z))!= 1 & nrow(subset) >2)){
       bcfivMat[i,] <- tibble::tibble(
-        "node" = sub_pop,
+        "node" = as.character(sub_pop),
         "CCACE" = NA_real_,
         "pvalue" = NA_real_,
         "Weak_IV_test" = NA_real_,
         "Pi_obs" = NA_real_,
         "ITT" = NA_real_,
         "Pi_compliers" = NA_real_,
-        "pred" = list(NA_real_),
+        "pred" = list(c('estimation_problem')),
         "node_coverage" = NA_real_,
         "node_pehe" = NA_real_,
         "node_bias" = NA_real_,
         "node_abs_bias" = NA_real_)
       
       bayes_ivMat[i, ] <- tibble::tibble(
-        "node" = sub_pop,
+        "node" = as.character(sub_pop),
         "CCACE" = NA_real_,
         "pvalue" = NA_real_,
         "Weak_IV_test" = NA_real_,
         "Pi_obs" = NA_real_,
         "ITT" = NA_real_,
         "Pi_compliers" = NA_real_,
-        "pred" = list(NA_real_),
+        "pred" = list(c('estimation_problem')),
         "node_coverage" = NA_real_,
         "node_pehe" = NA_real_,
         "node_bias" = NA_real_,
