@@ -25,6 +25,7 @@ path_in <- list.files(
   here::here('00_sim_data'), recursive = TRUE, full.names = TRUE)
 
 dataset <- readRDS(path_in[1])
+dataset <- readRDS(try$path_in[1])
 
 y <- dataset$y
 w <- dataset$w

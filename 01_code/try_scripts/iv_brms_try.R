@@ -21,12 +21,20 @@ library(brms)
 #Y <- 2 * X + 0.5 * U + rnorm(n)
 # Combine into a data frame
 #data <- data.frame(Y, X, Z, U)
-dataset <- readRDS(here::here('00_sim_data/effect_2/baselinemu_ncovs_10/dataset_ncovs10_1'))
+# dataset <- readRDS(here::here('00_sim_data/effect_2/baselinemu_ncovs_10/dataset_ncovs10_1'))
+path_in <- list.files(
+  here::here('00_sim_data'), recursive = TRUE, full.names = TRUE)
+
+dataset <- readRDS(path_in[1])
+
 y <- dataset$y
 w <- dataset$w
 z <- dataset$z
 x <- dataset$X
 data <- as.data.frame(cbind(y, w, z, x))
+
+data %<>%
+  dplyr::sample_n(500)
 
 # Estimate the treatment effect using IV (Z as instrument for X)
 iv_model <- ivreg(y ~ w | z, data = data)
@@ -37,8 +45,10 @@ iv_summary$diagnostics[1, 4]
 
 # Perform Bayesian IV regression using brms
 # First stage: regress X on Z
-stan_model_first_stage <- brm(w ~ z, data = data, chains = 4, iter = 2000, warmup = 1000)
+stan_model_first_stage <- brm(w ~ z, data = data, chains = 4, iter = 4000, silent = 2, refresh = 0)
                    #, save_model = "05_stan_code/brms_first_stage.stan",  silent = 2, refresh = 0)
+
+saveRDS(stan_model_first_stage, file = '05_stan_code/brms_first_stage_4000.rds')
 
 summary(stan_model_first_stage)
 
@@ -46,12 +56,12 @@ summary(stan_model_first_stage)
 data$w_hat <- fitted(stan_model_first_stage)[,1]
 
 # Second stage: regress Y on X_hat
-stan_model_second_stage <- brm(Y ~ X_hat, data = data, chains = 4, iter = 2000)
+stan_model_second_stage <- brm(y ~ w_hat, data = data, chains = 4, iter = 4000, silent = 2, refresh = 0)
                                #, warmup = 1000, save_model = "05_stan_code/brms_second_stage.stan", silent = 2, refresh = 0)
 
-saveRDS(stan_model_second_stage, file = '05_stan_code/brms_second_stage.rds')
+saveRDS(stan_model_second_stage, file = '05_stan_code/brms_second_stage_4000.rds')
 # Summarize the Bayesian IV model
-summary(second_stage)
+summary(stan_model_second_stage)
 
 #### second test  ####
 

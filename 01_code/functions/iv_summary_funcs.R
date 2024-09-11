@@ -21,6 +21,7 @@ iv_summary_func <- function(obj, subset, inference, sub_pop, pred_df, bayes = FA
     # Store Results
     summary_vec <- tibble::tibble(
       'node' = as.character(sub_pop), 
+      'est_problems' = 'no',
       'CCACE' = iv.effect, 
       'pvalue' = p.value,
       'Weak_IV_test' = p.value.weak.iv,
@@ -44,6 +45,7 @@ iv_summary_func <- function(obj, subset, inference, sub_pop, pred_df, bayes = FA
     
     summary_vec <- tibble::tibble(
       "node" = as.character(sub_pop),
+      'est_problems' = 'no',
       "CCACE" = obj[2, 1],
       "CCACE_l-95%_CI" = obj[2, 3],
       "CCACE_u-95%_CI" = obj[2, 4],

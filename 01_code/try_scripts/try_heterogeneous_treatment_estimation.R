@@ -23,6 +23,7 @@ rules <- as.numeric(row.names(fit.tree$frame[fit.tree$numresp]))
 # Initialize Outputs # NEW
 bcfivMat <- tibble::tibble(
   "node" = rep(NA_character_, length(rules)),
+  "est_problems" = rep(NA_character_, length(rules)),
   "CCACE" = rep(NA_real_, length(rules)),
   "pvalue" = rep(NA_real_, length(rules)),
   "Weak_IV_test" = rep(NA_real_, length(rules)),
@@ -38,6 +39,7 @@ bcfivMat <- tibble::tibble(
 
 bayes_ivMat <- tibble::tibble(
   "node" = rep(NA_character_, length(rules)),
+  "est_problems" = rep(NA_character_, length(rules)),
   "CCACE" = rep(NA_real_, length(rules)),
   "CCACE_l-95%_CI" = rep(NA_real_, length(rules)),
   "CCACE_u-95%_CI" = rep(NA_real_, length(rules)),
@@ -129,13 +131,14 @@ for (i in rules[-1]){
   if (!(length(unique(subset$w))!= 1 & length(unique(subset$z))!= 1 & nrow(subset) >2)){
     bcfivMat[i,] <- tibble::tibble(
       "node" = as.character(sub_pop),
+      "est_problems" = 'yes',
       "CCACE" = NA_real_,
       "pvalue" = NA_real_,
       "Weak_IV_test" = NA_real_,
       "Pi_obs" = NA_real_,
       "ITT" = NA_real_,
       "Pi_compliers" = NA_real_,
-      "pred" = list(c('estimation_problem')),
+      "pred" = list(pred_subset),
       "node_coverage" = NA_real_,
       "node_pehe" = NA_real_,
       "node_bias" = NA_real_,
@@ -143,13 +146,14 @@ for (i in rules[-1]){
       
     bayes_ivMat[i, ] <- tibble::tibble(
       "node" = as.character(sub_pop),
+      "est_problems" = 'yes',
       "CCACE" = NA_real_,
       "pvalue" = NA_real_,
       "Weak_IV_test" = NA_real_,
       "Pi_obs" = NA_real_,
       "ITT" = NA_real_,
       "Pi_compliers" = NA_real_,
-      "pred" = list(c('estimation_problem')),
+      "pred" = list(pred_subset),
       "node_coverage" = NA_real_,
       "node_pehe" = NA_real_,
       "node_bias" = NA_real_,

@@ -8,6 +8,7 @@ heterogeneous_treatment_estimation <- function(
   # Initialize Outputs # NEW
   bcfivMat <- tibble::tibble(
     "node" = rep(NA_character_, length(rules)),
+    "est_problems" = rep(NA_character_, length(rules)),
     "CCACE" = rep(NA_real_, length(rules)),
     "pvalue" = rep(NA_real_, length(rules)),
     "Weak_IV_test" = rep(NA_real_, length(rules)),
@@ -23,6 +24,7 @@ heterogeneous_treatment_estimation <- function(
   
   bayes_ivMat <- tibble::tibble(
     "node" = rep(NA_character_, length(rules)),
+    "est_problems" = rep(NA_character_, length(rules)),
     "CCACE" = rep(NA_real_, length(rules)),
     "CCACE_l-95%_CI" = rep(NA_real_, length(rules)),
     "CCACE_u-95%_CI" = rep(NA_real_, length(rules)),
@@ -119,15 +121,17 @@ heterogeneous_treatment_estimation <- function(
     }
     
     if (!(length(unique(subset$w))!= 1 & length(unique(subset$z))!= 1 & nrow(subset) >2)){
+      print('estimation problem')
       bcfivMat[i,] <- tibble::tibble(
         "node" = as.character(sub_pop),
+        "est_problems" = 'yes',
         "CCACE" = NA_real_,
         "pvalue" = NA_real_,
         "Weak_IV_test" = NA_real_,
         "Pi_obs" = NA_real_,
         "ITT" = NA_real_,
         "Pi_compliers" = NA_real_,
-        "pred" = list(c('estimation_problem')),
+        "pred" =  list(pred_subset),
         "node_coverage" = NA_real_,
         "node_pehe" = NA_real_,
         "node_bias" = NA_real_,
@@ -135,13 +139,14 @@ heterogeneous_treatment_estimation <- function(
       
       bayes_ivMat[i, ] <- tibble::tibble(
         "node" = as.character(sub_pop),
+        "est_problems" = 'yes',
         "CCACE" = NA_real_,
         "pvalue" = NA_real_,
         "Weak_IV_test" = NA_real_,
         "Pi_obs" = NA_real_,
         "ITT" = NA_real_,
         "Pi_compliers" = NA_real_,
-        "pred" = list(c('estimation_problem')),
+        "pred" =  list(pred_subset),
         "node_coverage" = NA_real_,
         "node_pehe" = NA_real_,
         "node_bias" = NA_real_,
@@ -150,8 +155,8 @@ heterogeneous_treatment_estimation <- function(
     
     # print argument 
        # print(i)
-    # Delete data and models
-    rm(subset, iv.reg, bayes_iv)
+    # detect and delete data and models
+    rm(list = ls()[ls() %in% c('subset', 'iv.reg', 'bayes_iv')])
   }
   
   # Adjust P.values 
@@ -171,41 +176,42 @@ heterogeneous_treatment_estimation <- function(
     dplyr::mutate('leaves' = leaves)
   
   ## Add overall metrics (only leaves) ----
+  ## not in the loop
   # bcf
-  leaves_bcfiv_pred <- bcfivResults %>%
-    dplyr::filter(leaves == 1) %>%
-    dplyr::select(pred) %>%
-    tidyr::unnest(pred)
+#  leaves_bcfiv_pred <- bcfivResults %>%
+#    dplyr::filter(leaves == 1) %>%
+#    dplyr::select(pred) %>%
+#    tidyr::unnest(pred)
   
-  bcfivResults %<>%
-    dplyr::mutate(
+#  bcfivResults %<>%
+#    dplyr::mutate(
       # Pehe leaves
-      pehe_leaves = PEHE_fun(leaves_bcfiv_pred$tau_true, leaves_bcfiv_pred$tau_pred),
+#      pehe_leaves = PEHE_fun(leaves_bcfiv_pred$tau_true, leaves_bcfiv_pred$tau_pred),
       # bias leaves
-      bias_leaves = bias_fun(leaves_bcfiv_pred$tau_true, leaves_bcfiv_pred$tau_pred),
+#      bias_leaves = bias_fun(leaves_bcfiv_pred$tau_true, leaves_bcfiv_pred$tau_pred),
       # abs bias leaves
-      abs_bias_leaves = abs_bias_fun(leaves_bcfiv_pred$tau_true, leaves_bcfiv_pred$tau_pred),
+#      abs_bias_leaves = abs_bias_fun(leaves_bcfiv_pred$tau_true, leaves_bcfiv_pred$tau_pred),
       # coverage leaves
-      coverage_leaves = mean(leaves_bcfiv_pred$coverage)
-      )
+#      coverage_leaves = mean(leaves_bcfiv_pred$coverage)
+#      )
   
   # bayes
-  leaves_bayes_iv_pred <- bayes_ivResults %>%
-    dplyr::filter(leaves == 1) %>%
-    dplyr::select(pred) %>%
-    tidyr::unnest(pred)
+ # leaves_bayes_iv_pred <- bayes_ivResults %>%
+#    dplyr::filter(leaves == 1) %>%
+#    dplyr::select(pred) %>%
+#    tidyr::unnest(pred)
   
-  bayes_ivResults %<>%
-    dplyr::mutate(
+#  bayes_ivResults %<>%
+#    dplyr::mutate(
       # Pehe leaves
-      pehe_leaves = PEHE_fun(leaves_bayes_iv_pred$tau_true, leaves_bayes_iv_pred$tau_pred),
+#      pehe_leaves = PEHE_fun(leaves_bayes_iv_pred$tau_true, leaves_bayes_iv_pred$tau_pred),
       # bias leaves
-      bias_leaves = bias_fun(leaves_bayes_iv_pred$tau_true, leaves_bayes_iv_pred$tau_pred),
+#      bias_leaves = bias_fun(leaves_bayes_iv_pred$tau_true, leaves_bayes_iv_pred$tau_pred),
       # abs bias leaves
-      abs_bias_leaves = abs_bias_fun(leaves_bayes_iv_pred$tau_true, leaves_bayes_iv_pred$tau_pred),
+#      abs_bias_leaves = abs_bias_fun(leaves_bayes_iv_pred$tau_true, leaves_bayes_iv_pred$tau_pred),
       # coverage leaves
-      coverage_leaves = mean(leaves_bayes_iv_pred$coverage)
-    )
+#      coverage_leaves = mean(leaves_bayes_iv_pred$coverage)
+#    )
 
   #### Return Results ####
   return(list('bcfivResults' = bcfivResults,
