@@ -32,8 +32,14 @@ check_bayes <- ifelse(sum(bayes_results$est_problems == 'yes') > 0,
 # inference and bayes
 leaves_bcfiv_pred <- bcf_leave_results$bcfivResults %>%
   dplyr::filter(leaves == 1) %>%
+  dplyr::select(pred, node) %>%
+  tidyr::unnest(pred)
+
+bcf_leave_results$bcfivResults %>%
+  dplyr::filter(est_problems == 'yes') %>%
   dplyr::select(pred) %>%
   tidyr::unnest(pred)
+  
 
 leave_result <- tibble::tibble(
   # Model
