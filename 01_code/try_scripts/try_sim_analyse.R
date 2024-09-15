@@ -16,6 +16,14 @@ sim_results <- try_sim_results
 # per row (with map)
 results_per_n <- sim_results$results[[1]]
 
+# initialize Dataframe
+df <- tibble::tibble(
+  'detect_model' = rep(c('bcf', 's_bcf'), times = c(2, 2)) ,
+  'est_method' = rep(c('inferential', 'bayes'), times = 2)
+)
+
+
+
 # bcf vs sbcf
 bcf_leave_results <- results_per_n$bcf_results
 s_bcf_leave_results <- results_per_n$s_bcf_results
@@ -23,7 +31,7 @@ s_bcf_leave_results <- results_per_n$s_bcf_results
 inference_results <- bcf_leave_results$bcfivResults
 bayes_results <- bcf_leave_results$bayes_ivResults
 
-# check if we have NO! estimation problems!
+# check if we FALSE -> estimation problems!
 check_inference <- ifelse(sum(inference_results$est_problems == 'yes') > 0, 
                           FALSE, TRUE)
 check_bayes <- ifelse(sum(bayes_results$est_problems == 'yes') > 0, 
