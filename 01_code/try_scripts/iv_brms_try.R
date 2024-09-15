@@ -48,7 +48,7 @@ iv_summary$diagnostics[1, 4]
 stan_model_first_stage <- brm(w ~ z, data = data, chains = 4, iter = 4000, silent = 2, refresh = 0)
                    #, save_model = "05_stan_code/brms_first_stage.stan",  silent = 2, refresh = 0)
 
-# saveRDS(stan_model_first_stage, file = '05_stan_code/brms_first_stage_4000.rds')
+# saveRDS(stan_model_first_stage, file = '05_stan_code/brms_first_stage_4000_mac.rds')
 
 summary(stan_model_first_stage)
 
@@ -59,7 +59,7 @@ data$w_hat <- fitted(stan_model_first_stage)[,1]
 stan_model_second_stage <- brm(y ~ w_hat, data = data, chains = 4, iter = 4000, silent = 2, refresh = 0)
                                #, warmup = 1000, save_model = "05_stan_code/brms_second_stage.stan", silent = 2, refresh = 0)
 
-# saveRDS(stan_model_second_stage, file = '05_stan_code/brms_second_stage_4000.rds')
+saveRDS(stan_model_second_stage, file = '05_stan_code/brms_second_stage_4000_mac.rds')
 # Summarize the Bayesian IV model
 summary(stan_model_second_stage)
 

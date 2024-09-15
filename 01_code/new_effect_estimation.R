@@ -18,10 +18,10 @@ future::plan(multisession, workers = 5)
 # reading data 
 data <- tibble::tibble(
   # path for loading data
-  path_in = list.files(sim_data_path(), # 'C:\\Users\\Jens Klenke\\Documents\\BART-IV\\00_sim_data', #   
+  path_in = list.files(here::here('00_sim_data'), # sim_data_path(), # 'C:\\Users\\Jens Klenke\\Documents\\BART-IV\\00_sim_data', #   
     recursive = TRUE, full.names = TRUE)
   ) %>%
-  dplyr::filter(str_detect(path_in, 'ef.2_co.0.75_baseline.ef_correlated_confounded')) %>%
+#  dplyr::filter(str_detect(path_in, 'ef.2_co.0.75_baseline.ef_correlated_confounded')) %>%
   dplyr::mutate(ncov = readr::parse_number(stringr::str_extract(path_in, pattern = 'ncov.[0-9]*'), 
                                            locale =  readr::locale(decimal_mark = ",")))
 

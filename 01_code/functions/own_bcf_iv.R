@@ -140,8 +140,11 @@ own_bcf_iv <- function(y, w, z, x, tau_true, binary = FALSE, n_burn = 3000, n_si
 
   theoretical_results <- estimate_theoretical_subgroups(inference)
   
-  # clean temp data
-  unlink(tempdir(), recursive = TRUE, force = TRUE)
+  # clean temp data only in WINDOWS!
+  if(base::Sys.info()["sysname"] == 'Windows'){
+    unlink(tempdir(), recursive = TRUE, force = TRUE)  
+  }
+  
   
   ######################################################
   ####             Step 4: Return results           ####

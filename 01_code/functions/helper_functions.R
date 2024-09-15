@@ -12,6 +12,12 @@ sim_data_path <- function(...){
     path <- 'C:\\Users\\jens.klenke\\sciebo\\BART_IV-data\\00_sim_data'
   }
   
+  # Mac 
+  if(base::Sys.info()["nodename"] == "MacBook-Air" & 
+     base::Sys.info()["effective_user"] == "jensklenke"){
+    path <- '~/Documents/BART_IV-data/00_sim_data'
+  }
+  
   # IBES Server
   if(base::Sys.info()["nodename"] == 'IBES-CALC01' & 
      base::Sys.info()["effective_user"] == 'jens.klenke'){
