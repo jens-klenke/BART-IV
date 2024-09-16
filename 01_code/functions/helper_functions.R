@@ -13,7 +13,7 @@ sim_data_path <- function(...){
   }
   
   # Mac 
-  if(base::Sys.info()["nodename"] == "MacBook-Air" & 
+  if(base::Sys.info()["sysname"] == "Darwin" & 
      base::Sys.info()["effective_user"] == "jensklenke"){
     path <- '~/Documents/BART_IV-data/00_sim_data'
   }

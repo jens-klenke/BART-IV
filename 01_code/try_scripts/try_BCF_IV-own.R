@@ -13,8 +13,14 @@ invisible(sapply(list.files(here::here('01_code/functions'), full.names = TRUE),
 tempdir()
 
 # load stan models ----
-stan_model_first_stage <- readRDS(here::here("05_stan_code/brms_first_stage.rds"))
-stan_model_second_stage <- readRDS(here::here("05_stan_code/brms_second_stage.rds"))
+if(base::Sys.info()["sysname"] == 'Windows'){
+  stan_model_first_stage <- readRDS(here::here("05_stan_code/brms_first_stage.rds"))
+  stan_model_second_stage <- readRDS(here::here("05_stan_code/brms_second_stage.rds"))    
+  }
+if(base::Sys.info()["sysname"] == 'Darwin'){
+  stan_model_first_stage <- readRDS(here::here("05_stan_code/brms_first_stage_4000_mac.rds"))
+  stan_model_second_stage <- readRDS(here::here("05_stan_code/brms_second_stage_4000_mac.rds"))
+  }
 
 # parallel plan
 # future::plan(multisession, workers = 10)
@@ -31,7 +37,10 @@ y <- dataset$y
 w <- dataset$w
 z <- dataset$z
 x <- dataset$X
+w1 <- dataset$w1
+w0 <- dataset$w0
 tau_true <- dataset$tau_true
+names(dataset)
 
 # Parameters,
 binary = FALSE
@@ -63,7 +72,13 @@ x_names <- paste0('x', 1:ncol(x))
   discovery <- iv.data[-index,]
   inference <- iv.data[index,]
   
-  inference_tau <- tau_true[index] #NEW
+  # saving to a dataframe? 
+  pred_df <- tibble::tibble(
+    index = index,
+    tau_true = tau_true[index],
+    w1 = w1[index],
+    w0 = w0[index],
+    tau_pred = NA_real_)
   
   ######################################################
   ####  Step 1: Compute the Bayesian Causal Forest  ####
@@ -195,7 +210,8 @@ x_names <- paste0('x', 1:ncol(x))
                                                         adj_method = adj_method,
                                                         stan_model_first_stage,
                                                         stan_model_second_stage, 
-                                                        tau_true = tau_true) # NEW
+                                                        pred_df = pred_df) # delete tau_true
+                                                      #  tau_true = tau_true) # NEW
     
     unlink(tempdir(), recursive = TRUE)
     
@@ -203,6 +219,7 @@ x_names <- paste0('x', 1:ncol(x))
                                                           adj_method = adj_method,
                                                           stan_model_first_stage,
                                                           stan_model_second_stage,
+                                                          # pred_df = pred_df # delete tau_true
                                                           tau_true = tau_true) # NEW
     
     unlink(tempdir(), recursive = TRUE)

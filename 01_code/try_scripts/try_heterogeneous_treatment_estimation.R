@@ -11,7 +11,8 @@ fit.tree <- s_bcf_fit.tree
 s_bcf_fit.tree
 inference
 adj_method
-tau_true
+pred_df
+# tau_true
 
 # function body ----
 # function call
@@ -53,10 +54,10 @@ bayes_ivMat <- tibble::tibble(
   "node_abs_bias" = rep(NA, length(rules))
 )
 
-pred_df <- tibble::tibble(
-  index = as.numeric(row.names(inference)),
-  tau_true = tau_true[as.numeric(row.names(inference))], 
-  tau_pred = NA_real_)
+#pred_df <- tibble::tibble(
+#  index = as.numeric(row.names(inference)),
+#  tau_true = tau_true[as.numeric(row.names(inference))], 
+#  tau_pred = NA_real_)
 
 # Generate Leaves (end notes) Indicator
 lvs <- leaves <- numeric(length(rules)) 

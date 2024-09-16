@@ -8,11 +8,17 @@ invisible(sapply(list.files(here::here('01_code/functions'), full.names = TRUE),
        source))
 
 # load stan models ----
-stan_model_first_stage <- readRDS(here::here("05_stan_code/brms_first_stage_4000_mac.rds"))
-stan_model_second_stage <- readRDS(here::here("05_stan_code/brms_second_stage_4000_mac.rds"))
+if(base::Sys.info()["sysname"] == 'Windows'){
+  stan_model_first_stage <- readRDS(here::here("05_stan_code/brms_first_stage.rds"))
+  stan_model_second_stage <- readRDS(here::here("05_stan_code/brms_second_stage.rds"))    
+}
+if(base::Sys.info()["sysname"] == 'Darwin'){
+  stan_model_first_stage <- readRDS(here::here("05_stan_code/brms_first_stage_4000_mac.rds"))
+  stan_model_second_stage <- readRDS(here::here("05_stan_code/brms_second_stage_4000_mac.rds"))
+}
 
 # parallel plan
-future::plan(multisession, workers = 5)
+future::plan(multisession, workers = 6)
 #options(future.globals.maxSize = 2147483648) # 2GB  
 
 # reading data 
@@ -24,7 +30,11 @@ data <- tibble::tibble(
   dplyr::filter(str_detect(path_in, 'ef.1_co.0.75_baseline.ef_correlated_confounded')) %>%
   dplyr::mutate(ncov = readr::parse_number(stringr::str_extract(path_in, pattern = 'ncov.[0-9]*'), 
                                            locale =  readr::locale(decimal_mark = ",")))
-
+# try
+# data <- data %>%
+#  dplyr::group_by(ncov) %>%
+#  dplyr::slice_sample(n = 6)
+  
 data_10 <- data %>%
   dplyr::filter(ncov == 10) %>%
   dplyr::mutate(row_num = paste(dplyr::row_number(), 'of', max(dplyr::row_number())))
@@ -43,6 +53,7 @@ tictoc::tic()
 sim_10_results <- data_10 %>%
   dplyr::mutate(results = furrr::future_pmap(., wrapper_function, 
                                              .progress = TRUE, .options = furrr_options(seed = T)))
+save(sim_10_results, file = here::here('temp_results/sim_10_results.RData'))
 tictoc::toc()
 
 # ncov = 50
@@ -50,6 +61,7 @@ tictoc::tic()
 sim_50_results <- data_50 %>%
   dplyr::mutate(results = furrr::future_pmap(., wrapper_function, 
                                              .progress = TRUE, .options = furrr_options(seed = T)))
+save(sim_50_results, file = here::here('temp_results/sim_50_results.RData'))
 tictoc::toc()
 
 # ncov = 100
@@ -57,6 +69,7 @@ tictoc::tic()
 sim_100_results <- data_100 %>%
   dplyr::mutate(results = furrr::future_pmap(., wrapper_function, 
                                              .progress = TRUE, .options = furrr_options(seed = T)))
+save(sim_100_results, file = here::here('temp_results/sim_100_results.RData'))
 tictoc::toc()
 
 #### combine -----

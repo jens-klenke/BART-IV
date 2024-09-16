@@ -1,6 +1,6 @@
 # used insite BCF_IV-own estimation
 heterogeneous_treatment_estimation <- function(
-    fit.tree, inference, adj_method, tau_true, ...){
+    fit.tree, inference, adj_method, pred_df, ...){
   
   # rules end terminal nodes
   rules <- as.numeric(row.names(fit.tree$frame[fit.tree$numresp]))
@@ -37,13 +37,6 @@ heterogeneous_treatment_estimation <- function(
     "node_bias" = rep(NA, length(rules)),
     "node_abs_bias" = rep(NA, length(rules))
   )
-  
-  
-  # prediction dataframe
-  pred_df <- tibble::tibble(
-    index = as.numeric(row.names(inference)),
-    tau_true = tau_true[as.numeric(row.names(inference))], 
-    tau_pred = NA_real_)
   
   # Generate Leaves (end notes) Indicator
   lvs <- leaves <- numeric(length(rules)) 

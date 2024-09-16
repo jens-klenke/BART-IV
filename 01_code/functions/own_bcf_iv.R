@@ -2,7 +2,7 @@
 #'
 #'
 
-own_bcf_iv <- function(y, w, z, x, tau_true, binary = FALSE, n_burn = 3000, n_sim = 7000,
+own_bcf_iv <- function(y, w, z, x, tau_true, w1, w0, binary = FALSE, n_burn = 3000, n_sim = 7000,
                        inference_ratio = 0.5, max_depth = 2, cp = 0.01,
                        minsplit = 30, adj_method = "holm", seed = 42, cost = TRUE, ...) {
   
@@ -23,6 +23,13 @@ own_bcf_iv <- function(y, w, z, x, tau_true, binary = FALSE, n_burn = 3000, n_si
   # 'names not fitting' # binary tree starts with V2 and not V4 in covariates
   inference <- iv.data[index,] 
   
+  # saving to a dataframe? 
+  pred_df <- tibble::tibble(
+    index = index,
+    tau_true = tau_true[index],
+    w1 = w1[index],
+    w0 = w0[index],
+    tau_pred = NA_real_)
   # print('Step 0 completed')
   
   ######################################################
@@ -133,10 +140,10 @@ own_bcf_iv <- function(y, w, z, x, tau_true, binary = FALSE, n_burn = 3000, n_si
   ######################################################
 
   bcf_ivResults <- heterogeneous_treatment_estimation(bcf_fit.tree, inference = inference,
-                                                      adj_method = adj_method, tau_true = tau_true)
+                                                      adj_method = adj_method, pred_df = pred_df) #tau_true = tau_true)
   
   s_bcf_ivResults <- heterogeneous_treatment_estimation(s_bcf_fit.tree, inference = inference,
-                                                        adj_method = adj_method, tau_true = tau_true)
+                                                        adj_method = adj_method, pred_df = pred_df) #tau_true = tau_true)
 
   theoretical_results <- estimate_theoretical_subgroups(inference)
   
