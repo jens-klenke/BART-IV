@@ -7,20 +7,19 @@ source(here::here('01_code/packages.R'))
 invisible(sapply(list.files(here::here('01_code/functions'), full.names = TRUE), 
                  source))
 
-# load example data 
-load(here::here('est_problems.RData'))
-
+# load example data
 load(here::here('03_sim_results/effect.1/ef.1_co.0.75_baseline.ef_correlated_confounded.RData'))
 
+ef.1_co.0.75_cor_conf <- sim_results
 
-try_1 <- sim_results %>%
+ef.1_co.0.75_cor_conf %<>%
   dplyr::mutate(dataset_num = as.numeric(str_extract(row_num, "^[^ of]+"))) %>%
   dplyr::mutate(leave_results = purrr::pmap(., analysis_fun)) %>%
   dplyr::rename('raw_data' = results) %>%
   dplyr::select(!path_in) %>%
   tidyr::unnest(leave_results)
 
-pryr::object_size(try_1)
+pryr::object_size(ef.1_co.0.75_cor_conf)
 
 # old ----
 # per row (with map)
