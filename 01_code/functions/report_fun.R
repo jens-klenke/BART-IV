@@ -25,7 +25,7 @@ analyse_df <- function(data, ...){
 }
 
 ## get counts for the plot 
-get_counts <- function(data, group.by = c('ncov', 'subgroup', 'result_names')){
+get_counts <- function(data, group.by = c('ncov', 'detect_model', 'methods')){
   # Convert character vector to symbols
   vars_group <- syms(group.by)
   
@@ -47,7 +47,7 @@ get_counts <- function(data, group.by = c('ncov', 'subgroup', 'result_names')){
 }
 
 # get vlines in effects
-get_vline <- function(data, effect = 2, group.by = c('ncov', 'subgroup', 'result_names')){
+get_vline <- function(data, effect = 2, group.by = c('ncov', 'subgroup', 'detect_model', 'methods')){
   # Convert character vector to symbols
   vars_group <- syms(group.by)
   
@@ -56,4 +56,19 @@ get_vline <- function(data, effect = 2, group.by = c('ncov', 'subgroup', 'result
     dplyr::mutate(x_line = ifelse(subgroup == 'positive effect', as.numeric(effect), as.numeric(paste0('-',effect))))
   
   return(data)
+}
+
+# theme 
+own_theme <- function(){
+  ggplot2::theme_bw() +
+    ggplot2::theme(panel.spacing = unit(0.25, "cm"),
+                   #   axis.line = element_line(colour = '#004c93'),
+                   panel.border = element_rect(colour = '#004c93', linewidth = 0.01),
+                   panel.grid.major.x = element_blank(),
+                   axis.ticks = element_line(colour = '#004c93'),
+                   panel.grid.minor.x = element_blank(),
+                   strip.background = element_rect(colour = '#004c93',
+                                                   fill = '#004c93'),
+                   strip.text.x = element_text(color = 'white', face = 'bold'),
+                   strip.text.y = element_text(color = 'white', face = 'bold'))
 }
