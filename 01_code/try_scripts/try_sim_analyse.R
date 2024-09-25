@@ -28,7 +28,7 @@ ef.1_co.0.75_cor_conf %<>%
 
 
 # statistics
-first_stats <- ef.1_co.0.75_cor_conf %>%
+ef.1_co.0.75_cor_conf_stats <- ef.1_co.0.75_cor_conf %>%
   dplyr::group_by(ncov, detect_model, methods) %>%
   dplyr::summarise(est_problems_count = sum(est_problems),
                    across(c(bias, bias_rm.na, abs_bias, abs_bias_rm.na, PEHE, PEHE_rm.na,coverage),
@@ -53,6 +53,8 @@ detect_subgroups <- ef.1_co.0.75_cor_conf %>%
 detect_subgroups_n.e <- detect_subgroups %>%
   dplyr::filter(subgroup == 'negative effect') 
 
+
+# estimation method -> color argument
 detect_subgroups_n.e %>%
   ggplot2::ggplot(aes(x = CCACE)) +
   ggplot2::geom_density() +
