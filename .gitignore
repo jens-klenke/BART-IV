@@ -48,3 +48,6 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+# ignore large files in 03_sim_results
+03_sim_results/
