@@ -1,8 +1,6 @@
 \chapter{Potential outcomes and irregular assignmnet}
 
-We follow the setup of \cite{bargagli_stoffi_causal_2020} and \cite{bargagli-stoffi_heterogeneous_2022} who follow the usual notation of the Rubin's causal model. 
-
-Given a set of $N$ indiviudals, indexed by $i = 1, \ldots, N$, we denote with $Y_i$ a generic outcome variable, with $W_i$ a binary treatment indicator, with $X$ an $N \times P$ matrix of $P$ control variables, and with $X_i$ the $i$-th $P$-dimensional row vector of covariates.
+We follow the setup of \cite{bargagli_stoffi_causal_2020} and \cite{bargagli-stoffi_heterogeneous_2022} who follow the usual notation of the Rubin's causal model. Given a set of $N$ indiviudals, indexed by $i = 1, \ldots, N$, we denote with $Y_i$ a generic outcome variable, with $W_i$ a binary treatment indicator, with $X$ an $N \times P$ matrix of $P$ control variables, and with $X_i$ the $i$-th $P$-dimensional row vector of covariates.
 Let us define the pair of potential outcomes $Y_i(W_i)$ by using the Stable Unit Treatment Value Assumption (SUTVA). 
 \begin{assump}{Stable unit treatment value assumption (SUTVA).}
    \label{assump:SUTVA} \\
@@ -18,7 +16,7 @@ Despite one is unable to observe both potential outcomes at the same time for ea
 Y_i^{\text{obs}} = Y_i(1)W_i + Y_i(0)(1 - W_i).
 \]
 
-Under the strong ignorability assumptions of \ref{assump:unconfoundedness} and \ref{assump:overlap} we operate under the regular assignment mechanism which, through \ref{assump:unconfoundedness}, prevents the existence of unmeasured confounding and, by \ref{assump:overlap}, allows for unbiased treatment effect estimation in support of the covariate space. 
+Under the following strong ignorability assumptions of Assumption \ref{assump:unconfoundedness} and Assumption \ref{assump:overlap} we operate under the regular assignment mechanism which, through Assumption \ref{assump:unconfoundedness}, prevents the existence of unmeasured confounding and, by Assumption \ref{assump:overlap}, allows for unbiased treatment effect estimation in support of the covariate space. 
 
 \begin{assump}{Unconfoundedness.}
    \label{assump:unconfoundedness} \\
@@ -36,7 +34,7 @@ Under the strong ignorability assumptions of \ref{assump:unconfoundedness} and \
 \end{assump}
 
  
-Using strong ignorability, one can define the CATE to analyse heterogeneous treatment effects by
+Using strong ignorability, one can define, for instance, the CATE to analyze heterogeneous treatment effects by
 
 \begin{defn}{Conditional Average Treatmnet Effect (CATE).}
    \label{defn:CATE} \\
@@ -45,7 +43,7 @@ Using strong ignorability, one can define the CATE to analyse heterogeneous trea
    \end{align*}
 \end{defn}
 
-In this work, we deviate from this regular assignment mechanism that is implied by assumptions \ref{assump:unconfoundedness} and \ref{assump:overlap} and operate under the scenario of an irregular assignment mechanism.
+In this work, we deviate from this regular assignment mechanism that is implied by Assumptions \ref{assump:unconfoundedness} and \ref{assump:overlap} and operate under the scenario of an irregular assignment mechanism.
 This irregular assignment mechanism allows for a violation of compliance between (quasi-)randomized treatment assignment, $Z_i$, and treatment receipt, $W_i$, such that just the assignment to treatment is assumed to be unconfounded through a valid choice of $Z_i$ but the treatment receipt might be confounded.
 A remedy to the issue of confoundedness in treatment receipt is the Instrumental Variable (IV) approach.
 A proper instrumental variable, $Z_i$, affects treatment receipt, $W_i$, while not being allowed to affect $Y_i$ directly such that treatment receipt depends on the treatment assignment by $W_i(Z_i)$.
@@ -71,7 +69,7 @@ Considering the distinction between $Z_i$ and $W_i$, the Intention-To-Treat (ITT
    \end{align*}
 \end{defn}
 which refers to the instrument's average effect. 
-Based on the subgroups in \ref{defn:subgroups} and the proportions $\pi_{G_i}$, an IV setting can be formalized by the usual four assumptions (\ref{assump:exclusion}, \ref{assump:monotonicity}, \ref{assump:existence}, \ref{assump:unconfoundedness_iv}) following \cite{Angrist1996}: 
+Based on the subgroups in Definition \ref{defn:subgroups} and their proportions $\pi_{G_i}$, an IV setting can be formalized by the usual four IV assumptions following \cite{Angrist1996}.
 
 \begin{assump}{Classical IV assumptions with a binary treatment.}
    \label{assump:IV_assump} 
@@ -83,7 +81,7 @@ Based on the subgroups in \ref{defn:subgroups} and the proportions $\pi_{G_i}$, 
    \end{align*}
 \end{assump}
 
-If these assumptions \ref{assump:exclusion} - \ref{assump:unconfoundedness_iv} hold, the Complier Average Causal Effect (CACE) is identified as
+If Assumptions \ref{assump:IV_assump} hold, the Complier Average Causal Effect (CACE) is identified.
 
 \begin{defn}{Complier Average Causal Effect (CACE).}
    \label{defn:CACE}
@@ -94,7 +92,14 @@ If these assumptions \ref{assump:exclusion} - \ref{assump:unconfoundedness_iv} h
 
 and can be estimated from observational data. The numerator represents the average effect of the instrument, also referred to as the Intention-To-Treat (ITT) effect. 
 The denominator represents the overall proportion of indiviudals that comply with the treatment assignment, also referred to as the proportion of compliers \cite{Angrist1996}.
-CACE is also sometimes referred to as Local Average Treatment Effects (see \cite{AngristPischke2008}) and represents the estimate of the causal effect of the assignment to treatment on the principal outcome, $Y_i$, for the subpopulation of compliers \cite{ImbensRubin2015}. In this work, we follow \cite{bargagli-stoffi_heterogeneous_2022} and consider the conditional version of the CACE, 
+CACE is also sometimes referred to as Local Average Treatment Effects (see \cite{AngristPischke2008}) and represents the estimate of the causal effect of the assignment to treatment on the principal outcome, $Y_i$, for the subpopulation of compliers \cite{ImbensRubin2015}. Consider the system of two simultaneous equations 
+\begin{align*}
+Y_i^{obs} &= \alpha + \tau_{CACE} W_i + \epsilon, \\
+W_i &= \pi_0 + \pi_C Z_i + \eta_i,
+\end{align*}
+with $\mathbb{E}\left(\epsilon_i \right) = \mathbb{E}\left(\eta_i \right) = 0$ and we assume by the first equation a linear projection of $W_i$ onto $Z_i$ with $\mathbb{E}\left(Z_i \eta_i\right)=0$. Then, \cite{Angrist1996} and \cite{ImbensRubin2015} show that $\tau_{\text{CACE}}$ can be estimated by a Two Stage Least Square (TSLS) estimator which is consistent and asymptotic normal as displayed in \cite{Wooldridge2015}.   
+
+In this work, we follow \cite{bargagli-stoffi_heterogeneous_2022} and consider the conditional version of the CACE, 
 
 \begin{defn}{Conditional CACE (cCACE).}
    \begin{align*}
@@ -102,4 +107,27 @@ CACE is also sometimes referred to as Local Average Treatment Effects (see \cite
    \end{align*}
 \end{defn}
 
-The cCACE is a straightforward extension of the CACE in \ref{defn:CACE} with \cite{bargagli-stoffi_heterogeneous_2022} providing theorems of a consistent and asymptotic normal conditional Two-Stage-Least-Square (2SLS) estimator which rely on the unconditional theorems of Wooldridge with the additional assumption of sufficient number of observations for every subgroup in which the cCACE is estimated.
+The cCACE is a straightforward extension of the CACE in Definition \ref{defn:CACE} presented in with \cite{bargagli-stoffi_heterogeneous_2022}. A natural, subgroup-related estimator $\tau_{\text{CACE}}(x)$ can be defined by acknowledging $\mX_i \in \mathbb{X}_j$ with $\mathbb{X}_j$ being a pre-specified subgroup.
+
+\begin{defn}{Estimator of cCACE.}
+   \label{defn:cCACE_estimator}
+   \begin{align*}
+      \widehat\tau_{\text{CACE}}(x) &= \frac{\text{ITT}_{Y}(x)}{\pi_C(x)} \\
+      &= \frac{\frac{1}{N_{1,j}} \mathlarger{\sum}_{l: X_l \in X_j} Y^{obs}_l Z_l - \frac{1}{N_{0,j}} \mathlarger{\sum}_{l: X_l \in X_j} Y^{obs}_l (1 - Z_l)}{\frac{1}{N_{1,j}} \mathlarger{\sum}_{l: X_l \in X_j} W_l Z_l - \frac{1}{N_{0,j}} \mathlarger{\sum}_{l: X_l \in X_j} W_l (1 - Z_l)
+      }\\
+   \end{align*}
+\end{defn}
+
+Intuitively, Definition \ref{defn:cCACE_estimator} proposes to use TSLS subgroup-wise for every $\mathbb{X}_j$ under Assumptions \ref{assump:IV_assump}. Moreover, \cite{Wooldridge2015} provide theorems for consistency and asymptotic normality for the unconditional TSLS estimator for $\tau_{CACE}$. \cite{bargagli-stoffi_heterogeneous_2022} show that those theorems can be transferred to the conditional TSLS estimator if there are sufficient number of observations for every subgroup in which the cCACE is estimated. 
+
+\begin{thm}[Consistency and Asymptotic Normality of the Conditional 2SLS Estimator]
+   Let Assumptions 1, 2, and 3 hold, i.e., \(E(Z^2_{i,X_j}) \neq 0\) (Assumption 1), \(E(Z_{i,X_j} \varepsilon_{i,X_j}) = 0\) (Assumption 2), and \(\pi_{C,X_j} \neq 0\) (Assumption 3). Then:
+   \begin{enumerate}
+       \item (Consistency) \( \hat{\tau}^{2SLS}_{X_j} - \tau_{X_j} \overset{p}{\to} 0 \) as \( N_{X_j} \to \infty \), where \( \overset{p}{\to} \) denotes convergence in probability, and \( N_{X_j} \) is the number of observations within the node \( X_j \).
+       \item (Asymptotic Normality) If, in addition, \(E(Z^2_{i,X_j} \varepsilon^2_{i,X_j})\) is finite (Assumption 4), then:
+       \[
+       \sqrt{N_{X_j}} (\hat{\tau}^{2SLS}_{X_j} - \tau_{X_j}) \overset{d}{\to} \mathcal{N}(0, N_{X_j} \cdot \text{avar}(\hat{\tau}^{2SLS}_{X_j}))
+       \]
+       as \(N_{X_j} \to \infty\), where \( \overset{d}{\to} \) denotes convergence in distribution, \( \mathcal{N}(0, N_{X_j} \cdot \text{avar}(\hat{\tau}^{2SLS}_{X_j})) \) stands for the normal distribution, and \(\text{avar}(\hat{\tau}^{2SLS}_{X_j})\) is the asymptotic variance of the 2SLS estimator that can be approximated as in Chapter 15 of Wooldridge (2015).
+   \end{enumerate}
+\end{thm}
