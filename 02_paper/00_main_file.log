@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.4.20)  23 AUG 2024 15:22
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.4.20)  26 SEP 2024 15:01
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**/Users/lennardmassmann/PhD_projects/BART-IV/02_paper/00_main_file.tex
+**/Users/lennardmassmann/PhD_projects/BART-IV/02_paper/00_main_file
 (/Users/lennardmassmann/PhD_projects/BART-IV/02_paper/00_main_file.tex
 LaTeX2e <2021-11-15> patch level 1
 L3 programming layer <2022-02-24> (/usr/local/texlive/2022/texmf-dist/tex/latex/koma-script/scrbook.cls
@@ -1184,6 +1184,9 @@ Class scrbook Warning: \float@addtolists detected!
 (scrbook)              a package that still implements the
 (scrbook)              deprecated \float@addtolist interface.
 
+
+Package natbib Warning: Citation `hahn_bayesian_2020' on page 1 undefined on input line 3.
+
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 9.
 (/usr/local/texlive/2022/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
@@ -1192,7 +1195,26 @@ File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 
 
 
-] [2]
+]
+
+Package natbib Warning: Citation `bargagli-stoffi_heterogeneous_2022' on page 2 undefined on input line 54.
+
+
+Package natbib Warning: Citation `linero_bayesian_2018' on page 2 undefined on input line 61.
+
+
+Package natbib Warning: Citation `linero_bayesian_2018-1' on page 2 undefined on input line 61.
+
+
+Package natbib Warning: Citation `bargagli-stoffi_heterogeneous_2022' on page 2 undefined on input line 63.
+
+
+Package natbib Warning: Citation `hahn_bayesian_2020' on page 2 undefined on input line 63.
+
+
+Package natbib Warning: Citation `caron_shrinkage_2022' on page 2 undefined on input line 70.
+
+[2]
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 77.
  (/usr/local/texlive/2022/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
@@ -1211,6 +1233,12 @@ Overfull \hbox (13.2295pt too wide) in paragraph at lines 76--79
 
  (./chapters/02_PO.tex
 chapter 2.
+
+Package natbib Warning: Citation `bargagli_stoffi_causal_2020' on page 4 undefined on input line 3.
+
+
+Package natbib Warning: Citation `bargagli-stoffi_heterogeneous_2022' on page 4 undefined on input line 3.
+
 
 Underfull \hbox (badness 10000) in paragraph at lines 7--9
 
@@ -1233,24 +1261,48 @@ Underfull \hbox (badness 10000) in paragraph at lines 41--43
  []
 
 
+LaTeX Warning: Reference `assump:exclusion' on page 5 undefined on input line 74.
+
+
+LaTeX Warning: Reference `assump:monotonicity' on page 5 undefined on input line 74.
+
+
+LaTeX Warning: Reference `assump:existence' on page 5 undefined on input line 74.
+
+
+LaTeX Warning: Reference `assump:unconfoundedness_iv' on page 5 undefined on input line 74.
+
+
 Package natbib Warning: Citation `Angrist1996' on page 5 undefined on input line 74.
 
 [5]
 
-Package natbib Warning: Citation `Angrist1996' on page 6 undefined on input line 111.
+LaTeX Warning: Reference `assump:exclusion' on page 6 undefined on input line 86.
 
 
-Package natbib Warning: Citation `AngristPischke2008' on page 6 undefined on input line 112.
+LaTeX Warning: Reference `assump:unconfoundedness_iv' on page 6 undefined on input line 86.
 
 
-Package natbib Warning: Citation `ImbensRubin2015' on page 6 undefined on input line 112.
+Package natbib Warning: Citation `Angrist1996' on page 6 undefined on input line 96.
 
-[6]) [7]
+
+Package natbib Warning: Citation `AngristPischke2008' on page 6 undefined on input line 97.
+
+
+Package natbib Warning: Citation `ImbensRubin2015' on page 6 undefined on input line 97.
+
+
+Package natbib Warning: Citation `bargagli-stoffi_heterogeneous_2022' on page 6 undefined on input line 97.
+
+
+Package natbib Warning: Citation `bargagli-stoffi_heterogeneous_2022' on page 6 undefined on input line 105.
+
+) [6]
 \openout2 = `chapters/03_BCF_IV.aux'.
 
  (./chapters/03_BCF_IV.tex
 chapter 3.
-) [8
+) [7
 
 
 
@@ -1261,18 +1313,18 @@ chapter 3.
 
  (./chapters/04_sim_study.tex
 chapter 4.
-[9
+[8
 
 
 
 
 
-]) [10]
+]) [9]
 \openout2 = `chapters/05_emp_appl.aux'.
 
  (./chapters/05_emp_appl.tex
 chapter 5.
-) [11
+) [10
 
 
 
@@ -1283,68 +1335,37 @@ chapter 5.
 
  (./chapters/06_discussion.tex
 chapter 6.
-) [12
+) [11
 
 
 
 
 
-] (./00_main_file.bbl
-Underfull \hbox (badness 10000) in paragraph at lines 13--19
-\T1/lmr/bx/n/10.95 (+20) URL: \T1/lmr/m/it/10.95 (+20) https://projecteuclid.org/journals/annals-of-applied-statistics/volume-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 13--19
-\T1/lmr/m/it/10.95 (+20) 16/issue-3/Heterogeneous-causal-effects-with-imperfect-compliance--A-Bayesian-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 32--38
-\T1/lmr/bx/n/10.95 (+20) URL: \T1/lmr/m/it/10.95 (+20) https://projecteuclid.org/journals/bayesian-analysis/volume-15/issue-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 32--38
-\T1/lmr/m/it/10.95 (+20) 3/Bayesian-Regression-Tree-Models-for-Causal-Inference--Regularization-
- []
-
-
-Underfull \hbox (badness 2073) in paragraph at lines 40--47
-\T1/lmr/m/n/10.95 (+20) dic-tion and Vari-able Se-lec-tion', \T1/lmr/m/it/10.95 (+20) Jour-nal of the Amer-i-can Sta-tis-ti-cal As-
- []
-
-
-Underfull \hbox (badness 4913) in paragraph at lines 40--47
-\T1/lmr/m/it/10.95 (+20) so-ci-a-tion \T1/lmr/bx/n/10.95 (+20) 113\T1/lmr/m/n/10.95 (+20) (522), 626--636.  Pub-lisher: Tay-lor & Fran-cis _eprint:
- []
-
-[13
-
-
-
-
-]) [14]
+]
+No file 00_main_file.bbl.
 
 Package natbib Warning: There were undefined citations.
 
 (./00_main_file.aux (./chapters/01_intro.aux) (./chapters/02_PO.aux) (./chapters/03_BCF_IV.aux) (./chapters/04_sim_study.aux) (./chapters/05_emp_appl.aux) (./chapters/06_discussion.aux))
+
+LaTeX Warning: There were undefined references.
+
 Package rerunfilecheck Info: File `00_main_file.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 36175 strings out of 478268
- 714440 string characters out of 5846347
- 1254005 words of memory out of 5000000
- 53397 multiletter control sequences out of 15000+600000
- 554239 words of font info for 181 fonts, out of 8000000 for 9000
+ 36124 strings out of 478268
+ 713403 string characters out of 5846347
+ 1254008 words of memory out of 5000000
+ 53374 multiletter control sequences out of 15000+600000
+ 549372 words of font info for 174 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 108i,20n,133p,10684b,612s stack positions out of 10000i,1000n,20000p,200000b,200000s
-{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}</usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmex10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmmi6.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr17.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr6.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmri10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmro10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on 00_main_file.pdf (17 pages, 352006 bytes).
+ 108i,20n,133p,10680b,569s stack positions out of 10000i,1000n,20000p,200000b,200000s
+{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}</usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmex10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmmi6.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr17.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr6.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmro10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on 00_main_file.pdf (14 pages, 317796 bytes).
 PDF statistics:
- 318 PDF objects out of 1000 (max. 8388607)
- 256 compressed objects within 3 object streams
- 54 named destinations out of 1000 (max. 500000)
- 49757 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 257 PDF objects out of 1000 (max. 8388607)
+ 201 compressed objects within 3 object streams
+ 41 named destinations out of 1000 (max. 500000)
+ 47709 words of extra memory for PDF output out of 51595 (max. 10000000)
 

@@ -73,63 +73,33 @@ Considering the distinction between $Z_i$ and $W_i$, the Intention-To-Treat (ITT
 which refers to the instrument's average effect. 
 Based on the subgroups in \ref{defn:subgroups} and the proportions $\pi_{G_i}$, an IV setting can be formalized by the usual four assumptions (\ref{assump:exclusion}, \ref{assump:monotonicity}, \ref{assump:existence}, \ref{assump:unconfoundedness_iv}) following \cite{Angrist1996}: 
 
-\begin{assump}{Exclusion restriction.}
-   \label{assump:exclusion} 
+\begin{assump}{Classical IV assumptions with a binary treatment.}
+   \label{assump:IV_assump} 
    \begin{align*}
-      Y_i(0) = Y_i(1), \text{ for } G_i \in \{AT, NT \}.
-   \end{align*}
-\end{assump}
-\begin{assump}{Monotonicity.}
-   \label{assump:monotonicity}
-   \begin{align*}
-      W_i(1) \geq W_i(0) \rightarrow \pi_D = 0.
-   \end{align*}
-\end{assump}
-\begin{assump}{Existence of compliers.}
-   \label{assump:existence}
-   \begin{align*}
-      P(W_i(0) < W_i(1)) > 0 \rightarrow \pi_C \ne 0.
-   \end{align*}
-\end{assump}
-\begin{assump}{Unconfoundedness of the instrumental variable.}
-   \label{assump:unconfoundedness_iv}
-   \begin{align*}
-      Z_i \perp (Y_i(0, 0), Y_i(0, 1), Y_i(1, 0), Y_i(1, 1), W_i(0), W_i(1)).
+      &\text{Exclusion restriction: }& Y_i(0) = Y_i(1), \text{ for } G_i \in \{AT, NT \}. \\
+      &\text{Monotonicity: }& W_i(1) \geq W_i(0) \rightarrow \pi_D = 0. \\
+      &\text{Existence of compliers: }& P(W_i(0) < W_i(1)) > 0 \rightarrow \pi_C \ne 0. \\
+      &\text{Unconfoundedness of IV: }& Z_i \perp (Y_i(0, 0), Y_i(0, 1), Y_i(1, 0), Y_i(1, 1), W_i(0), W_i(1)). 
    \end{align*}
 \end{assump}
 
 If these assumptions \ref{assump:exclusion} - \ref{assump:unconfoundedness_iv} hold, the Complier Average Causal Effect (CACE) is identified as
 
-\begin{defn}{Complier Average Causal Effect (CACE)}
+\begin{defn}{Complier Average Causal Effect (CACE).}
    \label{defn:CACE}
    \begin{align*}
-      \tau_{\text{CACE}} = \frac{\text{ITT}_{Y}}{\pi_C} = \frac{\mathbb{E}[Y_i \mid Z_i = 1] - \mathbb{E}[Y_i \mid Z_i = 0]}{\mathbb{E}[W_i \mid Z_i = 1] - \mathbb{E}[W_i \mid Z_i = 0]}.
+      \tau_{\text{CACE}} = \frac{\text{ITT}_{Y}}{\pi_C} = \frac{\mathbb{E}[Y_i \mid Z_i = 1] - \mathbb{E}[Y_i \mid Z_i = 0]}{\mathbb{E}[W_i \mid Z_i = 1] - \mathbb{E}[W_i \mid Z_i = 0]},
    \end{align*}
 \end{defn}
 
-can be estimated from observational data. The numerator represents the average effect of the instrument, also referred to as the Intention-To-Treat (ITT) effect. 
+and can be estimated from observational data. The numerator represents the average effect of the instrument, also referred to as the Intention-To-Treat (ITT) effect. 
 The denominator represents the overall proportion of indiviudals that comply with the treatment assignment, also referred to as the proportion of compliers \cite{Angrist1996}.
-CACE is also sometimes referred to as Local Average Treatment Effects (see \cite{AngristPischke2008}) and represents the estimate of the causal effect of the assignment to treatment on the principal outcome, $Y_i$, for the subpopulation of compliers \cite{ImbensRubin2015}.
-
-
-
-Following \cite{bargagli-stoffi_heterogeneous_2022}, we consider the following conditional version of the CACE, 
+CACE is also sometimes referred to as Local Average Treatment Effects (see \cite{AngristPischke2008}) and represents the estimate of the causal effect of the assignment to treatment on the principal outcome, $Y_i$, for the subpopulation of compliers \cite{ImbensRubin2015}. In this work, we follow \cite{bargagli-stoffi_heterogeneous_2022} and consider the conditional version of the CACE, 
 
 \begin{defn}{Conditional CACE (cCACE).}
    \begin{align*}
-      \tau_{\text{CACE}}(x) = \frac{\text{ITT}_{Y}(x)}{\pi_C(x)} = \frac{\mathbb{E}[Y_i \mid Z_i = 1, X_i = x] - \mathbb{E}[Y_i \mid Z_i = 0, X_i = x]}{\mathbb{E}[W_i \mid Z_i = 1, X_i = x] - \mathbb{E}[W_i \mid Z_i = 0, X_i = x]}.
+      \tau_{\text{CACE}}(x) = \frac{\text{ITT}_{Y}(x)}{\pi_C(x)} &= \frac{\mathbb{E}[Y_i \mid Z_i = 1, X_i = x] - \mathbb{E}[Y_i \mid Z_i = 0, X_i = x]}{\mathbb{E}[W_i \mid Z_i = 1, X_i = x] - \mathbb{E}[W_i \mid Z_i = 0, X_i = x]}.
    \end{align*}
 \end{defn}
 
-The cCACE is a straightforward extension of the CACE in \ref{defn:CACE} with \cite{bargagli-stoffi_heterogeneous_2022} providing theorems of a consistent and asymptotic normal conditional Two-Stage-Least-Square (2SLS) estimator which rely on the unconditional theorems of Wooldridge. 
-The conditional theorems just need the additional assumption of sufficient number of observations for every leaf node in which the cCACE is estimated.
-
-
-
-
-
-
-
-
-The conditional CACE can be estimated in a generic sub-sample (i.e., for each $\mathbf{X}_i \in \mathbb{X}_j$ , where $\mathbb{X}_j$ is a
-generic node of the discovered tree, like a non-terminal node or a leaf) as:
+The cCACE is a straightforward extension of the CACE in \ref{defn:CACE} with \cite{bargagli-stoffi_heterogeneous_2022} providing theorems of a consistent and asymptotic normal conditional Two-Stage-Least-Square (2SLS) estimator which rely on the unconditional theorems of Wooldridge with the additional assumption of sufficient number of observations for every subgroup in which the cCACE is estimated.
