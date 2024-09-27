@@ -7,48 +7,45 @@ source(here::here('01_code/packages.R'))
 invisible(sapply(list.files(here::here('01_code/functions'), full.names = TRUE), 
                  source))
 
-# load example data
-load(here::here('03_sim_results/effect.1/ef.1_co.0.75_baseline.ef_correlated_confounded.RData'))
-path <- '03_sim_results/effect.1/ef.1_co.0.75_baseline.ef_correlated_confounded.RData'
-
+# Analysis
 # effect 1
-analysis_ef.1_co.0.75_baseline.ef_correlated_confounded <- datset_analysis(
-  here::here('03_sim_results/effect.1/ef.1_co.0.75_baseline.ef_correlated_confounded.RData'))
+analysis_ef.1_co.0.75_baseline.ef_correlated_confounded <- 
+  datset_analysis(
+  here::here('03_sim_results/effect.1/ef.1_co.0.75_baseline.ef_correlated_confounded.RData'),
+  'ef.1_co.0.75_conf')
 
 analysis_ef.1_co.0.75_baseline.ef_correlated <- datset_analysis(
-  here::here('03_sim_results/effect.1/ef.1_co.0.75_baseline.ef_correlated.RData'))
+  here::here('03_sim_results/effect.1/ef.1_co.0.75_baseline.ef_correlated.RData'),
+  'ef.1_co.0.75_corr')
 
 analysis_ef.1_co.0.5_baseline.ef_correlated_confounded <- datset_analysis(
-  here::here('03_sim_results/effect.1/ef.1_co.0.5_baseline.ef_correlated_confounded.RData'))
+  here::here('03_sim_results/effect.1/ef.1_co.0.5_baseline.ef_correlated_confounded.RData'),
+  'ef.1_co.0.5_conf')
 
 analysis_ef.1_co.0.5_baseline.ef_correlated <- datset_analysis(
-  here::here('03_sim_results/effect.1/ef.1_co.0.5_baseline.ef_correlated.RData'))
+  here::here('03_sim_results/effect.1/ef.1_co.0.5_baseline.ef_correlated.RData'),
+  'ef.1_co.0.5_corr')
 
 # effect 2
 analysis_ef.2_co.0.75_baseline.ef_correlated_confounded <- datset_analysis(
-  here::here('03_sim_results/effect.2/ef.2_co.0.75_baseline.ef_correlated_confounded.RData'))
+  here::here('03_sim_results/effect.2/ef.2_co.0.75_baseline.ef_correlated_confounded.RData'),
+  'ef.2_co.0.75_conf')
 
 analysis_ef.2_co.0.75_baseline.ef_correlated <- datset_analysis(
-  here::here('03_sim_results/effect.2/ef.2_co.0.75_baseline.ef_correlated.RData'))
+  here::here('03_sim_results/effect.2/ef.2_co.0.75_baseline.ef_correlated.RData'),
+  'ef.2_co.0.75_corr')
 
 analysis_ef.2_co.0.5_baseline.ef_correlated_confounded <- datset_analysis(
-  here::here('03_sim_results/effect.2/ef.2_co.0.5_baseline.ef_correlated_confounded.RData'))
+  here::here('03_sim_results/effect.2/ef.2_co.0.5_baseline.ef_correlated_confounded.RData'),
+  'ef.2_co.0.5_conf')
 
 analysis_ef.2_co.0.5_baseline.ef_correlated <- datset_analysis(
-  here::here('03_sim_results/effect.2/ef.2_co.0.5_baseline.ef_correlated.RData'))
-
- A <- analysis_ef.1_co.0.75_baseline.ef_correlated_confounded$plot_supgroup_p.e
-# saving
-save(analysis_ef.1_co.0.75_baseline.ef_correlated_confounded, file = here::here('03_sim_results/analysed/analysis_ef.1_co.0.75_baseline.ef_correlated_confounded.RData'))
-
-save(analysis_ef.1_co.0.75_baseline.ef_correlated, file = here::here('03_sim_results/analysed/analysis_ef.1_co.0.75_baseline.ef_correlated.RData'))
-
-save(analysis_ef.1_co.0.5_baseline.ef_correlated_confounded, file = here::here('03_sim_results/analysed/analysis_ef.1_co.0.5_baseline.ef_correlated_confounded.RData'))
-
-save(analysis_ef.1_co.0.5_baseline.ef_correlated, file = here::here('03_sim_results/analysed/analysis_ef.1_co.0.5_baseline.ef_correlated.RData'))
-
+  here::here('03_sim_results/effect.2/ef.2_co.0.5_baseline.ef_correlated.RData'),
+  'ef.2_co.0.5_corr')
 
 # try ----
+# load example data
+load(here::here('03_sim_results/effect.1/ef.1_co.0.75_baseline.ef_correlated_confounded.RData'))
 
 ef.1_co.0.75_cor_conf <- sim_results
 
@@ -88,13 +85,14 @@ detect_subgroups <- ef.1_co.0.75_cor_conf %>%
     node == 'x2< 0.5 & x1< 0.5' | node == 'x1< 0.5 & x2< 0.5' | node == 'x2<=0.5 & x1<=0.5' | node == 'x1<=0.5 & x2<=0.5' ~ 'positive effect',
     .default = NA)
     ) %>%
-  dplyr::filter(subgroup %in% c('negative effect', 'positive effect'))
+  dplyr::filter(subgroup %in% c('negative effect', 'positive effect')) %>%
+  dplyr::select(subgroup, methods, detect_model, ncov, CCACE)
 
 detect_subgroups_n.e <- detect_subgroups %>%
   dplyr::filter(subgroup == 'negative effect') 
 
 # estimation method -> color argument
-detect_subgroups_n.e %>%
+plot_A <- detect_subgroups_n.e %>%
   ggplot2::ggplot(aes(x = CCACE, color = methods)) +
   ggplot2::geom_density(alpha = 0.7) +
   ggplot2::scale_color_manual(values = c('#004c93', '#787777')) +
@@ -108,6 +106,9 @@ detect_subgroups_n.e %>%
                       linewidth = 0.75, linetype = 'longdash') +
   own_theme()
 
+ggsave(here::here('04_reports/ef.1_co.0.75_conf.png'), plot_A, dpi = 400)
+
+pryr::object_size(plot_A)
 
 detect_subgroups_p.e <-detect_subgroups %>%
   dplyr::filter(subgroup == 'positive effect')
@@ -138,7 +139,7 @@ detect_subgroups %>%
 
 
 # function analysis  ----
-datset_analysis <- function(path,...){
+datset_analysis <- function(path, name, ...){
   
   load(path)
   
@@ -202,6 +203,9 @@ datset_analysis <- function(path,...){
                         linewidth = 0.75, linetype = 'longdash') +
     own_theme()
   
+  ggsave(here::here('04_reports', paste0(name, '_n.e.png')), 
+         plot_supgroup_n.e, dpi = 300)
+  
   plot_supgroup_p.e <- detect_subgroups_p.e %>%
     ggplot2::ggplot(aes(x = CCACE, color = methods)) +
     ggplot2::geom_density(alpha = 0.7) +
@@ -216,17 +220,18 @@ datset_analysis <- function(path,...){
                         linewidth = 0.75, linetype = 'longdash') +
     own_theme()
   
+  ggsave(here::here('04_reports', paste0(name, '_p.e.png')), 
+         plot_supgroup_p.e, dpi = 300)
   
-  # 
+  # list
   
   results <- list(
     'leave_stats' = data_stats,
-    'detected_subgroups' = detect_subgroups,
-    'plot_supgroup_n.e' = plot_supgroup_n.e,
-    'plot_supgroup_p.e' = plot_supgroup_p.e
+    'detected_subgroups' = detect_subgroups
   )
+  
+  save(results, file = here::here('04_reports', paste0(name, '.RData')))
   
   # return 
   return(results)
 }
-
