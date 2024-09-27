@@ -37,7 +37,7 @@ analysis_ef.2_co.0.5_baseline.ef_correlated_confounded <- datset_analysis(
 analysis_ef.2_co.0.5_baseline.ef_correlated <- datset_analysis(
   here::here('03_sim_results/effect.2/ef.2_co.0.5_baseline.ef_correlated.RData'))
 
-
+ A <- analysis_ef.1_co.0.75_baseline.ef_correlated_confounded$plot_supgroup_p.e
 # saving
 save(analysis_ef.1_co.0.75_baseline.ef_correlated_confounded, file = here::here('03_sim_results/analysed/analysis_ef.1_co.0.75_baseline.ef_correlated_confounded.RData'))
 
@@ -176,7 +176,8 @@ datset_analysis <- function(path,...){
       node == 'x2< 0.5 & x1< 0.5' | node == 'x1< 0.5 & x2< 0.5' | node == 'x2<=0.5 & x1<=0.5' | node == 'x1<=0.5 & x2<=0.5' ~ 'positive effect',
       .default = NA)
     ) %>%
-    dplyr::filter(subgroup %in% c('negative effect', 'positive effect'))
+    dplyr::filter(subgroup %in% c('negative effect', 'positive effect')) %>%
+    dplyr::select(subgroup, methods, detect_model, ncov, CCACE)
   
   # negative effect group
   detect_subgroups_n.e <- detect_subgroups %>%
