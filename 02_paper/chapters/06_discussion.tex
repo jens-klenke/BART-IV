@@ -1,1 +1,15 @@
 \chapter{Discussion}
+
+Moreover, \cite{Wooldridge2015} provide theorems for consistency and asymptotic normality for the unconditional TSLS estimator for the true population parameter $\tau_{CACE}$. \cite{bargagli-stoffi_heterogeneous_2022} show that those theorems can be transferred to the conditional TSLS estimator if there are sufficient number of observations for every subgroup in which the cCACE is estimated. 
+
+\begin{thm}[Consistency and Asymptotic Normality of the Conditional 2SLS Estimator]
+   Let Assumptions 1, 2, and 3 hold, i.e., \(E(Z^2_{i,X_j}) \neq 0\) (Assumption 1), \(E(Z_{i,X_j} \varepsilon_{i,X_j}) = 0\) (Assumption 2), and \(\pi_{C,X_j} \neq 0\) (Assumption 3). Then:
+   \begin{enumerate}
+       \item (Consistency) \( \hat{\tau}^{2SLS}_{X_j} - \tau_{X_j} \overset{p}{\to} 0 \) as \( N_{X_j} \to \infty \), where \( \overset{p}{\to} \) denotes convergence in probability, and \( N_{X_j} \) is the number of observations within the node \( X_j \).
+       \item (Asymptotic Normality) If, in addition, \(E(Z^2_{i,X_j} \varepsilon^2_{i,X_j})\) is finite (Assumption 4), then:
+       \[
+       \sqrt{N_{X_j}} (\hat{\tau}^{2SLS}_{X_j} - \tau_{X_j}) \overset{d}{\to} \mathcal{N}(0, N_{X_j} \cdot \text{avar}(\hat{\tau}^{2SLS}_{X_j}))
+       \]
+       as \(N_{X_j} \to \infty\), where \( \overset{d}{\to} \) denotes convergence in distribution, \( \mathcal{N}(0, N_{X_j} \cdot \text{avar}(\hat{\tau}^{2SLS}_{X_j})) \) stands for the normal distribution, and \(\text{avar}(\hat{\tau}^{2SLS}_{X_j})\) is the asymptotic variance of the 2SLS estimator that can be approximated as in Chapter 15 of Wooldridge (2015).
+   \end{enumerate}
+\end{thm}

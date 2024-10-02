@@ -3,10 +3,10 @@
 \contentsline {section}{\numberline {1.1}Literature}{1}{section.1.1}%
 \contentsline {section}{\numberline {1.2}Contribution}{2}{section.1.2}%
 \contentsline {chapter}{\numberline {2}Potential outcomes and irregular assignmnet}{4}{chapter.2}%
-\contentsline {chapter}{\numberline {3}Sparsity-inducing Bayesian Causal Forest with Instrumental Variable}{8}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Sparse Bayesian Causal Forest}{8}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Sparse BCF-IV}{8}{section.3.2}%
-\contentsline {chapter}{\numberline {4}Simulation study}{9}{chapter.4}%
-\contentsline {chapter}{\numberline {5}Empirical application}{11}{chapter.5}%
-\contentsline {chapter}{\numberline {6}Discussion}{12}{chapter.6}%
+\contentsline {chapter}{\numberline {3}Sparsity-inducing Bayesian Causal Forest with Instrumental Variable}{9}{chapter.3}%
+\contentsline {section}{\numberline {3.1}BCF-IV}{9}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Shrinkage BCF-IV}{10}{section.3.2}%
+\contentsline {chapter}{\numberline {4}Simulation study}{11}{chapter.4}%
+\contentsline {chapter}{\numberline {5}Empirical application}{13}{chapter.5}%
+\contentsline {chapter}{\numberline {6}Discussion}{14}{chapter.6}%
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

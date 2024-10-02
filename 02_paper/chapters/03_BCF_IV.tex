@@ -1,7 +1,59 @@
 \chapter{Sparsity-inducing Bayesian Causal Forest with
 Instrumental Variable}
 
-\section{Sparse Bayesian Causal Forest}
+This paper proposes an algorithm for the estimation of cCACE for sparse data scenarios. 
+More precisely, we propose an extension of the BCF-IV algorithm in \cite{bargagli-stoffi_heterogeneous_2022} 
+to handle scenarios with many irrelevant covariates in the dataset.
+Section \ref{sec:BCF-IV} describes the original BCF-IV algorithm while section
+\ref{sec:SBCF-IV} explains the proposed extension based on the Shrinkage Bayesian Causal Forest. 
 
 
-\section{Sparse BCF-IV}
+\section{BCF-IV}
+\label{sec:BCF-IV}
+
+The Bayesian Causal Forest (BCF) algorithm is proposed in \cite{hahn_bayesian_2020} to use the Bayesian Additive Regression Trees (BART) algorithm \cite{chipman_bart_2010} to estimate CATE in a regular assignment mechanism. BART is related to the CART algorithm of \cite{Breiman1984} which constructs binary trees by recursively partitioning the covariate space to produce accurate predictions.
+BART rests on a complete Bayesian probability model by using different regularizing prior distributions such that the overall model fit dominates fits of single trees. Distinct prior distributions are used for the complexity of the tree structure, data shrinkage within the nodes and the variance of the error term. 
+
+
+\begin{algorithm}[H]
+    \footnotesize
+    \DontPrintSemicolon
+    \SetAlgoLined
+    \LinesNotNumbered
+    \SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+    %\SetKwBlock{BARTBMA}{BART-BMA(Y,x, hyperparams)}{} 
+    \Input{$N$ units $i$ $(X_i, Z_i, W_i, Y_i)$, with feature vector $X_i$, treatment assignment (instrumental variable) $Z_i$, treatment receipt $W_i$, observed response $Y_i$} 
+    \Output{A tree structure discovering the heterogeneity in the causal effects and estimates of the Complier Average Causal Effects (CACE) within its leaves.}
+    \BlankLine
+    \textbf{1. The Honest Splitting Step:} \\
+    \begin{itemize}
+        \item Randomly split the total sample into a discovery subsample ($I_{\text{dis}}$) and an inference subsample ($I_{\text{inf}}$).
+    \end{itemize}
+    \BlankLine
+    \textbf{2. The Discovery Step} (performed on $I_{\text{dis}}$): \\
+    Estimation of the Conditional CACE:
+    \begin{itemize}
+        \item (a) Estimate the conditional Intention-To-Treat: $\widehat{\text{ITT}}(x)$.
+        \item (b) Estimate the conditional proportion of compliers: $\widehat{\pi}_C(x)$.
+        \item (c) Estimate the conditional CACE, $\widehat{\tau}_{\text{CACE}}(x)$, using the estimated values from (a) and (b).
+    \end{itemize}
+    Heterogeneous subpopulations discovery:
+    \begin{itemize}
+        \item (d) Discover the heterogeneous effects by fitting a decision tree using the data $(\widehat{\tau}_{\text{CACE}}(x), X_i)$.
+    \end{itemize}
+    \BlankLine
+    \textbf{3. The Inference Step} (performed on $I_{\text{inf}}$): \\
+    \begin{itemize}
+        \item (a) Estimate the $\widehat{\tau}_{\text{CACE}}(x)$ for all discovered subpopulations (i.e., nodes and leaves) in the tree discovered in Step 3(d).
+        \item (b) Perform multiple hypothesis tests and adjust p-values to control for the familywise error rate or, less stringently, the false discovery rate. 
+        \item (c) Run weak-instrument tests within every node and discard nodes where weak-instrument issues are detected.
+    \end{itemize}
+    \caption{Bayesian Causal Forest with Instrumental Variable (BCF-IV)}
+    \label{algo:SBART+SPL}
+\end{algorithm}
+
+\section{Shrinkage BCF-IV}
+\label{sec:SBCF-IV}
+
+
+

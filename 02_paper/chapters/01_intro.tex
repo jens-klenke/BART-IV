@@ -5,12 +5,9 @@
 \section{Literature}
 
 
+Using machine learning to infer heterogeneous effects in observational studies often focuses on different forms of average treatment effect estimations under regular assignment mechanisms \cite{athey_generalized_2019}. In this work, we focus on methods to discover heterogeneous effects in the presence of imperfect compliance leading to an irregular assignment mechanism. 
+
 \begin{itemize}
-    \item Using machine learning to infer heterogeneous effects in observational studies often focuses on CATE estimation under regular assignment mechanisms 
-    %($athey_generalized_2019$)
-    \item Focus in this work: Methods to discover heterogeneous effects in the presence of imperfect compliance
-    \item Methods
-    \begin{itemize}
         \item tree-based 
         %($bargagli_stoffi_causal_2020$)
         %<!-- (perform worse compared to ensembles) -->
@@ -20,13 +17,13 @@
         \item deep-learning-based methods 
         %($@hartford_counterfactual_2016$)
         %<!-- (computationally intensive, hyper-parameter-sensitive, intolerant against unmeasured variation, hart to interpret) -->
-    \end{itemize}
-    \item BCF-IV: Discovers and estimates HTE in an interpretable way %($@bargagli-stoffi_heterogeneous_2020$)
+\end{itemize}
+
+BCF-IV: Discovers and estimates HTE in an interpretable way %($@bargagli-stoffi_heterogeneous_2020$)
     \begin{itemize}
         \item BCF: BART-based semi-parametric Bayesian regression model, able to estimate HTE in regular assignment mechanisms, even with strong confounding %($@hahn_bayesian_2020$)
         \item Use BCF to estimate $\hat\tau_C(x)$ and  $\widehat{ITT}_{Y}(x)$ such that the conditional Complier Average Causal Effect $\hat\tau^{cace}(x) = \frac{\widehat{ITT}_{Y}(x)}{\hat\tau_C(x)}$
     \end{itemize}
-\end{itemize}
 
 
 \begin{itemize}

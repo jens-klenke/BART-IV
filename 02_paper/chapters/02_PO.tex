@@ -1,6 +1,6 @@
 \chapter{Potential outcomes and irregular assignmnet}
 
-We follow the setup of \cite{bargagli_stoffi_causal_2020} and \cite{bargagli-stoffi_heterogeneous_2022} who follow the usual notation of the Rubin's causal model. Given a set of $N$ indiviudals, indexed by $i = 1, \ldots, N$, we denote with $Y_i$ a generic outcome variable, with $W_i$ a binary treatment indicator, with $X$ an $N \times P$ matrix of $P$ control variables, and with $X_i$ the $i$-th $P$-dimensional row vector of covariates.
+We follow the setup of \cite{bargagli_stoffi_causal_2020} and \cite{bargagli-stoffi_heterogeneous_2022} who use the usual notation of the Rubin's causal model. Given a set of $N$ indiviudals, indexed by $i = 1, \ldots, N$, we denote with $Y_i$ a generic outcome variable, with $W_i$ a binary treatment indicator, with $X$ an $N \times P$ matrix of $P$ control variables, and with $X_i$ the $i$-th $P$-dimensional row vector of covariates.
 Let us define the pair of potential outcomes $Y_i(W_i)$ by using the Stable Unit Treatment Value Assumption (SUTVA). 
 \begin{assump}{Stable unit treatment value assumption (SUTVA).}
    \label{assump:SUTVA} \\
@@ -65,10 +65,10 @@ The proportion of individuals that belong to each subgroup is defined as $\pi_{G
 Considering the distinction between $Z_i$ and $W_i$, the Intention-To-Treat (ITT) effect is defined as
 \begin{defn}{Intention-To-Treat (ITT) effect.}
    \begin{align*}
-      ITT_Y = \mathbb{E} \left[ Y_i | Z_i = 1 \right] - \mathbb{E} \left[ Y_i | Z_i = 0 \right],
+      ITT_Y = \mathbb{E} \left[ Y_i | Z_i = 1 \right] - \mathbb{E} \left[ Y_i | Z_i = 0 \right].
    \end{align*}
 \end{defn}
-which refers to the instrument's average effect. 
+The ITT effect refers to the instrument's average effect. 
 Based on the subgroups in Definition \ref{defn:subgroups} and their proportions $\pi_{G_i}$, an IV setting can be formalized by the usual four IV assumptions following \cite{Angrist1996}.
 
 \begin{assump}{Classical IV assumptions with a binary treatment.}
@@ -81,7 +81,7 @@ Based on the subgroups in Definition \ref{defn:subgroups} and their proportions 
    \end{align*}
 \end{assump}
 
-If Assumptions \ref{assump:IV_assump} hold, the Complier Average Causal Effect (CACE) is identified.
+If Assumptions \ref{assump:IV_assump} hold, the Complier Average Causal Effect (CACE) can be identified.
 
 \begin{defn}{Complier Average Causal Effect (CACE).}
    \label{defn:CACE}
@@ -90,9 +90,8 @@ If Assumptions \ref{assump:IV_assump} hold, the Complier Average Causal Effect (
    \end{align*}
 \end{defn}
 
-and can be estimated from observational data. The numerator represents the average effect of the instrument, also referred to as the Intention-To-Treat (ITT) effect. 
-The denominator represents the overall proportion of indiviudals that comply with the treatment assignment, also referred to as the proportion of compliers \cite{Angrist1996}.
-CACE is also sometimes referred to as Local Average Treatment Effects (see \cite{AngristPischke2008}) and represents the estimate of the causal effect of the assignment to treatment on the principal outcome, $Y_i$, for the subpopulation of compliers \cite{ImbensRubin2015}. Consider the system of two simultaneous equations 
+The CACE can be estimated from observational data where the numerator represents the average effect of the instrument, also referred to as the Intention-To-Treat (ITT) effect. The denominator represents the overall proportion of indiviudals that comply with the treatment assignment, also referred to as the proportion of compliers \cite{Angrist1996}.
+CACE is also sometimes referred to as Local Average Treatment Effects (LATE, see \cite{AngristPischke2008}) and represents the estimate of the causal effect of the assignment to treatment on the principal outcome, $Y_i$, for the subpopulation of compliers \cite{ImbensRubin2015}. Consider the system of two simultaneous equations 
 \begin{align*}
 Y_i^{obs} &= \alpha + \tau_{CACE} W_i + \epsilon, \\
 W_i &= \pi_0 + \pi_C Z_i + \eta_i,
@@ -107,27 +106,31 @@ In this work, we follow \cite{bargagli-stoffi_heterogeneous_2022} and consider t
    \end{align*}
 \end{defn}
 
-The cCACE is a straightforward extension of the CACE in Definition \ref{defn:CACE} presented in with \cite{bargagli-stoffi_heterogeneous_2022}. A natural, subgroup-related estimator $\tau_{\text{CACE}}(x)$ can be defined by acknowledging $\mX_i \in \mathbb{X}_j$ with $\mathbb{X}_j$ being a pre-specified subgroup.
+The cCACE is a straightforward extension of the CACE in Definition \ref{defn:CACE} presented in \cite{bargagli-stoffi_heterogeneous_2022}. A natural, subgroup-related estimator $\tau_{\text{CACE}}(x)$ can be defined by acknowledging $\mX_i \in \mathbb{X}_j$ with $\mathbb{X}_j$ being a pre-specified subgroup.
 
 \begin{defn}{Estimator of cCACE.}
    \label{defn:cCACE_estimator}
    \begin{align*}
-      \widehat\tau_{\text{CACE}}(x) &= \frac{\text{ITT}_{Y}(x)}{\pi_C(x)} \\
-      &= \frac{\frac{1}{N_{1,j}} \mathlarger{\sum}_{l: X_l \in X_j} Y^{obs}_l Z_l - \frac{1}{N_{0,j}} \mathlarger{\sum}_{l: X_l \in X_j} Y^{obs}_l (1 - Z_l)}{\frac{1}{N_{1,j}} \mathlarger{\sum}_{l: X_l \in X_j} W_l Z_l - \frac{1}{N_{0,j}} \mathlarger{\sum}_{l: X_l \in X_j} W_l (1 - Z_l)
+      \widehat\tau_{\text{CACE}}(x) &= \frac{\widehat{\text{ITT}}_{Y}(x)}{\widehat{\pi}_C(x)} \\
+      &= \frac{\frac{1}{N_{1,j}} \mathlarger{\sum}_{l: X_l \in \mathbb{X}_j} Y^{obs}_l Z_l - \frac{1}{N_{0,j}} \mathlarger{\sum}_{l: X_l \in \mathbb{X}_j} Y^{obs}_l (1 - Z_l)}{\frac{1}{N_{1,j}} \mathlarger{\sum}_{l: X_l \in \mathbb{X}_j} W_l Z_l - \frac{1}{N_{0,j}} \mathlarger{\sum}_{l: X_l \in \mathbb{X}_j} W_l (1 - Z_l)
       }\\
    \end{align*}
 \end{defn}
 
-Intuitively, Definition \ref{defn:cCACE_estimator} proposes to use TSLS subgroup-wise for every $\mathbb{X}_j$ under Assumptions \ref{assump:IV_assump}. Moreover, \cite{Wooldridge2015} provide theorems for consistency and asymptotic normality for the unconditional TSLS estimator for $\tau_{CACE}$. \cite{bargagli-stoffi_heterogeneous_2022} show that those theorems can be transferred to the conditional TSLS estimator if there are sufficient number of observations for every subgroup in which the cCACE is estimated. 
+Intuitively, Definition \ref{defn:cCACE_estimator} implies to use TSLS subgroup-wise for every $\mathbb{X}_j$ under Assumptions \ref{assump:IV_assump}. The system of two simulatenous equations from above can be conditionalized by 
+\begin{align*}
+   Y_{i, \mathbb{X}_j}^{obs} &= \alpha_{\mathbb{X}_j} + \tau_{\mathbb{X}_j}^{CACE} W_{i, \mathbb{X}_j} + \epsilon_{i, \mathbb{X}_j}, \\
+   W_{i, \mathbb{X}_j} &= \pi_{0, \mathbb{X}_j} + \pi_{C, \mathbb{X}_j} Z_{i, \mathbb{X}_j} + \eta_{i, \mathbb{X}_j},
+\end{align*}
+such that the reduced form reads 
+\begin{align*}
+   Y_{i,\mathbb{X}_j}^{\text{obs}} = &\left( \alpha_{\mathbb{X}_j} +
+    \tau_{\text{CACE},\mathbb{X}_j} \pi_{0,\mathbb{X}_j} \right) + \\
+     &\left( \tau_{\text{CACE},\mathbb{X}_j} \pi_{C,\mathbb{X}_j} \right) Z_{i,\mathbb{X}_j} + \\
+     &\left( \varepsilon_{i,\mathbb{X}_j} + \tau^{\text{CACE}}_{\mathbb{X}_j} \eta_{i,\mathbb{X}_j} \right).
+\end{align*}
+such that the intercept and slope parameter can be estimated by ordinary least squares, given a sufficient number of $i.i.d$ observations in each node. More information regarding theoretical properties of ... can be found in Appendix A of \cite{bargagli-stoffi_heterogeneous_2022}. In Definition \ref{defn:cCACE_estimator}, the estimator $\widehat\tau_{\text{CACE}}(x)$ is defined by relying on the existence of accurately pre-specified subgroups. The main contribution of BCF-IV in \cite{bargagli-stoffi_heterogeneous_2022} revolves around providing a full algorithm that (1) $\mathcal{I}_{disc}, \mathcal{I}_{inf}$ and (2) discovers heterogeneity in cCACE in an interpretable way using $\mathcal{I}_{disc}$ and (3) infers precise estimates of cCACE on $\mathcal{I}_{inf}$. The next chapter explains BCF-IV in detail and describes the extension to a sparsity-inducing version.
 
-\begin{thm}[Consistency and Asymptotic Normality of the Conditional 2SLS Estimator]
-   Let Assumptions 1, 2, and 3 hold, i.e., \(E(Z^2_{i,X_j}) \neq 0\) (Assumption 1), \(E(Z_{i,X_j} \varepsilon_{i,X_j}) = 0\) (Assumption 2), and \(\pi_{C,X_j} \neq 0\) (Assumption 3). Then:
-   \begin{enumerate}
-       \item (Consistency) \( \hat{\tau}^{2SLS}_{X_j} - \tau_{X_j} \overset{p}{\to} 0 \) as \( N_{X_j} \to \infty \), where \( \overset{p}{\to} \) denotes convergence in probability, and \( N_{X_j} \) is the number of observations within the node \( X_j \).
-       \item (Asymptotic Normality) If, in addition, \(E(Z^2_{i,X_j} \varepsilon^2_{i,X_j})\) is finite (Assumption 4), then:
-       \[
-       \sqrt{N_{X_j}} (\hat{\tau}^{2SLS}_{X_j} - \tau_{X_j}) \overset{d}{\to} \mathcal{N}(0, N_{X_j} \cdot \text{avar}(\hat{\tau}^{2SLS}_{X_j}))
-       \]
-       as \(N_{X_j} \to \infty\), where \( \overset{d}{\to} \) denotes convergence in distribution, \( \mathcal{N}(0, N_{X_j} \cdot \text{avar}(\hat{\tau}^{2SLS}_{X_j})) \) stands for the normal distribution, and \(\text{avar}(\hat{\tau}^{2SLS}_{X_j})\) is the asymptotic variance of the 2SLS estimator that can be approximated as in Chapter 15 of Wooldridge (2015).
-   \end{enumerate}
-\end{thm}
+
+
+
