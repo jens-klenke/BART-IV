@@ -3,10 +3,13 @@
 \contentsline {section}{\numberline {1.1}Literature}{1}{section.1.1}%
 \contentsline {section}{\numberline {1.2}Contribution}{2}{section.1.2}%
 \contentsline {chapter}{\numberline {2}Potential outcomes and irregular assignmnet}{4}{chapter.2}%
-\contentsline {chapter}{\numberline {3}Sparsity-inducing Bayesian Causal Forest with Instrumental Variable}{9}{chapter.3}%
+\contentsline {chapter}{\numberline {3}Bayesian Causal Forests and Instrumental Variables}{9}{chapter.3}%
 \contentsline {section}{\numberline {3.1}BCF-IV}{9}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Shrinkage BCF-IV}{10}{section.3.2}%
-\contentsline {chapter}{\numberline {4}Simulation study}{11}{chapter.4}%
-\contentsline {chapter}{\numberline {5}Empirical application}{13}{chapter.5}%
-\contentsline {chapter}{\numberline {6}Discussion}{14}{chapter.6}%
+\contentsline {subsection}{\numberline {3.1.1}Honest sample splitting}{9}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}Discovery of heterogeneous subgroups}{10}{subsection.3.1.2}%
+\contentsline {subsection}{\numberline {3.1.3}Inference of conditional CACE}{11}{subsection.3.1.3}%
+\contentsline {section}{\numberline {3.2}Shrinkage BCF-IV}{11}{section.3.2}%
+\contentsline {chapter}{\numberline {4}Simulation study}{12}{chapter.4}%
+\contentsline {chapter}{\numberline {5}Empirical application}{14}{chapter.5}%
+\contentsline {chapter}{\numberline {6}Discussion}{15}{chapter.6}%
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

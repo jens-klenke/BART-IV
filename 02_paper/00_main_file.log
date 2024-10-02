@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.4.20)  2 OCT 2024 12:25
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.4.20)  2 OCT 2024 14:34
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1000,11 +1000,7 @@ Package csquotes Info: ... found 'babel' package.
 LaTeX Font Info:    Trying to load font information for T1+lmr on input line 206.
  (/usr/local/texlive/2022/texmf-dist/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) (./00_main_file.aux (./chapters/01_intro.aux) (./chapters/02_PO.aux) (./chapters/03_BCF_IV.aux
-
-LaTeX Warning: Label `sec:BCF-IV' multiply defined.
-
-) (./chapters/04_sim_study.aux) (./chapters/05_emp_appl.aux) (./chapters/06_discussion.aux))
+) (./00_main_file.aux (./chapters/01_intro.aux) (./chapters/02_PO.aux) (./chapters/03_BCF_IV.aux) (./chapters/04_sim_study.aux) (./chapters/05_emp_appl.aux) (./chapters/06_discussion.aux))
 \openout1 = `00_main_file.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 206.
@@ -1292,22 +1288,13 @@ LaTeX Font Warning: Font shape `TS1/cmr/m/n' in size <6.56998> not available
  (./chapters/03_BCF_IV.tex
 chapter 3.
 
-LaTeX Warning: Reference `sec:SBCF-IV' on page 9 undefined on input line 8.
+Package natbib Warning: Citation `hartford_deep_2017' on page 9 undefined on input line 8.
 
 
-Package natbib Warning: Citation `chipman_bart_2010' on page 9 undefined on input line 14.
+Package natbib Warning: Citation `athey_generalized_2019' on page 9 undefined on input line 8.
 
 
-Package natbib Warning: Citation `Breiman1984' on page 9 undefined on input line 14.
-
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <9> on input line 25.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 25.
-
-Overfull \hbox (10.88788pt too wide) detected at line 53
-[][] 
- []
+Package natbib Warning: Citation `Athey_imbens_2016' on page 9 undefined on input line 18.
 
 [9
 
@@ -1315,23 +1302,39 @@ Overfull \hbox (10.88788pt too wide) detected at line 53
 
 
 
-]) [10]
+]
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <9> on input line 27.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 27.
+
+Overfull \hbox (10.88788pt too wide) detected at line 55
+[][] 
+ []
+
+
+Package natbib Warning: Citation `chipman_bart_2010' on page 10 undefined on input line 64.
+
+
+Package natbib Warning: Citation `Breiman1984' on page 10 undefined on input line 64.
+
+) [10] [11]
 \openout2 = `chapters/04_sim_study.aux'.
 
  (./chapters/04_sim_study.tex
 chapter 4.
-[11
+[12
 
 
 
 
 
-]) [12]
+]) [13]
 \openout2 = `chapters/05_emp_appl.aux'.
 
  (./chapters/05_emp_appl.tex
 chapter 5.
-) [13
+) [14
 
 
 
@@ -1343,14 +1346,14 @@ chapter 5.
  (./chapters/06_discussion.tex
 chapter 6.
 
-Package natbib Warning: Citation `Wooldridge2015' on page 14 undefined on input line 3.
+Package natbib Warning: Citation `Wooldridge2015' on page 15 undefined on input line 3.
 
 
 Overfull \hbox (10.93286pt too wide) in paragraph at lines 12--14
 \T1/lmr/m/it/10.95 (-20) as $\OML/lmm/m/it/10.95 N[] \OMS/lmsy/m/n/10.95 ! 1$\T1/lmr/m/it/10.95 (-20) , where $[]$ de-notes con-ver-gence in dis-tri-b-u-tion, $\OMS/lmsy/m/n/10.95 N\OT1/lmr/m/n/10.95 (-20) (0\OML/lmm/m/it/10.95 ; N[] \OMS/lmsy/m/n/10.95 ^^A []\OT1/lmr/m/n/10.95 (-20) ([]))$
  []
 
-) [14
+) [15
 
 
 
@@ -1386,12 +1389,12 @@ Underfull \hbox (badness 4913) in paragraph at lines 40--47
 \T1/lmr/m/it/10.95 (+20) so-ci-a-tion \T1/lmr/bx/n/10.95 (+20) 113\T1/lmr/m/n/10.95 (+20) (522), 626--636.  Pub-lisher: Tay-lor & Fran-cis _eprint:
  []
 
-[15
+[16
 
 
 
 
-]) [16]
+]) [17]
 
 Package natbib Warning: There were undefined citations.
 
@@ -1401,27 +1404,24 @@ LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 1.13995pt have occurred.
 
 
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: There were multiply-defined labels.
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
 Package rerunfilecheck Info: File `00_main_file.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 36438 strings out of 478268
- 718499 string characters out of 5846347
- 1256005 words of memory out of 5000000
- 53540 multiletter control sequences out of 15000+600000
- 619058 words of font info for 283 fonts, out of 8000000 for 9000
+ 36475 strings out of 478268
+ 719264 string characters out of 5846347
+ 1255989 words of memory out of 5000000
+ 53561 multiletter control sequences out of 15000+600000
+ 622371 words of font info for 290 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  108i,20n,133p,10680b,612s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}</usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmbx9.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmex10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmmi6.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmmi9.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmmib10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr17.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr6.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr9.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmri10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmro10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on 00_main_file.pdf (19 pages, 439004 bytes).
+Output written on 00_main_file.pdf (20 pages, 442030 bytes).
 PDF statistics:
- 367 PDF objects out of 1000 (max. 8388607)
- 293 compressed objects within 3 object streams
- 59 named destinations out of 1000 (max. 500000)
- 86109 words of extra memory for PDF output out of 89155 (max. 10000000)
+ 398 PDF objects out of 1000 (max. 8388607)
+ 322 compressed objects within 4 object streams
+ 63 named destinations out of 1000 (max. 500000)
+ 88181 words of extra memory for PDF output out of 89155 (max. 10000000)
 

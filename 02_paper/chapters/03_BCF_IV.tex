@@ -1,19 +1,21 @@
-\chapter{Sparsity-inducing Bayesian Causal Forest with
-Instrumental Variable}
+\chapter{Bayesian Causal Forests and
+Instrumental Variables}
 
 This paper proposes an algorithm for the estimation of cCACE for sparse data scenarios. 
 More precisely, we propose an extension of the BCF-IV algorithm in \cite{bargagli-stoffi_heterogeneous_2022} 
 to handle scenarios with many irrelevant covariates in the dataset.
 Section \ref{sec:BCF-IV} describes the original BCF-IV algorithm while section
-\ref{sec:SBCF-IV} explains the proposed extension based on the Shrinkage Bayesian Causal Forest. 
+\ref{sec:SBCF-IV} explains the proposed extension based on the Shrinkage Bayesian Causal Forest. As pointed out in the literature review of this paper, current ensemble methods that operate under an irregular assignment mechanism with imperfect compliance face some difficulties. Algorithms like Deep IV \cite{hartford_deep_2017} and the Generalized Random Forest \cite{athey_generalized_2019} provide precise cCACE estimates but are rather uninformative about relevant covariates, or subsets of possibly many covariates, that drive heterogeneity in cCACE. Tree-based methods like the Causal Tree with IV \cite{bargagli_stoffi_causal_2020} propose to estimate treatment effects under imperfect compliance and the existence of a suitable IV while retainig interpretability. However, although the single tree structure enables interpretability it also lacks of stability and replicability. \cite{bargagli-stoffi_heterogeneous_2022} argue to overcome those shortcomings using the BCF-IV algorithm as outlined in the following Section \ref{sec:BCF-IV}.   
 
 
 \section{BCF-IV}
 \label{sec:BCF-IV}
 
-The Bayesian Causal Forest (BCF) algorithm is proposed in \cite{hahn_bayesian_2020} to use the Bayesian Additive Regression Trees (BART) algorithm \cite{chipman_bart_2010} to estimate CATE in a regular assignment mechanism. BART is related to the CART algorithm of \cite{Breiman1984} which constructs binary trees by recursively partitioning the covariate space to produce accurate predictions.
-BART rests on a complete Bayesian probability model by using different regularizing prior distributions such that the overall model fit dominates fits of single trees. Distinct prior distributions are used for the complexity of the tree structure, data shrinkage within the nodes and the variance of the error term. 
+The main steps of the BCF-IV algorithm are outlined in Algorithm \ref{algo:BCF-IV}. Details of these three steps of honest sample splitting, discovery of treatment effect heterogeneity and inference of treatment effects are discussed in Sections \ref{honest_splitting}, \ref{discovery} and \ref{inference}.
 
+\subsection{Honest sample splitting}
+\label{honest_splitting}
+The first step concerns honest sample splitting. This step enables a data-driven discovery of heterogeneous subgroups such that there is no need to specify those subgroups beforehand. Defining subgroups before estimating treatment effects based on relevant data of the studied population is a challenging task. It requires deep knowledge about the intricacies of the treatment effect at hand and may be prone to overlook relevant subgroups. Honest sample splitting as proposed in \cite{Athey_imbens_2016} is a remedy for those issues by making distinctions between model selection and treatment effect inference.    
 
 \begin{algorithm}[H]
     \footnotesize
@@ -49,8 +51,25 @@ BART rests on a complete Bayesian probability model by using different regulariz
         \item (c) Run weak-instrument tests within every node and discard nodes where weak-instrument issues are detected.
     \end{itemize}
     \caption{Bayesian Causal Forest with Instrumental Variable (BCF-IV)}
-    \label{algo:SBART+SPL}
+    \label{algo:BCF-IV}
 \end{algorithm}
+
+
+\subsection{Discovery of heterogeneous subgroups}
+\label{discovery}
+
+
+
+
+The Bayesian Causal Forest (BCF) algorithm is proposed in \cite{hahn_bayesian_2020} to use the Bayesian Additive Regression Trees (BART) algorithm \cite{chipman_bart_2010} to estimate CATE in a regular assignment mechanism. BART is related to the CART algorithm of \cite{Breiman1984} which constructs binary trees by recursively partitioning the covariate space to produce accurate predictions.
+BART rests on a complete Bayesian probability model by using different regularizing prior distributions such that the overall model fit dominates fits of single trees. Distinct prior distributions are used for the complexity of the tree structure, data shrinkage within the nodes and the variance of the error term. 
+
+
+
+
+\subsection{Inference of conditional CACE}
+\label{inference}
+
 
 \section{Shrinkage BCF-IV}
 \label{sec:SBCF-IV}
