@@ -106,7 +106,7 @@ In this work, we follow \cite{bargagli-stoffi_heterogeneous_2022} and consider t
    \end{align*}
 \end{defn}
 
-The cCACE is a straightforward extension of the CACE in Definition \ref{defn:CACE} presented in \cite{bargagli-stoffi_heterogeneous_2022}. A natural, subgroup-related estimator $\tau_{\text{CACE}}(x)$ can be defined by acknowledging $\mX_i \in \mathbb{X}_j$ with $\mathbb{X}_j$ being a pre-specified subgroup.
+The cCACE is a straightforward extension of the CACE in Definition \ref{defn:CACE} presented in \cite{bargagli-stoffi_heterogeneous_2022}. A natural subgroup-related estimator $\tau_{\text{CACE}}(x)$ can be defined by acknowledging $\mX_i \in \mathbb{X}_j$ with $\mathbb{X}_j$ being a pre-specified subgroup.
 
 \begin{defn}{Estimator of cCACE.}
    \label{defn:cCACE_estimator}
@@ -129,7 +129,7 @@ such that the reduced form reads
      &\left( \tau_{\text{CACE},\mathbb{X}_j} \pi_{C,\mathbb{X}_j} \right) Z_{i,\mathbb{X}_j} + \\
      &\left( \varepsilon_{i,\mathbb{X}_j} + \tau^{\text{CACE}}_{\mathbb{X}_j} \eta_{i,\mathbb{X}_j} \right).
 \end{align*}
-The intercept $\left( \alpha_{\mathbb{X}_j} + \tau_{\text{CACE},\mathbb{X}_j} \pi_{0,\mathbb{X}_j} \right)$ and slope parameter $\left( \tau_{\text{CACE},\mathbb{X}_j} \pi_{C,\mathbb{X}_j} \right)$ can be estimated by ordinary least squares, given a sufficient number of $i.i.d$ observations in each subgroup $\mathcal{X}_j$. More information regarding theoretical properties of ... can be found in Appendix A of \cite{bargagli-stoffi_heterogeneous_2022}. In Definition \ref{defn:cCACE_estimator}, the estimator $\widehat\tau_{\text{CACE}}(x)$ is defined by relying on the existence of accurately pre-specified subgroups. The main contribution of BCF-IV in \cite{bargagli-stoffi_heterogeneous_2022} revolves around providing a full algorithm that (1) honestly splits the data into two disjunct subsamples $\mathcal{I}_{disc}, \mathcal{I}_{inf}$, (2) discovers heterogeneity in cCACE in an interpretable way using $\mathcal{I}_{disc}$ and (3) infers precise estimates of cCACE on $\mathcal{I}_{inf}$. The next chapter explains BCF-IV in detail and describes the extension to a sparsity-inducing version.
+The intercept $\left( \alpha_{\mathbb{X}_j} + \tau_{\text{CACE},\mathbb{X}_j} \pi_{0,\mathbb{X}_j} \right)$ and slope parameter $\left( \tau_{\text{CACE},\mathbb{X}_j} \pi_{C,\mathbb{X}_j} \right)$ can be estimated by ordinary least squares, given a sufficient number of $i.i.d$ observations in each subgroup $\mathbb{X}_j$. More information regarding theoretical properties of ... can be found in Appendix A of \cite{bargagli-stoffi_heterogeneous_2022}. In Definition \ref{defn:cCACE_estimator}, the estimator $\widehat\tau_{\text{CACE}}(x)$ is defined by relying on the existence of accurately pre-specified subgroups. The main contribution of BCF-IV in \cite{bargagli-stoffi_heterogeneous_2022} revolves around providing a full algorithm that (1) honestly splits the data into two disjunct subsamples $\mathcal{I}_{disc}, \mathcal{I}_{inf}$, (2) discovers heterogeneity in cCACE in an interpretable way using $\mathcal{I}_{disc}$ and (3) infers precise estimates of cCACE on $\mathcal{I}_{inf}$. The next chapter explains BCF-IV in detail and describes the extension to a sparsity-inducing version.
 
 
 

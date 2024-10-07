@@ -58,17 +58,41 @@ The first step concerns honest sample splitting. This step enables a data-driven
 \subsection{Discovery of heterogeneous subgroups}
 \label{discovery}
 
+To estimate the conditional CACE given in Definition \ref{defn:cCACE_estimator}, we need some functional expression for the conditional expected value for the outcome, $Y_i$, as well as for the treatment indicator, $W_i$.  
+The Bayesian Causal Forest (BCF) algorithm is proposed in \cite{hahn_bayesian_2020} to use the Bayesian Additive Regression Trees (BART) algorithm \cite{chipman_bart_2010} to estimate the CATE of Definition \ref{defn:CATE} in a regular assignment mechanism. BART is related to the CART algorithm of \cite{Breiman1984} which constructs binary trees by recursively partitioning the covariate space to produce accurate predictions. 
+BART rests on a complete Bayesian probability model by using different regularizing prior distributions such that the overall model fit dominates fits of single trees. Distinct prior distributions are used for the complexity of the tree structure, data shrinkage within the nodes and the variance of the error term. The same idea is now transferred to the setup of an irregular assignment mechanism.
+We start with modeling the numerator of Definition \ref{defn:cCACE_estimator} and restrict our dataset to observations within $\mathcal{I}_{disc}$.
+Let the outcome variable $Y_i$ be modelled semi-parametrically as 
+\begin{align*}
+    Y_i = f(Z_i, X_i) + \varepsilon_i 
+\end{align*}
+with $\varepsilon_i \sim \left(0, \sigma_{\varepsilon}^2\right)$. The conditional expected value of the outcome be defined similar to \cite{hahn_bayesian_2020} as 
 
-
-
-The Bayesian Causal Forest (BCF) algorithm is proposed in \cite{hahn_bayesian_2020} to use the Bayesian Additive Regression Trees (BART) algorithm \cite{chipman_bart_2010} to estimate CATE in a regular assignment mechanism. BART is related to the CART algorithm of \cite{Breiman1984} which constructs binary trees by recursively partitioning the covariate space to produce accurate predictions.
-BART rests on a complete Bayesian probability model by using different regularizing prior distributions such that the overall model fit dominates fits of single trees. Distinct prior distributions are used for the complexity of the tree structure, data shrinkage within the nodes and the variance of the error term. 
-
-
-
+\begin{align*}
+    \mathbb{E}\left[Y_i | Z_i = z, X_i=x \right] = \mu\left(\pi(x), x\right) + ITT_y(x)z. 
+\end{align*}
+Therefore, the conditional expectation is mainly governed by two additive functions. 
+The first additive term $\mu\left(\pi(x), x\right)$ incorporates the IV's propensity score $\pi(x)=\mathbb{E}[Z_i=1 | X_i=x]$ and accounts for the direct, treatment-independent influence of the control variables on the outcome variable. 
+The usage of the propensity score $\pi(x)$ prevents targeted selection and regularization-induced confounding. 
+The second additive component $ITT_y(x)$ accounts for the direct, possibly heterogeneous, intention-to-treat effect. 
+While the first term follows the standard prior specifications as in \cite{chipman_bart_2010}, the second term uses alternative tree depth penalty parameters $(\eta = 3, \beta=0.25)$ that encourage rather simplistic trees \cite{hahn_bayesian_2020}.
+Consequently, we can get estimates of $\widehat{ITT}_y(x)$ as required in the discovery step 2(a) of Algorithm \ref{algo:BCF-IV}.
+Analogously, we can model the denominator of Definition \ref{defn:cCACE_estimator} by still restricting our dataset to observations within $\mathcal{I}_{disc}$ and using
+\begin{align*}
+    W_i = f(Z_i, X_i) + \varphi_i 
+\end{align*}
+with $\varphi_i \sim \left(0, \sigma_{\varphi}^2\right)$. The conditional expected value of the treatment indicator is now defined as       
+\begin{align*}
+    \mathbb{E}\left[W_i | Z_i = z, X_i=x \right] = \delta(z, x)
+\end{align*}
+This conditional expectation is governed by a standard BART prior such that the denominator of Definition \ref{defn:cCACE_estimator} is estimated using BART in the sense of \cite{Hill_2011}. This gives us estimates $\widehat{\pi}_{C}(x)$ as required in discovery step 2 (b) of Algorithm \ref{algo:BCF-IV} such that, together with $\widehat{ITT}_y(x)$, we can compute $\widehat\tau_{CACE}(x)$ straightforward.
+Finally, a CART algorithm is used on the estimates $\widehat\tau_{CACE}(x)$ to discover heterogeneity in CACE while retaining interpretability by providing transperancy on which variables have been used to construct the relevant subgroups. 
 
 \subsection{Inference of conditional CACE}
 \label{inference}
+Finally, Definition \ref{defn:cCACE_estimator} is used in all subgroups independently using the tree structure learned in Subsection \ref{discovery} with unseen data from $\mathcal{I}_{inf}$ to infer conditional CACE by exploiting honest sample splitting outlined in Subsection \ref{honest_splitting}.  
+
+
 
 
 \section{Shrinkage BCF-IV}

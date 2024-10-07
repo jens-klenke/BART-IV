@@ -217,7 +217,16 @@
 
 \begin{Abstract}
 \begin{changemargin}{1cm}{1cm}
-Your text:\lipsum[10]
+  This paper focuses on improving the estimation of heterogeneous treatment effects in observational studies under sparsity and conditions of imperfect compliance using instrumental variables (IV).
+  Traditional IV methods, such as two-stage least squares (2SLS), often impose linearity assumptions that may not hold in complex empirical settings.
+  To address these limitations, the Bayesian Instrumental Variable Causal Forest (BCF-IV) framework has been developed to estimate the conditional Complier Average Causal Effect (CACE) non-parametrically while retaining interpretability.
+  BCF-IV, based on the Bayesian Additive Regression Trees (BART) algorithm, identifies treatment effect heterogeneity within the subgroup of compliers using 2SLS leafwise. 
+  This research contributes in two significant ways by proposing the Shrinkage Bayesian Instrumental Variable Causal Forest (SBCF-IV) algorithm. 
+  First, the paper adopts the Shrinkage Bayesian Causal Forest (SBCF) algorithm, which integrates shrinkage priors to enable more precise treatment effect estimation in the presence of sparse data.
+  Second, the paper refines the discovery of heterogeneous subgroups by incorporating posterior splitting probabilities into the decision-making process.
+  These probabilities are used to scale the cost function during subgroup construction, leading to more accurate identification of meaningful subgroups.
+  The approach of SBCF-IV enhances the ability to manage sparse data and improves the detection of variables that drive treatment effect heterogeneity.  
+  Overall, a simulation study suggests improved adaptability and interpretability in estimating conditional CACE, particularly in scenarios with sparsity, confounding and nonlinearity.
 \end{changemargin}
 \end{Abstract}
 
