@@ -29,7 +29,7 @@ The first step concerns honest sample splitting. This step enables a data-driven
     \BlankLine
     \textbf{1. The Honest Splitting Step:} \\
     \begin{itemize}
-        \item Randomly split the total sample into a discovery subsample ($I_{\text{dis}}$) and an inference subsample ($I_{\text{inf}}$).
+        \item Randomly split the total sample into a discovery subsample ($\mathcal{I}_{\text{dis}}$) and an inference subsample ($\mathcal{I}_{\text{inf}}$).
     \end{itemize}
     \BlankLine
     \textbf{2. The Discovery Step} (performed on $I_{\text{dis}}$): \\
@@ -58,10 +58,10 @@ The first step concerns honest sample splitting. This step enables a data-driven
 \subsection{Discovery of heterogeneous subgroups}
 \label{discovery}
 
-To estimate the conditional CACE given in Definition \ref{defn:cCACE_estimator}, we need some functional expression for the conditional expected value for the outcome, $Y_i$, as well as for the treatment indicator, $W_i$.  
+To estimate the conditional CACE given in Definition \ref{defn:cCACE}, we need some functional expression for the conditional expected value for the outcome, $Y_i$, as well as for the treatment indicator, $W_i$.  
 The Bayesian Causal Forest (BCF) algorithm is proposed in \cite{hahn_bayesian_2020} to use the Bayesian Additive Regression Trees (BART) algorithm \cite{chipman_bart_2010} to estimate the CATE of Definition \ref{defn:CATE} in a regular assignment mechanism. BART is related to the CART algorithm of \cite{Breiman1984} which constructs binary trees by recursively partitioning the covariate space to produce accurate predictions. 
 BART rests on a complete Bayesian probability model by using different regularizing prior distributions such that the overall model fit dominates fits of single trees. Distinct prior distributions are used for the complexity of the tree structure, data shrinkage within the nodes and the variance of the error term. The same idea is now transferred to the setup of an irregular assignment mechanism.
-We start with modeling the numerator of Definition \ref{defn:cCACE_estimator} and restrict our dataset to observations within $\mathcal{I}_{disc}$.
+We start with modeling the numerator of Definition \ref{defn:cCACE} and restrict our dataset to observations within $\mathcal{I}_{disc}$.
 Let the outcome variable $Y_i$ be modelled semi-parametrically as 
 \begin{align*}
     Y_i = f(Z_i, X_i) + \varepsilon_i 
@@ -77,7 +77,7 @@ The usage of the propensity score $\pi(x)$ prevents targeted selection and regul
 The second additive component $ITT_y(x)$ accounts for the direct, possibly heterogeneous, intention-to-treat effect. 
 While the first term follows the standard prior specifications as in \cite{chipman_bart_2010}, the second term uses alternative tree depth penalty parameters $(\eta = 3, \beta=0.25)$ that encourage rather simplistic trees \cite{hahn_bayesian_2020}.
 Consequently, we can get estimates of $\widehat{ITT}_y(x)$ as required in the discovery step 2(a) of Algorithm \ref{algo:BCF-IV}.
-Analogously, we can model the denominator of Definition \ref{defn:cCACE_estimator} by still restricting our dataset to observations within $\mathcal{I}_{disc}$ and using
+Analogously, we can model the denominator of Definition \ref{defn:cCACE} by still restricting our dataset to observations within $\mathcal{I}_{disc}$ and using
 \begin{align*}
     W_i = f(Z_i, X_i) + \varphi_i 
 \end{align*}
@@ -85,18 +85,26 @@ with $\varphi_i \sim \left(0, \sigma_{\varphi}^2\right)$. The conditional expect
 \begin{align*}
     \mathbb{E}\left[W_i | Z_i = z, X_i=x \right] = \delta(z, x)
 \end{align*}
-This conditional expectation is governed by a standard BART prior such that the denominator of Definition \ref{defn:cCACE_estimator} is estimated using BART in the sense of \cite{Hill_2011}. This gives us estimates $\widehat{\pi}_{C}(x)$ as required in discovery step 2 (b) of Algorithm \ref{algo:BCF-IV} such that, together with $\widehat{ITT}_y(x)$, we can compute $\widehat\tau_{CACE}(x)$ straightforward.
+This conditional expectation is governed by a standard BART prior such that the denominator of Definition \ref{defn:cCACE} is estimated using BART in the sense of \cite{Hill_2011}. This gives us estimates $\widehat{\pi}_{C}(x)$ as required in discovery step 2 (b) of Algorithm \ref{algo:BCF-IV} such that, together with $\widehat{ITT}_y(x)$, we can compute $\widehat\tau_{CACE}(x)$ straightforward.
 Finally, a CART algorithm is used on the estimates $\widehat\tau_{CACE}(x)$ to discover heterogeneity in CACE while retaining interpretability by providing transperancy on which variables have been used to construct the relevant subgroups. 
 
 \subsection{Inference of conditional CACE}
 \label{inference}
-Finally, Definition \ref{defn:cCACE_estimator} is used in all subgroups independently using the tree structure learned in Subsection \ref{discovery} with unseen data from $\mathcal{I}_{inf}$ to infer conditional CACE by exploiting honest sample splitting outlined in Subsection \ref{honest_splitting}.  
+Finally, Definition \ref{defn:cCACE} is used in all subgroups independently using the tree structure learned in Subsection \ref{discovery} with unseen data from $\mathcal{I}_{inf}$ to infer conditional CACE by exploiting honest sample splitting outlined in Subsection \ref{honest_splitting}.
+Following Definition \ref{defn:cCACE_estimator} and its corresponding conditionalized system of two simulatenous equations one can estimate $\widehat{\tau}_{2SLS, \mathbb{X}_j}$ by using 2SLS given a sufficient number of $i.i.d$ observations in each subgroup $\mathbb{X}_j$.  
 
 
 
 
 \section{Shrinkage BCF-IV}
 \label{sec:SBCF-IV}
+
+The SBCF proposed by \cite{caron_shrinkage_2022} is a sparsity-inducing extension of the BCF which implements additional priors that uses weight-adjustments for covariates connected to the splits in the sum-of-tree model. This extension suggests improved estimation of CATE for a rising number of covariates leading to a sparse data scenario as well was confounding data settings. 
+The main difference between SBCF and BCF concerns the splitting probabilities that give each predictor variable a certain probabilty of being chosen as a splitting variable in the branching process of BART. 
+For BCF, the vector of splitting probabilities $\vs=\left(s_1, ..., s_P\right)$ with $s_j$ being the probability for predictor variable $j \in \left(1, ..., P \right)$ of being chosen for a split is uniformly distributed with $s_j=\frac{1}{P} \forall j \in \{1, ..., P \}$. Instead, SBCF uses an additional Dirichlet prior on $\vs$ such that $\vs =\left(s_1, ..., s_P \right) \sim \text{Dirichlet}\left( \frac{\alpha}{P}, ..., \frac{\alpha}{P} \right)$ such that small $\alpha$ values indicate a preference for sparsity while large $\alpha$ values would support many predictor variables in the model. As the degree of sparsity is typically unknown, an additional prior is used such that $\frac{\alpha}{\alpha+\rho} \sim {\text{Beta}\left(a, b\right)}$ with default values $\left(a, b, \rho \right) = \left(0.5, 1,P \right)$. That is, $(a, b) = (0.5, 1)$ leads small $\alpha$ and with increasing number of predictors $P$ the preference for sparsity increases.\footnote{Moreover, $(a, b) = (1, 1)$ would result in the standard BART uniform distribution.}
+
+
+
 
 
 

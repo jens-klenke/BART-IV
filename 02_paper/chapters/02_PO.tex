@@ -101,6 +101,7 @@ with $\mathbb{E}\left(\epsilon_i \right) = \mathbb{E}\left(\eta_i \right) = 0$ a
 In this work, we follow \cite{bargagli-stoffi_heterogeneous_2022} and consider the conditional version of the CACE, 
 
 \begin{defn}{Conditional CACE (cCACE).}
+   \label{defn:cCACE}
    \begin{align*}
       \tau_{\text{CACE}}(x) = \frac{\text{ITT}_{Y}(x)}{\pi_C(x)} &= \frac{\mathbb{E}[Y_i \mid Z_i = 1, X_i = x] - \mathbb{E}[Y_i \mid Z_i = 0, X_i = x]}{\mathbb{E}[W_i \mid Z_i = 1, X_i = x] - \mathbb{E}[W_i \mid Z_i = 0, X_i = x]}.
    \end{align*}
@@ -117,7 +118,7 @@ The cCACE is a straightforward extension of the CACE in Definition \ref{defn:CAC
    \end{align*}
 \end{defn}
 
-Intuitively, Definition \ref{defn:cCACE_estimator} implies to use TSLS subgroup-wise for every $\mathbb{X}_j$ under Assumptions \ref{assump:IV_assump}. The system of two simulatenous equations from above can be conditionalized by 
+Intuitively, Definition \ref{defn:cCACE_estimator} implies to use TSLS subgroup-wise for every $\mathbb{X}_j$ under Assumptions \ref{assump:IV_assump}. The system of two simulatenous equations from above can be conditionalized for every subgroup $\mathbb{X}_j$ by 
 \begin{align*}
    Y_{i, \mathbb{X}_j}^{obs} &= \alpha_{\mathbb{X}_j} + \tau_{\mathbb{X}_j}^{CACE} W_{i, \mathbb{X}_j} + \epsilon_{i, \mathbb{X}_j}, \\
    W_{i, \mathbb{X}_j} &= \pi_{0, \mathbb{X}_j} + \pi_{C, \mathbb{X}_j} Z_{i, \mathbb{X}_j} + \eta_{i, \mathbb{X}_j},
