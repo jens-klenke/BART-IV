@@ -1,5 +1,13 @@
 \begin{thebibliography}{xx}
 
+\harvarditem[Athey et~al.]{Athey, Tibshirani \harvardand\
+  Wager}{2019}{athey_generalized_2019}
+Athey, S., Tibshirani, J. \harvardand\ Wager, S.  \harvardyearleft
+  2019\harvardyearright , `Generalized random forests', {\em Annals of
+  Statistics} {\bf 47}(2),~1148--1178.
+\newblock Publisher: Institute of Mathematical Statistics.
+\newline\harvardurl{https://projecteuclid.org/euclid.aos/1547197251}
+
 \harvarditem{Bargagli~Stoffi \harvardand\
   Gnecco}{2020}{bargagli_stoffi_causal_2020}
 Bargagli~Stoffi, F.~J. \harvardand\ Gnecco, G.  \harvardyearleft
@@ -27,6 +35,19 @@ Caron, A., Baio, G. \harvardand\ Manolopoulou, I.  \harvardyearleft
   https://doi.org/10.1080/10618600.2022.2067549.
 \newline\harvardurl{https://doi.org/10.1080/10618600.2022.2067549}
 
+\harvarditem[Chipman et~al.]{Chipman, George \harvardand\
+  McCulloch}{2010}{chipman_bart_2010}
+Chipman, H.~A., George, E.~I. \harvardand\ McCulloch, R.~E.  \harvardyearleft
+  2010\harvardyearright , `{BART}: {Bayesian} additive regression trees', {\em
+  The Annals of Applied Statistics} {\bf 4}(1),~266--298.
+\newblock Publisher: Institute of Mathematical Statistics.
+\newline\harvardurl{https://projecteuclid.org/journals/annals-of-applied-statistics/volume-4/issue-1/BART-Bayesian-additive-regression-trees/10.1214/09-AOAS285.full}
+
+\harvarditem{Guo \harvardand\ Small}{2016}{guo_control_2016}
+Guo, Z. \harvardand\ Small, D.~S.  \harvardyearleft 2016\harvardyearright ,
+  `Control function instrumental variable estimation of nonlinear causal effect
+  models', {\em J. Mach. Learn. Res.} {\bf 17}(1),~3448--3482.
+
 \harvarditem[Hahn et~al.]{Hahn, Murray \harvardand\
   Carvalho}{2020}{hahn_bayesian_2020}
 Hahn, P.~R., Murray, J.~S. \harvardand\ Carvalho, C.~M.  \harvardyearleft
@@ -35,6 +56,15 @@ Hahn, P.~R., Murray, J.~S. \harvardand\ Carvalho, C.~M.  \harvardyearleft
   (with {Discussion})', {\em Bayesian Analysis} {\bf 15}(3),~965--1056.
 \newblock Publisher: International Society for Bayesian Analysis.
 \newline\harvardurl{https://projecteuclid.org/journals/bayesian-analysis/volume-15/issue-3/Bayesian-Regression-Tree-Models-for-Causal-Inference--Regularization-Confounding/10.1214/19-BA1195.full}
+
+\harvarditem[Hartford et~al.]{Hartford, Lewis, Leyton-Brown \harvardand\
+  Taddy}{2017}{hartford_deep_2017}
+Hartford, J., Lewis, G., Leyton-Brown, K. \harvardand\ Taddy, M.
+  \harvardyearleft 2017\harvardyearright , Deep {IV}: {A} {Flexible} {Approach}
+  for {Counterfactual} {Prediction}, {\em in} `Proceedings of the 34th
+  {International} {Conference} on {Machine} {Learning}', PMLR, pp.~1414--1423.
+\newblock ISSN: 2640-3498.
+\newline\harvardurl{https://proceedings.mlr.press/v70/hartford17a.html}
 
 \harvarditem{Linero}{2018}{linero_bayesian_2018-1}
 Linero, A.~R.  \harvardyearleft 2018\harvardyearright , `Bayesian {Regression}
@@ -51,5 +81,12 @@ Linero, A.~R. \harvardand\ Yang, Y.  \harvardyearleft 2018\harvardyearright ,
   {Sparsity}', {\em Journal of the Royal Statistical Society Series B:
   Statistical Methodology} {\bf 80}(5),~1087--1110.
 \newline\harvardurl{https://academic.oup.com/jrsssb/article/80/5/1087/7048381}
+
+\harvarditem{Newey \harvardand\ Powell}{2003}{newey_instrumental_2003}
+Newey, W.~K. \harvardand\ Powell, J.~L.  \harvardyearleft 2003\harvardyearright
+  , `Instrumental variable estimation of nonparametric models', {\em
+  Econometrica} {\bf 71}(5),~1565--1578.
+\newblock Publisher: [Wiley, Econometric Society].
+\newline\harvardurl{https://www.jstor.org/stable/1555512}
 
 \end{thebibliography}

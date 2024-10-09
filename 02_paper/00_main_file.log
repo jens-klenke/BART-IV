@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.4.20)  7 OCT 2024 17:09
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.4.20)  9 OCT 2024 14:47
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1185,21 +1185,6 @@ Class scrbook Warning: \float@addtolists detected!
 (scrbook)              deprecated \float@addtolist interface.
 
 
-Package natbib Warning: Citation `athey_generalized_2019' on page 1 undefined on input line 3.
-
-
-Package natbib Warning: Citation `newey_instrumental_2003' on page 1 undefined on input line 4.
-
-
-Package natbib Warning: Citation `guo_control_2016' on page 1 undefined on input line 4.
-
-
-Package natbib Warning: Citation `athey_generalized_2019' on page 1 undefined on input line 6.
-
-
-Package natbib Warning: Citation `hartford_deep_2017' on page 1 undefined on input line 6.
-
-
 Package natbib Warning: Citation `wang' on page 1 undefined on input line 7.
 
 
@@ -1301,12 +1286,6 @@ LaTeX Font Warning: Font shape `TS1/cmr/m/n' in size <6.56998> not available
  (./chapters/03_BCF_IV.tex
 chapter 3.
 
-Package natbib Warning: Citation `hartford_deep_2017' on page 9 undefined on input line 8.
-
-
-Package natbib Warning: Citation `athey_generalized_2019' on page 9 undefined on input line 8.
-
-
 Package natbib Warning: Citation `Athey_imbens_2016' on page 9 undefined on input line 18.
 
 [9
@@ -1326,19 +1305,17 @@ Overfull \hbox (10.88788pt too wide) detected at line 55
  []
 
 
-Package natbib Warning: Citation `chipman_bart_2010' on page 10 undefined on input line 62.
-
-
 Package natbib Warning: Citation `Breiman1984' on page 10 undefined on input line 62.
 
 [10]
 
-Package natbib Warning: Citation `chipman_bart_2010' on page 11 undefined on input line 78.
-
-
 Package natbib Warning: Citation `Hill_2011' on page 11 undefined on input line 88.
 
-[11]) [12]
+[11]
+
+Package natbib Warning: Citation `therneau' on page 12 undefined on input line 107.
+
+) [12]
 \openout2 = `chapters/04_sim_study.aux'.
 
  (./chapters/04_sim_study.tex
@@ -1390,33 +1367,28 @@ Overfull \hbox (10.93286pt too wide) in paragraph at lines 22--24
 
 
 ] (./00_main_file.bbl
-Underfull \hbox (badness 10000) in paragraph at lines 13--19
+Underfull \hbox (badness 10000) in paragraph at lines 21--27
 \T1/lmr/bx/n/10.95 (+20) URL: \T1/lmr/m/it/10.95 (+20) https://projecteuclid.org/journals/annals-of-applied-statistics/volume-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 13--19
+Underfull \hbox (badness 10000) in paragraph at lines 21--27
 \T1/lmr/m/it/10.95 (+20) 16/issue-3/Heterogeneous-causal-effects-with-imperfect-compliance--A-Bayesian-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 32--38
+Underfull \hbox (badness 10000) in paragraph at lines 40--45
+\T1/lmr/bx/n/10.95 (+20) URL: \T1/lmr/m/it/10.95 (+20) https://projecteuclid.org/journals/annals-of-applied-statistics/volume-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 53--59
 \T1/lmr/bx/n/10.95 (+20) URL: \T1/lmr/m/it/10.95 (+20) https://projecteuclid.org/journals/bayesian-analysis/volume-15/issue-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 32--38
+Underfull \hbox (badness 10000) in paragraph at lines 53--59
 \T1/lmr/m/it/10.95 (+20) 3/Bayesian-Regression-Tree-Models-for-Causal-Inference--Regularization-
- []
-
-
-Underfull \hbox (badness 2073) in paragraph at lines 40--47
-\T1/lmr/m/n/10.95 (+20) dic-tion and Vari-able Se-lec-tion', \T1/lmr/m/it/10.95 (+20) Jour-nal of the Amer-i-can Sta-tis-ti-cal As-
- []
-
-
-Underfull \hbox (badness 4913) in paragraph at lines 40--47
-\T1/lmr/m/it/10.95 (+20) so-ci-a-tion \T1/lmr/bx/n/10.95 (+20) 113\T1/lmr/m/n/10.95 (+20) (522), 626--636.  Pub-lisher: Tay-lor & Fran-cis _eprint:
  []
 
 [17
@@ -1424,7 +1396,17 @@ Underfull \hbox (badness 4913) in paragraph at lines 40--47
 
 
 
-]) [18]
+]
+Underfull \hbox (badness 2073) in paragraph at lines 70--77
+\T1/lmr/m/n/10.95 (+20) dic-tion and Vari-able Se-lec-tion', \T1/lmr/m/it/10.95 (+20) Jour-nal of the Amer-i-can Sta-tis-ti-cal As-
+ []
+
+
+Underfull \hbox (badness 4913) in paragraph at lines 70--77
+\T1/lmr/m/it/10.95 (+20) so-ci-a-tion \T1/lmr/bx/n/10.95 (+20) 113\T1/lmr/m/n/10.95 (+20) (522), 626--636.  Pub-lisher: Tay-lor & Fran-cis _eprint:
+ []
+
+) [18]
 
 Package natbib Warning: There were undefined citations.
 
@@ -1437,21 +1419,21 @@ Package rerunfilecheck Info: File `00_main_file.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 36498 strings out of 478268
- 719509 string characters out of 5846347
+ 36530 strings out of 478268
+ 720170 string characters out of 5846347
  1256989 words of memory out of 5000000
- 53558 multiletter control sequences out of 15000+600000
- 623461 words of font info for 303 fonts, out of 8000000 for 9000
+ 53573 multiletter control sequences out of 15000+600000
+ 624100 words of font info for 309 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 108i,20n,133p,10680b,610s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 108i,20n,133p,10680b,612s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 pdfTeX warning (dest): name{Hfootnote.1} has been referenced but does not exist, replaced by a fixed one
 
 {/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}</usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmbx9.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmex10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmmi6.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmmi9.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmmib10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr17.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr6.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmr9.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmri10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmro10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmsy9.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on 00_main_file.pdf (21 pages, 460751 bytes).
+Output written on 00_main_file.pdf (21 pages, 465042 bytes).
 PDF statistics:
- 417 PDF objects out of 1000 (max. 8388607)
- 338 compressed objects within 4 object streams
- 63 named destinations out of 1000 (max. 500000)
+ 448 PDF objects out of 1000 (max. 8388607)
+ 369 compressed objects within 4 object streams
+ 68 named destinations out of 1000 (max. 500000)
  88165 words of extra memory for PDF output out of 89155 (max. 10000000)
 
