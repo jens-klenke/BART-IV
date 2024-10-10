@@ -11,7 +11,7 @@ source(here::here('01_code/packages.R'))
 # we need variables y, w, z, x
 
 # num covariates
-p <- 20
+p <- 10
 # num obs 
 n <- 1000
 # effects
@@ -173,10 +173,10 @@ soft_test <- SoftBart::softbart_probit(w ~. , data=dat_test, test_data =  dat_te
 # Next make predictions for two datasets (Hill 2011). X is kept intact for both, however, in one
 # all treatment values are set to 0, and in the other they are all set to 1. This allows BART 
 # to draw from the posterior distribution  
-# for E[Y (1) | X]
+# for E[W (1) | X]
 val_covs_1 <- data.frame(w=factor(w[-index]), z=ifelse(dat_test$z==1, 1, 1), x[-index,])
 soft_test_w1 <- predict(soft_test, newdata=val_covs_1)
-# and E[Y (0) | X]
+# and E[W (0) | X]
 val_covs_0 <- data.frame(w=factor(w[-index]), z=ifelse(dat_test$z==0, 0, 0), x[-index,])
 soft_test_w0 <- predict(soft_test, newdata=val_covs_0)
 # implying we can also obtain draws from E[Y (1)−Y (0) | X] for each person.
@@ -279,3 +279,6 @@ s_bcf_fit.tree_2 <- rpart(s_bcf_tauhat_2 ~ .,
 rpart.plot(bcf_fit.tree)
 rpart.plot(s_bcf_fit.tree)
 rpart.plot(s_bcf_fit.tree_2)
+
+
+
