@@ -7,7 +7,10 @@
 \contentsline {subsection}{\numberline {3.1.2}Discovery of heterogeneous subgroups}{10}{subsection.3.1.2}%
 \contentsline {subsection}{\numberline {3.1.3}Inference of conditional CACE}{12}{subsection.3.1.3}%
 \contentsline {section}{\numberline {3.2}Shrinkage BCF-IV}{12}{section.3.2}%
-\contentsline {chapter}{\numberline {4}Simulation study}{13}{chapter.4}%
-\contentsline {chapter}{\numberline {5}Empirical application}{15}{chapter.5}%
-\contentsline {chapter}{\numberline {6}Discussion}{16}{chapter.6}%
+\contentsline {chapter}{\numberline {4}Simulation Study}{13}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Setup}{13}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Performance Criteria}{14}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Results}{15}{section.4.3}%
+\contentsline {chapter}{\numberline {5}Empirical application}{16}{chapter.5}%
+\contentsline {chapter}{\numberline {6}Discussion}{17}{chapter.6}%
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 
