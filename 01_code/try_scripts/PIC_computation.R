@@ -179,7 +179,7 @@ soft_test_w1 <- predict(soft_test, newdata=val_covs_1)
 # and E[W (0) | X]
 val_covs_0 <- data.frame(w=factor(w[-index]), z=ifelse(dat_test$z==0, 0, 0), x[-index,])
 soft_test_w0 <- predict(soft_test, newdata=val_covs_0)
-# implying we can also obtain draws from E[Y (1)−Y (0) | X] for each person.
+# implying we can also obtain draws from E[W (1)−W (0) | X] for each person.
 pic_sbart <- soft_test_w1$p_mean - soft_test_w0$p_mean
 
 ######################################################
