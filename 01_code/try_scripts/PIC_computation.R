@@ -48,7 +48,7 @@ get_features <- function(N, P, uncorrelated=T) {
   X = matrix(NA, N, P)
   P_half <- round(P/2)
   X[, 1:P_half] = qnorm(unif[, (1:P_half)])
-  X[, (P_half+1):P] = qbinom(unif[, ((P_half+1):P)], 1, 0.3)
+  X[, (P_half+1):P] = qbinom(unif[, ((P_half+1):P)], 1, 0.3) # we changed that to 0.5
   
   return(X)
   
@@ -81,8 +81,8 @@ y0 <- mu + rnorm(n)
 y1 <- numeric(n)
 
 # x6 and x7 needed for heterogeneous effects
-x3 <- X[, p/2+1]
-x4 <- X[, p/2+1]
+x3 <- X[, p/2+1] # isn't it the same? 
+x4 <- X[, p/2+2] # isn't it the same? # changes that! 
 
 # Generate Heterogeneity - only depends on x3 and x4  
 y1[x3 == 0 & x4 == 0] <- y0[x3 == 0 & x4 == 0] + w1[x3 == 0 & x4 == 0] * effect_size
@@ -100,12 +100,13 @@ tau_true[x3 == 1 & x4 == 1] <- w1[x3 == 1 & x4 == 1] * -effect_size
 # num of obs. with effect 2: 
 length(y1[x3 == 0 & x4 == 0])
 
-# num of obs. with effect 0: 
-length(y1[x3 == 0 & x4 == 1]) + length(y1[x3 == 1 & x4 == 0])
+# num of obs. with effect 0: # was 0 in my case
+length(y1[x3 == 0 & x4 == 1]) + length(y1[x3 == 1 & x4 == 0]) # wrong?! as there a basically the same variables? LINE 84/85
 
 # num of obs. with effect -2: 
 length(y1[x3 == 1 & x4 == 1])
 
+# all have a treatment?
 
 # Unit level observed exposure and observed response
 w <- z * w1 + (1 - z) * w0
@@ -202,6 +203,7 @@ bcf_exp <- as.data.frame(cbind(bcf_tauhat, x[-index,]))
 # repair names for binary tree
 names(bcf_exp)[2:length(bcf_exp)] <- names(inference)[-(1:3)]
 
+# always breaks on my laptop
 ## SBART
 s_bcf_itt.tree <- SparseBCF::SparseBCF(y[-index], z[-index], x[-index,], 
                                        pihat = pihat,
@@ -211,8 +213,8 @@ s_bcf_itt.tree <- SparseBCF::SparseBCF(y[-index], z[-index], x[-index,],
                                        x_pred_mu = x[-index,],
                                        pi_pred=pihat,
                                        x_pred_tau = x[-index,],
-                                       save_trees_mu_dir = paste(gewtd(), "/01_code/trees/mu_trees.txt", sep="")
-)
+                                       save_trees_mu_dir = here::here('01_code/trees/mu_trees.txt')) # paste(gewtd(), "/01_code/trees/mu_trees.txt", sep="") # gewtd()
+
 
 
 
