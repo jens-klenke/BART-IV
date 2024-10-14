@@ -49,7 +49,24 @@ own_bcf_iv <- function(y, w, z, x, tau_true, w1, w0, binary = FALSE, n_burn = 30
   tau_bcf_pic <- bartCause::extract(pic_bcf_tree, type = "ite")
   pic_bcf <- apply(tau_bcf_pic, 2, mean)
   # workaround! 
-  pic_bcf[pic_bcf == 0] <- 1e-2 
+  pic_bcf[pic_bcf == 0] <- 1e-2
+  
+  ## new PIC 
+  # prepare dataset
+  dat_test <- data.frame(w=factor(w[-index]), z=z[-index], x[-index,])
+  
+  # fit BART to the observed data (W given Z and X) 
+  soft_test <- SoftBart::softbart_probit(w ~. , data=dat_test, test_data = dat_test)
+  
+  # for E[W (1) | X]
+  val_covs_1 <- data.frame(w=factor(w[-index]), z=ifelse(dat_test$z==1, 1, 1), x[-index,])
+  soft_test_w1 <- predict(soft_test, newdata=val_covs_1)
+  
+  # and E[W (0) | X]
+  val_covs_0 <- data.frame(w=factor(w[-index]), z=ifelse(dat_test$z==0, 0, 0), x[-index,])
+  soft_test_w0 <- predict(soft_test, newdata=val_covs_0)
+  # implying we can also obtain draws from E[W (1)−W (0) | X] for each person.
+  pic_sbart <- soft_test_w1$p_mean - soft_test_w0$p_mean
   
   ######################################################
   ####     Continuous and Discrete Outcomes         ####
@@ -70,8 +87,14 @@ own_bcf_iv <- function(y, w, z, x, tau_true, w1, w0, binary = FALSE, n_burn = 30
   bcf_tauhat <- bcf_itt/pic_bcf
   bcf_exp <- as.data.frame(cbind(bcf_tauhat, x[-index,]))
   
+  # Get posterior of treatment effects with new pic
+  # 2 stands for SBART PIC
+  bcf_tauhat_2 <- bcf_itt/pic_sbart
+  bcf_2_exp <- as.data.frame(cbind(bcf_tauhat_2, x[-index,]))
+  
   # repair names for binary tree
   names(bcf_exp)[2:length(bcf_exp)] <- names(inference)[-(1:3)]
+  names(bcf_2_exp)[2:length(bcf_2_exp)] <- names(inference)[-(1:3)]
   
   ## SBART
   s_bcf_itt.tree <- quiet(
@@ -90,8 +113,13 @@ own_bcf_iv <- function(y, w, z, x, tau_true, w1, w0, binary = FALSE, n_burn = 30
   # s_bcf_exp %>% dplyr::filter(V2 == 0 & V3 == 0) %>% dplyr::summarise(median(s_bcf_tauhat))
   s_bcf_exp <- as.data.frame(cbind(s_bcf_tauhat, x[-index,]))
   
+  # Get posterior of treatment effects with new pic
+  s_bcf_tauhat_2 <- s_bcf_itt/pic_sbart
+  s_bcf_2_exp <- as.data.frame(cbind(s_bcf_tauhat_2, x[-index,]))
+  
   # repair names? !! by me 
   names(s_bcf_exp)[2:length(s_bcf_exp)] <- names(inference)[-(1:3)]
+  names(s_bcf_2_exp)[2:length(s_bcf_2_exp)] <- names(inference)[-(1:3)]
   
   # print('Step 1 completed')
   ######################################################
@@ -124,6 +152,14 @@ own_bcf_iv <- function(y, w, z, x, tau_true, w1, w0, binary = FALSE, n_burn = 30
                           cost = (max(bcf_post_split_probs)/bcf_post_split_probs)
                           )
     
+    bcf_2_fit.tree <- rpart(bcf_tauhat_2 ~ .,
+                            data = bcf_2_exp,
+                            maxdepth = max_depth,
+                            cp = cp,
+                            minsplit = minsplit,
+                            cost =(max(bcf_post_split_probs)/bcf_post_split_probs)
+                              )
+    
     # binary tree for sparse trees
     s_bcf_fit.tree <- rpart(s_bcf_tauhat ~ .,
                             data = s_bcf_exp,
@@ -132,7 +168,15 @@ own_bcf_iv <- function(y, w, z, x, tau_true, w1, w0, binary = FALSE, n_burn = 30
                             minsplit = minsplit,
                             cost = (max(s_bcf_post_split_probs)/s_bcf_post_split_probs)
                             )
-  }
+    
+    s_bcf_2_fit.tree <- rpart(s_bcf_tauhat_2 ~ .,
+                              data = s_bcf_2_exp,
+                              maxdepth = max_depth,
+                              cp = cp,
+                              minsplit = minsplit,
+                              cost = (max(s_bcf_post_split_probs)/s_bcf_post_split_probs)
+                              )
+    }
   
   # print('Step 2 completed')
   ######################################################
@@ -140,12 +184,18 @@ own_bcf_iv <- function(y, w, z, x, tau_true, w1, w0, binary = FALSE, n_burn = 30
   ######################################################
 
   bcf_ivResults <- heterogeneous_treatment_estimation(bcf_fit.tree, inference = inference,
-                                                      adj_method = adj_method, pred_df = pred_df) #tau_true = tau_true)
+                                                      adj_method = adj_method, pred_df = pred_df)
+  
+  bcf_2_ivResults <- heterogeneous_treatment_estimation(bcf_2_fit.tree, inference = inference,
+                                                        adj_method = adj_method, pred_df = pred_df)
   
   s_bcf_ivResults <- heterogeneous_treatment_estimation(s_bcf_fit.tree, inference = inference,
-                                                        adj_method = adj_method, pred_df = pred_df) #tau_true = tau_true)
-
-  theoretical_results <- estimate_theoretical_subgroups(inference)
+                                                        adj_method = adj_method, pred_df = pred_df)
+  
+  s_bcf_2_ivResults <- heterogeneous_treatment_estimation(s_bcf_2_fit.tree, inference = inference,
+                                                          adj_method = adj_method, pred_df = pred_df)
+  
+  # theoretical_results <- estimate_theoretical_subgroups(inference)
   
   # clean temp data only in WINDOWS!
   if(base::Sys.info()["sysname"] == 'Windows'){
@@ -161,15 +211,18 @@ own_bcf_iv <- function(y, w, z, x, tau_true, w1, w0, binary = FALSE, n_burn = 30
   return(
     list(
     'bcf_results' = bcf_ivResults, # results BART, IV and Bayes
+    'bcf_2_results' = bcf_2_ivResults,
     's_bcf_results' = s_bcf_ivResults, # results Soft BART IV and Bayes
-#    'pic' = pic_bcf, # Proportion of Compliers (pic)
+    's_bcf_2_ivResults' = s_bcf_2_ivResults,
+    'pic' = pic_bcf, # Proportion of Compliers (pic)
+    'pic_sbart' = pic_sbart #, # Proportion of Compliers (pic)
 #    'bcf_itt' = bcf_itt,
 #    's_bcf_itt'= s_bcf_itt,
 #    'bcf_tauhat' = bcf_tauhat,
 #    's_bcf_tauhat' = s_bcf_tauhat,
 #    'bcf_exp' = bcf_exp, # posterior of treatment effects and Design Matrix
 #    's_bcf_exp' = s_bcf_exp, # posterior of treatment effects and Design Matrix
-    'theoretical_results' = theoretical_results 
+#    'theoretical_results' = theoretical_results 
     )
   )
 }

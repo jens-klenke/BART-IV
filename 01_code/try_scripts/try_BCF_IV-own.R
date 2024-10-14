@@ -31,7 +31,7 @@ path_in <- list.files(
   here::here('00_sim_data'), recursive = TRUE, full.names = TRUE)
 
 dataset <- readRDS(path_in[1])
-dataset <- readRDS(try$path_in[1])
+#dataset <- readRDS(try$path_in[1])
 
 y <- dataset$y
 w <- dataset$w
@@ -102,6 +102,30 @@ x_names <- paste0('x', 1:ncol(x))
   bcf_pic[bcf_pic == 0] <- 1e-2 
   # mean(pic_bcf) / median(pic) == compliance
   
+  hist(bcf_pic)
+  plot(density(bcf_pic))
+  
+  #### new PIC 
+  # prepare dataset
+  dat_test <- data.frame(w=factor(w[-index]), z=z[-index], x[-index,])
+  
+  # fit BART to the observed data (W given Z and X) 
+  soft_test <- SoftBart::softbart_probit(w ~. , data=dat_test, test_data =  dat_test)
+  
+  # for E[W (1) | X]
+  val_covs_1 <- data.frame(w=factor(w[-index]), z=ifelse(dat_test$z==1, 1, 1), x[-index,])
+  soft_test_w1 <- predict(soft_test, newdata=val_covs_1)
+  
+  # and E[W (0) | X]
+  val_covs_0 <- data.frame(w=factor(w[-index]), z=ifelse(dat_test$z==0, 0, 0), x[-index,])
+  soft_test_w0 <- predict(soft_test, newdata=val_covs_0)
+  # implying we can also obtain draws from E[W (1)−W (0) | X] for each person.
+  pic_sbart <- soft_test_w1$p_mean - soft_test_w0$p_mean
+  
+  hist(pic_sbart, xlim = c(0, 1))
+  plot(density(pic_sbart))
+  plot(density(pic_sbart), xlim = c(-.2, 1.2))
+  
   ######################################################
   ####     Continuous and Discrete Outcomes         ####
   ######################################################
@@ -121,13 +145,15 @@ x_names <- paste0('x', 1:ncol(x))
     
     # Get posterior of treatment effects
     bcf_tauhat <- bcf_itt/bcf_pic
+    bcf_tauhat_2 <- bcf_itt/pic_sbart
     # driven by outliers
     # bcf_exp %>% dplyr::filter(x1 == 0 & x2 == 0) %>% dplyr::summarise(median(bcf_tauhat))
     bcf_exp <- as.data.frame(cbind(bcf_tauhat, x[-index,]))
+    bcf_2_exp <- as.data.frame(cbind(bcf_tauhat_2, x[-index,]))
     
     # repair names? !! by me 
     names(bcf_exp)[2:length(bcf_exp)] <- names(inference)[-(1:3)]
-    
+    names(bcf_2_exp)[2:length(bcf_2_exp)] <- names(inference)[-(1:3)]
     
     'sparse BCF'
     ##### sparse BCF -> BCF https://github.com/albicaron/SparseBCF
@@ -143,11 +169,15 @@ x_names <- paste0('x', 1:ncol(x))
     
     # Get posterior of treatment effects
     s_bcf_tauhat <- s_bcf_itt/bcf_pic
+    s_bcf_tauhat_2 <- s_bcf_itt/pic_sbart
+    
     # s_bcf_exp %>% dplyr::filter(V2 == 0 & V3 == 0) %>% dplyr::summarise(median(s_bcf_tauhat))
     s_bcf_exp <- as.data.frame(cbind(s_bcf_tauhat, x[-index,]))
+    s_bcf_2_exp <- as.data.frame(cbind(s_bcf_tauhat_2, x[-index,]))
     
     # repair names? !! by me 
     names(s_bcf_exp)[2:length(s_bcf_exp)] <- names(inference)[-(1:3)]
+    names(s_bcf_2_exp)[2:length(s_bcf_2_exp)] <- names(inference)[-(1:3)]
     
     ######################################################
     ####  Step 2: Build a CART on the Unit Level CITT ####
@@ -188,6 +218,20 @@ x_names <- paste0('x', 1:ncol(x))
       # plot tree
       rpart.plot::rpart.plot(bcf_fit.tree)
       
+      bcf_2_fit.tree <- rpart(bcf_tauhat_2 ~ .,
+                            data = bcf_2_exp,
+                            maxdepth = max_depth,
+                            cp = cp,
+                            minsplit = minsplit,
+                            cost = scales::rescale(
+                              colMeans(bcf_itt.tree$varprb_tau), 
+                              to = c(10, 1))
+      )
+      # plot tree
+      rpart.plot::rpart.plot(bcf_2_fit.tree)
+      
+      
+      
       # binary tree for sparse trees
       s_bcf_fit.tree <- rpart(s_bcf_tauhat ~ .,
                               data = s_bcf_exp,
@@ -200,6 +244,21 @@ x_names <- paste0('x', 1:ncol(x))
       )
       # plot tree
       rpart.plot::rpart.plot(s_bcf_fit.tree)
+      
+      # binary tree for sparse trees
+      s_bcf_2_fit.tree <- rpart(s_bcf_tauhat_2 ~ .,
+                              data = s_bcf_2_exp,
+                              maxdepth = max_depth,
+                              cp = cp,
+                              minsplit = minsplit,
+                              cost = scales::rescale(
+                                colMeans(s_bcf_itt.tree$varprb_tau), 
+                                to = c(10, 1))
+      )
+      # plot tree
+      rpart.plot::rpart.plot(s_bcf_2_fit.tree)
+      
+      
     }
     
     ######################################################
@@ -215,11 +274,29 @@ x_names <- paste0('x', 1:ncol(x))
     
     unlink(tempdir(), recursive = TRUE)
     
+    bcf_2_ivResults <- heterogeneous_treatment_estimation(bcf_2_fit.tree, inference = inference,
+                                                          adj_method = adj_method,
+                                                          stan_model_first_stage,
+                                                          stan_model_second_stage,
+                                                          pred_df = pred_df) # delete tau_true
+    #  tau_true = tau_true) # NEW
+    
+    unlink(tempdir(), recursive = TRUE)
+    
     s_bcf_ivResults <- heterogeneous_treatment_estimation(s_bcf_fit.tree, inference = inference,
                                                           adj_method = adj_method,
                                                           stan_model_first_stage,
                                                           stan_model_second_stage,
-                                                          # pred_df = pred_df # delete tau_true
-                                                          tau_true = tau_true) # NEW
+                                                           pred_df = pred_df) # delete tau_true
+                                                          #tau_true = tau_true) # NEW
     
     unlink(tempdir(), recursive = TRUE)
+
+    s_bcf_2_ivResults <- heterogeneous_treatment_estimation(s_bcf_2_fit.tree, inference = inference,
+                                                            adj_method = adj_method,
+                                                            stan_model_first_stage,
+                                                            stan_model_second_stage,
+                                                            pred_df = pred_df)
+    
+    unlink(tempdir(), recursive = TRUE)
+    
